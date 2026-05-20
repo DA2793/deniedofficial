@@ -517,6 +517,15 @@ img {
     margin-bottom: 20px;
 }
 
+.about-quote {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 28px;
+}
+
 .about-values {
     margin-top: 48px;
     display: flex;
