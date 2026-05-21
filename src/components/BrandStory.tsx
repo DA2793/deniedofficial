@@ -41,17 +41,20 @@ export default function BrandStory() {
           {/* Right */}
           <div className="space-y-8">
             <ScrollReveal delay={0.2}>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                We don&apos;t design for the masses. DENIED. is a filter — a mark of
-                distinction for those who understand that true luxury isn&apos;t about
-                being loud. It&apos;s about being selected.
+              <p className="text-gray-400 text-lg leading-relaxed italic">
+                DENIED. is a filter — not everyone passes.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.3}>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Not built for acceptance. Not here to impress. Every piece carries
-                intention. Every drop is limited. Some standards still exist.
+              <p className="text-gray-400 text-lg leading-relaxed italic">
+                True luxury is never about being loud. It is about being selected. Every piece carries intention. Every drop is limited.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.4}>
+              <p className="text-gray-400 text-lg leading-relaxed italic">
+                Some standards still exist.
               </p>
             </ScrollReveal>
 
