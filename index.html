@@ -39,8 +39,154 @@
             justify-content: center;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
+        /* ===== BLURRED BACKGROUND - "something is cooking" ===== */
+        .bg-teaser {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Fake site content behind the glass */
+        .bg-teaser-content {
+            position: absolute;
+            inset: -20px;
+            padding: 80px 60px;
+            filter: blur(12px);
+            opacity: 0.4;
+            transform: scale(1.05);
+        }
+
+        .bg-teaser-content .fake-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .bg-teaser-content .fake-logo {
+            width: 120px;
+            height: 16px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .bg-teaser-content .fake-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .bg-teaser-content .fake-link {
+            width: 60px;
+            height: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+        }
+
+        .bg-teaser-content .fake-hero {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .bg-teaser-content .fake-title {
+            width: 400px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin: 0 auto 20px;
+        }
+
+        .bg-teaser-content .fake-subtitle {
+            width: 250px;
+            height: 14px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin: 0 auto 32px;
+        }
+
+        .bg-teaser-content .fake-btn {
+            width: 160px;
+            height: 44px;
+            background: rgba(201, 169, 110, 0.3);
+            border-radius: 0;
+            margin: 0 auto;
+        }
+
+        .bg-teaser-content .fake-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bg-teaser-content .fake-card {
+            aspect-ratio: 3/4;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 2px;
+        }
+
+        /* Animated floating elements behind glass */
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--gold);
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: var(--gold);
+            top: 60%;
+            right: 10%;
+            animation-delay: -3s;
+        }
+
+        .particle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: var(--white);
+            bottom: 20%;
+            left: 40%;
+            animation-delay: -5s;
+            opacity: 0.05;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
+        }
+
+        /* ===== GLASS OVERLAY ===== */
+        .glass-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* ===== MAIN CONTENT ===== */
         .mask-page {
             text-align: center;
             padding: 40px 24px;
@@ -111,32 +257,12 @@
 
         .insta-link:hover {
             border-color: var(--gold);
-            background: rgba(201, 169, 110, 0.05);
+            background: rgba(201, 169, 110, 0.08);
         }
 
         .insta-link svg {
             width: 20px;
             height: 20px;
-        }
-
-        /* Background glow */
-        .bg-glow {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 1;
-            animation: breathe 6s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
         }
 
         .footer-note {
@@ -148,12 +274,55 @@
             color: var(--gray);
             letter-spacing: 1px;
             text-transform: uppercase;
+            z-index: 2;
+        }
+
+        @media (max-width: 600px) {
+            .bg-teaser-content .fake-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bg-teaser-content .fake-title {
+                width: 80%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+    <!-- Blurred background teaser -->
+    <div class="bg-teaser">
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="bg-teaser-content">
+            <div class="fake-nav">
+                <div class="fake-logo"></div>
+                <div class="fake-links">
+                    <div class="fake-link"></div>
+                    <div class="fake-link"></div>
+                    <div class="fake-link"></div>
+                    <div class="fake-link"></div>
+                </div>
+            </div>
+            <div class="fake-hero">
+                <div class="fake-title"></div>
+                <div class="fake-subtitle"></div>
+                <div class="fake-btn"></div>
+            </div>
+            <div class="fake-grid">
+                <div class="fake-card"></div>
+                <div class="fake-card"></div>
+                <div class="fake-card"></div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Glass effect overlay -->
+    <div class="glass-overlay"></div>
+
+    <!-- Foreground content -->
     <div class="mask-page">
         <div class="logo">
             <img src="assets/Brand Logo.png" alt="DENIED.">
