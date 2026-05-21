@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -10,11 +11,12 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <motion.div
-      whileHover={{ scale: 0.98 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-black group cursor-pointer"
-    >
+    <Link href={`/product/${product.id}`}>
+      <motion.div
+        whileHover={{ scale: 0.98 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-black group cursor-pointer"
+      >
       {/* Image */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-900">
         <Image
@@ -62,5 +64,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </motion.div>
+    </Link>
   );
 }
