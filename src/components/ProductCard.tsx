@@ -17,20 +17,12 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       {/* Image */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-900">
-        {product.image ? (
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-gray-700 text-xs uppercase tracking-brutal">
-              Image Soon
-            </span>
-          </div>
-        )}
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
 
         {/* Badge */}
         {product.badge && (
@@ -43,15 +35,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
 
         {/* Quick add */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        >
+        <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           <button className="w-full bg-white text-black text-[10px] uppercase tracking-brutal py-3 hover:bg-gold transition-colors duration-300">
             Add to Cart
           </button>
-        </motion.div>
+        </div>
       </div>
 
       {/* Info */}
