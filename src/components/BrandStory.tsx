@@ -48,7 +48,13 @@ export default function BrandStory() {
 
             <ScrollReveal delay={0.3}>
               <p className="text-gray-400 text-lg leading-relaxed italic">
-                True luxury is never about being loud. It is about being selected. Every piece carries intention. Every drop is limited.
+                True luxury is never about being loud. It is about being selected.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.35}>
+              <p className="text-gray-400 text-lg leading-relaxed italic">
+                Every piece carries intention. Every drop is limited.
               </p>
             </ScrollReveal>
 
