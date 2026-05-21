@@ -75,20 +75,6 @@ export default function Hero() {
           </a>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-[1px] h-12 bg-gradient-to-b from-white/40 to-transparent"
-        />
-      </motion.div>
     </section>
   );
 }

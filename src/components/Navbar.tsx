@@ -5,21 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+const categories = ["T-Shirts", "Caps"];
+const filters = ["New In", "Best Sellers", "All Collection"];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const links = [
-    { label: "Collection", href: "#collection" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   return (
     <>
@@ -39,24 +37,88 @@ export default function Navbar() {
             <Image
               src="/assets/Brand Logo.png"
               alt="DENIED."
-              width={140}
-              height={40}
-              className="h-8 w-auto"
+              width={180}
+              height={50}
+              className="h-12 w-auto"
               priority
             />
           </Link>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-12">
-            {links.map((link) => (
+            {/* Collection with dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
               <a
-                key={link.label}
-                href={link.href}
+                href="#collection"
                 className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
               >
-                {link.label}
+                Collection
               </a>
-            ))}
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-full left-0 mt-4 w-[280px] bg-black border border-white/[0.06] p-6"
+                  >
+                    {/* Categories */}
+                    <p className="text-[9px] uppercase tracking-brutal text-gold mb-4">
+                      Products
+                    </p>
+                    <div className="space-y-3 mb-6">
+                      {categories.map((cat) => (
+                        <a
+                          key={cat}
+                          href="#collection"
+                          className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                        >
+                          {cat}
+                        </a>
+                      ))}
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-white/[0.06] my-4" />
+
+                    {/* Filters */}
+                    <p className="text-[9px] uppercase tracking-brutal text-gold mb-4">
+                      Browse
+                    </p>
+                    <div className="space-y-3">
+                      {filters.map((filter) => (
+                        <a
+                          key={filter}
+                          href="#collection"
+                          className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                        >
+                          {filter}
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <a
+              href="#about"
+              className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              Contact
+            </a>
           </div>
 
           {/* Menu Toggle */}
@@ -91,7 +153,11 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-12"
           >
-            {links.map((link, i) => (
+            {[
+              { label: "Collection", href: "#collection" },
+              { label: "About", href: "#about" },
+              { label: "Contact", href: "#contact" },
+            ].map((link, i) => (
               <motion.a
                 key={link.label}
                 href={link.href}
