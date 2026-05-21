@@ -25,7 +25,7 @@ const bebas = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: "DENIED. — Not for Everyone",
-  description: "Not for Everyone. Luxury for Selected. Premium apparel and accessories.",
+  description: "Not for Everyone. Luxury for the Selected. Premium apparel and accessories.",
   icons: {
     icon: "/favicon.png",
     apple: "/favicon.png",

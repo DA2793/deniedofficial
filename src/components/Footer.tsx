@@ -18,7 +18,7 @@ export default function Footer() {
               className="h-7 w-auto mb-6"
             />
             <p className="text-gray-600 text-sm max-w-xs">
-              Not for Everyone. Luxury for Selected.
+              Not for Everyone. Luxury for the Selected.
             </p>
           </div>
 

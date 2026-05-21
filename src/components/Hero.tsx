@@ -58,7 +58,7 @@ export default function Hero() {
           transition={{ delay: 1.2, duration: 1 }}
           className="font-serif text-xl md:text-2xl text-gray-300 font-medium mt-6 mb-12"
         >
-          Not for Everyone. Luxury for Selected.
+          Not for Everyone. Luxury for the Selected.
         </motion.p>
 
         {/* CTA */}
