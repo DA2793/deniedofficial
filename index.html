@@ -33,113 +33,154 @@
             font-family: 'Inter', sans-serif;
             background: var(--black);
             color: var(--white);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            min-height: 300vh;
             -webkit-font-smoothing: antialiased;
             position: relative;
         }
 
-        /* ===== BLURRED BACKGROUND - "something is cooking" ===== */
+        /* ===== BLURRED BACKGROUND - scrollable "site" behind glass ===== */
         .bg-teaser {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        /* Fake site content behind the glass */
-        .bg-teaser-content {
             position: absolute;
-            inset: -20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 0;
             padding: 80px 60px;
-            filter: blur(12px);
-            opacity: 0.4;
-            transform: scale(1.05);
+            filter: blur(10px);
+            opacity: 0.35;
         }
 
-        .bg-teaser-content .fake-nav {
+        .bg-teaser .fake-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 80px;
+            margin-bottom: 100px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .bg-teaser-content .fake-logo {
+        .bg-teaser .fake-logo {
             width: 120px;
-            height: 16px;
+            height: 18px;
             background: rgba(255,255,255,0.3);
             border-radius: 2px;
         }
 
-        .bg-teaser-content .fake-links {
+        .bg-teaser .fake-links {
             display: flex;
             gap: 24px;
         }
 
-        .bg-teaser-content .fake-link {
+        .bg-teaser .fake-link {
             width: 60px;
             height: 10px;
             background: rgba(255,255,255,0.15);
             border-radius: 2px;
         }
 
-        .bg-teaser-content .fake-hero {
+        .bg-teaser .fake-hero {
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 120px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .bg-teaser-content .fake-title {
-            width: 400px;
-            height: 48px;
-            background: rgba(255,255,255,0.2);
+        .bg-teaser .fake-title {
+            width: 450px;
+            max-width: 80%;
+            height: 56px;
+            background: rgba(255,255,255,0.18);
             border-radius: 4px;
             margin: 0 auto 20px;
         }
 
-        .bg-teaser-content .fake-subtitle {
-            width: 250px;
-            height: 14px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin: 0 auto 32px;
+        .bg-teaser .fake-title-2 {
+            width: 300px;
+            max-width: 60%;
+            height: 56px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 4px;
+            margin: 0 auto 24px;
         }
 
-        .bg-teaser-content .fake-btn {
-            width: 160px;
-            height: 44px;
-            background: rgba(201, 169, 110, 0.3);
-            border-radius: 0;
+        .bg-teaser .fake-subtitle {
+            width: 280px;
+            max-width: 50%;
+            height: 14px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            margin: 0 auto 40px;
+        }
+
+        .bg-teaser .fake-btn {
+            width: 180px;
+            height: 48px;
+            background: rgba(201, 169, 110, 0.25);
             margin: 0 auto;
         }
 
-        .bg-teaser-content .fake-grid {
+        .bg-teaser .fake-section {
+            max-width: 900px;
+            margin: 0 auto 100px;
+        }
+
+        .bg-teaser .fake-section-title {
+            width: 200px;
+            height: 20px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 2px;
+            margin: 0 auto 48px;
+        }
+
+        .bg-teaser .fake-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            max-width: 800px;
-            margin: 0 auto;
         }
 
-        .bg-teaser-content .fake-card {
+        .bg-teaser .fake-card {
             aspect-ratio: 3/4;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 2px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
         }
 
-        /* Animated floating elements behind glass */
+        .bg-teaser .fake-card-info {
+            height: 80px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-top: none;
+        }
+
+        .bg-teaser .fake-text-block {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .bg-teaser .fake-text-line {
+            height: 12px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 2px;
+            margin-bottom: 12px;
+        }
+
+        .bg-teaser .fake-text-line:nth-child(2) { width: 80%; margin-left: auto; margin-right: auto; }
+        .bg-teaser .fake-text-line:nth-child(3) { width: 60%; margin-left: auto; margin-right: auto; }
+
+        /* Floating particles */
         .bg-particles {
-            position: absolute;
+            position: fixed;
             inset: 0;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .particle {
             position: absolute;
             border-radius: 50%;
-            opacity: 0.15;
+            opacity: 0.12;
             animation: float 8s ease-in-out infinite;
         }
 
@@ -168,7 +209,7 @@
             bottom: 20%;
             left: 40%;
             animation-delay: -5s;
-            opacity: 0.05;
+            opacity: 0.04;
         }
 
         @keyframes float {
@@ -176,22 +217,27 @@
             50% { transform: translateY(-30px) scale(1.05); }
         }
 
-        /* ===== GLASS OVERLAY ===== */
+        /* ===== GLASS OVERLAY - fixed, stays while you scroll ===== */
         .glass-overlay {
             position: fixed;
             inset: 0;
             z-index: 1;
-            background: rgba(10, 10, 10, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
-        /* ===== MAIN CONTENT ===== */
+        /* ===== MAIN CONTENT - fixed center ===== */
         .mask-page {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
             padding: 40px 24px;
-            position: relative;
             z-index: 2;
+            width: 100%;
+            max-width: 600px;
         }
 
         .logo {
@@ -277,52 +323,116 @@
             z-index: 2;
         }
 
+        /* Scroll hint */
+        .scroll-hint {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        .scroll-hint svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--gray-light);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
         @media (max-width: 600px) {
-            .bg-teaser-content .fake-grid {
+            .bg-teaser .fake-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .bg-teaser-content .fake-title {
-                width: 80%;
+            .bg-teaser {
+                padding: 40px 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Blurred background teaser -->
+    <!-- Scrollable blurred background -->
     <div class="bg-teaser">
-        <div class="bg-particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
+        <div class="fake-nav">
+            <div class="fake-logo"></div>
+            <div class="fake-links">
+                <div class="fake-link"></div>
+                <div class="fake-link"></div>
+                <div class="fake-link"></div>
+                <div class="fake-link"></div>
+            </div>
         </div>
-        <div class="bg-teaser-content">
-            <div class="fake-nav">
-                <div class="fake-logo"></div>
-                <div class="fake-links">
-                    <div class="fake-link"></div>
-                    <div class="fake-link"></div>
-                    <div class="fake-link"></div>
-                    <div class="fake-link"></div>
+
+        <div class="fake-hero">
+            <div class="fake-title"></div>
+            <div class="fake-title-2"></div>
+            <div class="fake-subtitle"></div>
+            <div class="fake-btn"></div>
+        </div>
+
+        <div class="fake-section">
+            <div class="fake-section-title"></div>
+            <div class="fake-grid">
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
+                </div>
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
+                </div>
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
                 </div>
             </div>
-            <div class="fake-hero">
-                <div class="fake-title"></div>
-                <div class="fake-subtitle"></div>
-                <div class="fake-btn"></div>
+        </div>
+
+        <div class="fake-section">
+            <div class="fake-section-title"></div>
+            <div class="fake-text-block">
+                <div class="fake-text-line"></div>
+                <div class="fake-text-line"></div>
+                <div class="fake-text-line"></div>
             </div>
+        </div>
+
+        <div class="fake-section">
+            <div class="fake-section-title"></div>
             <div class="fake-grid">
-                <div class="fake-card"></div>
-                <div class="fake-card"></div>
-                <div class="fake-card"></div>
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
+                </div>
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
+                </div>
+                <div>
+                    <div class="fake-card"></div>
+                    <div class="fake-card-info"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Glass effect overlay -->
+    <!-- Floating particles -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Glass overlay -->
     <div class="glass-overlay"></div>
 
-    <!-- Foreground content -->
+    <!-- Foreground content (stays centered) -->
     <div class="mask-page">
         <div class="logo">
             <img src="assets/Brand Logo.png" alt="DENIED.">
