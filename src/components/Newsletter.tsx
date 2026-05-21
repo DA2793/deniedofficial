@@ -19,15 +19,18 @@ export default function Newsletter() {
     <section className="py-32 px-6 md:px-12 bg-black-soft border-t border-white/[0.04]">
       <div className="max-w-[600px] mx-auto text-center">
         <ScrollReveal>
+          <p className="text-[10px] uppercase tracking-brutal text-gray-600 mb-6">
+            Observe from Distance.
+          </p>
           <h2 className="font-display text-4xl md:text-6xl uppercase mb-4">
-            Observe from Distance
+            Join the Selected
             <span className="text-gold">.</span>
           </h2>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <p className="text-gray-500 text-sm mb-12">
-            Or join the Selected. Early access to drops. No noise.
+          <p className="text-gray-400 text-base mb-12">
+            Early access to drops. No noise.
           </p>
         </ScrollReveal>
 

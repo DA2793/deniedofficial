@@ -59,7 +59,7 @@ export default function BrandStory() {
             </ScrollReveal>
 
             <ScrollReveal delay={0.4}>
-              <p className="text-gray-400 text-lg leading-relaxed italic">
+              <p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif mt-4">
                 Some standards still exist.
               </p>
             </ScrollReveal>
