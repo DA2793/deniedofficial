@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import MagneticButton from "./MagneticButton";
+import TextReveal from "./TextReveal";
 
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -51,28 +53,29 @@ export default function Hero() {
           </motion.h1>
         </div>
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="font-serif text-xl md:text-2xl text-gray-300 font-medium mt-6 mb-12"
-        >
-          Not for Everyone. Luxury for the Selected.
-        </motion.p>
+        {/* Tagline — word-by-word reveal */}
+        <div className="mt-6 mb-12">
+          <TextReveal
+            text="Not for Everyone. Luxury for the Selected."
+            className="font-serif text-xl md:text-2xl text-gray-300 font-medium"
+            delay={1.2}
+          />
+        </div>
 
-        {/* CTA */}
+        {/* CTA — magnetic */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
         >
-          <a
-            href="#collection"
-            className="inline-block text-[11px] uppercase tracking-brutal border border-white/20 px-10 py-4 text-white hover:bg-white hover:text-black transition-all duration-500"
-          >
-            Explore Collection
-          </a>
+          <MagneticButton strength={0.2}>
+            <a
+              href="#collection"
+              className="inline-block text-[11px] uppercase tracking-brutal border border-white/20 px-10 py-4 text-white hover:bg-white hover:text-black transition-all duration-500"
+            >
+              Explore Collection
+            </a>
+          </MagneticButton>
         </motion.div>
       </div>
     </section>

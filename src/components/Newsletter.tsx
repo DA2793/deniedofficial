@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
+import MagneticButton from "./MagneticButton";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -41,12 +42,14 @@ export default function Newsletter() {
               required
               className="flex-1 bg-transparent border border-white/10 border-r-0 px-5 py-4 text-sm text-white placeholder:text-gray-600 outline-none focus:border-gold/50 transition-colors"
             />
-            <button
-              type="submit"
-              className="bg-white text-black text-[10px] uppercase tracking-brutal px-8 py-4 hover:bg-gold transition-colors duration-300"
-            >
-              {submitted ? "✓" : "Join"}
-            </button>
+            <MagneticButton strength={0.15}>
+              <button
+                type="submit"
+                className="bg-white text-black text-[10px] uppercase tracking-brutal px-8 py-4 hover:bg-gold transition-colors duration-300"
+              >
+                {submitted ? "✓" : "Join"}
+              </button>
+            </MagneticButton>
           </form>
         </ScrollReveal>
       </div>

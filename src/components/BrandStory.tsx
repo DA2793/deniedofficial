@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import ScrollReveal from "./ScrollReveal";
+import TextReveal from "./TextReveal";
 
 export default function BrandStory() {
   const sectionRef = useRef(null);
@@ -60,7 +61,7 @@ export default function BrandStory() {
 
             <ScrollReveal delay={0.4}>
               <p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif mt-4">
-                Some standards still exist.
+                <TextReveal text="Some standards still exist." delay={0.2} />
               </p>
             </ScrollReveal>
 
