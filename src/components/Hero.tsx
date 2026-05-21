@@ -56,7 +56,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 1 }}
-          className="font-serif text-xl md:text-2xl text-gray-400 font-light italic mt-6 mb-12"
+          className="font-serif text-xl md:text-2xl text-gray-300 font-medium mt-6 mb-12"
         >
           Not for Everyone. Luxury for Selected.
         </motion.p>
