@@ -37,27 +37,79 @@ export default function ProductPage() {
           {/* Left — Image Gallery */}
           <div>
             {/* Main Image */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeImage}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative aspect-[3/4] bg-gray-900 overflow-hidden mb-4"
-              >
-                <Image
-                  src={product.images[activeImage]}
-                  alt={`${product.name} - ${activeImage + 1}`}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </motion.div>
-            </AnimatePresence>
+            <div className="relative">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeImage}
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative aspect-[3/4] bg-gray-900 overflow-hidden"
+                >
+                  <Image
+                    src={product.images[activeImage]}
+                    alt={`${product.name} - ${activeImage + 1}`}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation — vertical bar on right side */}
+              <div className="absolute right-0 top-0 bottom-0 w-12 flex flex-col items-center justify-center gap-6 z-20">
+                {/* Prev */}
+                <motion.button
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                  className="w-10 h-10 border border-white/10 bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M18 15l-6-6-6 6" />
+                  </svg>
+                </motion.button>
+
+                {/* Progress indicator */}
+                <div className="flex flex-col items-center gap-1">
+                  {product.images.map((_, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        height: activeImage === i ? 20 : 6,
+                        backgroundColor: activeImage === i ? "#c9a96e" : "rgba(255,255,255,0.15)",
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className="w-[2px] rounded-full cursor-pointer"
+                      onClick={() => setActiveImage(i)}
+                    />
+                  ))}
+                </div>
+
+                {/* Next */}
+                <motion.button
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setActiveImage((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                  className="w-10 h-10 border border-white/10 bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </motion.button>
+              </div>
+
+              {/* Image counter */}
+              <div className="absolute bottom-4 left-4 z-20">
+                <span className="text-[10px] uppercase tracking-brutal text-white/40">
+                  {String(activeImage + 1).padStart(2, "0")} / {String(product.images.length).padStart(2, "0")}
+                </span>
+              </div>
+            </div>
 
             {/* Thumbnails */}
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-2 mt-4">
               {product.images.map((img, i) => (
                 <button
                   key={i}
