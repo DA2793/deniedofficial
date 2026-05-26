@@ -22,7 +22,7 @@ export default function PoliciesPage() {
         {/* Made to Order */}
         <ScrollReveal delay={0.1}>
           <div className="mb-16">
-            <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8">
+            <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8 rounded-2xl">
               <h3 className="font-display text-xl uppercase mb-4 text-gold">Made to Order — Crafted for You</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 Every DENIED. piece is printed and crafted only after you place your order. We do not hold ready stock. Your order is created exclusively for you — making every piece truly one-of-one.
@@ -123,7 +123,7 @@ export default function PoliciesPage() {
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Accepted Payment Methods</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
               {["Credit Cards", "Debit Cards", "UPI (GPay, PhonePe, Paytm)", "Wallets", "Cash on Delivery"].map((method) => (
-                <div key={method} className="border border-white/[0.06] px-4 py-3 text-xs text-gray-300">
+                <div key={method} className="border border-white/[0.06] px-4 py-3 text-xs text-gray-300 rounded-full">
                   {method}
                 </div>
               ))}
@@ -147,7 +147,7 @@ export default function PoliciesPage() {
           <div className="mb-16">
             <h2 className="font-display text-3xl uppercase mb-8">Cancellation & Refund Policy</h2>
 
-            <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8">
+            <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8 rounded-2xl">
               <h3 className="font-display text-lg uppercase mb-4 text-gold">Important — Please Read</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 Since every DENIED. piece is printed and curated exclusively for you after your order is placed, cancellations are only possible before your order enters the <strong className="text-white">Printing</strong> stage.

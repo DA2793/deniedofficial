@@ -70,7 +70,7 @@ function CollectionContent() {
                 setShowNewOnly(false);
                 setShowSignature(false);
               }}
-              className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal transition-all duration-300 ${
+              className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
                 activeCategory === cat.slug && !showNewOnly && !showSignature
                   ? "bg-white text-black"
                   : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
@@ -90,7 +90,7 @@ function CollectionContent() {
               setShowSignature(false);
               setActiveCategory("all");
             }}
-            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal transition-all duration-300 ${
+            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
               showNewOnly
                 ? "bg-gold text-black"
                 : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
@@ -105,7 +105,7 @@ function CollectionContent() {
               setShowNewOnly(false);
               setActiveCategory("all");
             }}
-            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal transition-all duration-300 ${
+            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
               showSignature
                 ? "bg-gold text-black"
                 : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
@@ -123,7 +123,7 @@ function CollectionContent() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="bg-transparent border border-white/10 text-gray-400 px-4 py-2.5 text-[10px] uppercase tracking-brutal focus:outline-none focus:border-gold appearance-none cursor-pointer"
+            className="bg-transparent border border-white/10 text-gray-400 px-4 py-2.5 text-[10px] uppercase tracking-brutal rounded-full focus:outline-none focus:border-gold appearance-none cursor-pointer"
           >
             <option value="default" className="bg-black">Sort: Default</option>
             <option value="price-low" className="bg-black">Price: Low → High</option>

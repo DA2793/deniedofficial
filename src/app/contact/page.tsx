@@ -49,17 +49,6 @@ export default function ContactPage() {
                 </a>
               </div>
             </ScrollReveal>
-
-            <ScrollReveal delay={0.3}>
-              <div>
-                <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
-                  Website
-                </p>
-                <span className="text-lg text-white">
-                  deniedofficial.com
-                </span>
-              </div>
-            </ScrollReveal>
           </div>
 
           {/* Right — Form */}
@@ -72,7 +61,7 @@ export default function ContactPage() {
                 <input
                   type="text"
                   required
-                  className="w-full bg-transparent border-b border-white/10 pb-3 text-white text-sm outline-none focus:border-gold transition-colors"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
                 />
               </div>
 
@@ -83,7 +72,7 @@ export default function ContactPage() {
                 <input
                   type="email"
                   required
-                  className="w-full bg-transparent border-b border-white/10 pb-3 text-white text-sm outline-none focus:border-gold transition-colors"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
                 />
               </div>
 
@@ -94,7 +83,7 @@ export default function ContactPage() {
                 <textarea
                   rows={4}
                   required
-                  className="w-full bg-transparent border-b border-white/10 pb-3 text-white text-sm outline-none focus:border-gold transition-colors resize-none"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors resize-none"
                 />
               </div>
 
@@ -102,7 +91,7 @@ export default function ContactPage() {
                 <MagneticButton strength={0.15}>
                   <button
                     type="submit"
-                    className="bg-white text-black text-[11px] uppercase tracking-brutal px-10 py-4 hover:bg-gold transition-colors duration-300"
+                    className="bg-white text-black text-[11px] uppercase tracking-brutal px-10 py-4 rounded-full hover:bg-gold transition-colors duration-300"
                   >
                     Send Message
                   </button>

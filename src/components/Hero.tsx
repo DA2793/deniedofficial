@@ -71,7 +71,7 @@ export default function Hero() {
           <MagneticButton strength={0.2}>
             <a
               href="/collection"
-              className="inline-block text-[11px] uppercase tracking-brutal border border-white/20 px-10 py-4 text-white hover:bg-white hover:text-black transition-all duration-500"
+              className="inline-block text-[11px] uppercase tracking-brutal border border-white/20 px-10 py-4 rounded-full text-white hover:bg-white hover:text-black transition-all duration-500"
             >
               Explore Collection
             </a>

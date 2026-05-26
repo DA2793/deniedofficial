@@ -78,7 +78,7 @@ export default function Footer() {
             &copy; 2026 DENIED. All rights reserved.
           </p>
           <p className="text-[10px] uppercase tracking-brutal text-gray-600">
-            Handcrafted with ◆ in India
+            Designed in India
           </p>
         </div>
       </div>
