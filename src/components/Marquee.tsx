@@ -20,10 +20,10 @@ export default function Marquee() {
       >
         {[...items, ...items, ...items, ...items].map((item, i) => (
           <span key={i} className="flex items-center gap-12">
-            <span className="text-[11px] uppercase tracking-brutal text-gray-600">
+            <span className="text-[11px] uppercase tracking-brutal text-gray-400">
               {item}
             </span>
-            <span className="text-gold/30 text-xs">·</span>
+            <span className="text-gold/40 text-xs">·</span>
           </span>
         ))}
       </motion.div>
