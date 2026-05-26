@@ -84,31 +84,31 @@ export default function AboutPage() {
             {/* Right */}
             <div className="space-y-6">
               <ScrollReveal delay={0.1}>
-                <p className="text-gray-400 text-base leading-relaxed italic font-serif">
+                <p className="text-gray-300 text-base leading-relaxed italic font-serif">
                   I started DENIED. because I was tired of seeing the same mass-produced apparel everywhere — no thought, no identity, no intention behind it.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={0.2}>
-                <p className="text-gray-400 text-base leading-relaxed italic font-serif">
-                  I wanted to build something that feels personal. Something where every piece is printed only when someone chooses it — not sitting in a warehouse waiting to be picked. When you order from DENIED., that tee is born because of you. It didn&apos;t exist before your order.
+                <p className="text-gray-300 text-base leading-relaxed italic font-serif">
+                  I wanted to build something that feels personal. Something where every piece is printed only when someone chooses it — not sitting in a warehouse waiting to be picked. When you order from DENIED., that product is born because of you. It didn&apos;t exist before your order.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={0.3}>
-                <p className="text-gray-400 text-base leading-relaxed italic font-serif">
+                <p className="text-gray-300 text-base leading-relaxed italic font-serif">
                   The name itself is a filter. Not everyone will get it. Not everyone is supposed to. And that&apos;s exactly the point.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={0.4}>
-                <p className="text-gray-400 text-base leading-relaxed italic font-serif">
+                <p className="text-gray-300 text-base leading-relaxed italic font-serif">
                   This isn&apos;t just clothing — it&apos;s a statement you carry. I want every person who wears DENIED. to feel like they&apos;re part of something exclusive, something that doesn&apos;t need validation.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={0.5}>
-                <p className="text-gray-400 text-base leading-relaxed italic font-serif">
+                <p className="text-gray-300 text-base leading-relaxed italic font-serif">
                   Because some standards still exist.
                 </p>
               </ScrollReveal>
