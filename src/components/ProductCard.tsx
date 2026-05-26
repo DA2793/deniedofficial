@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         className="group cursor-pointer"
       >
         {/* Image container */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-900 rounded-sm">
+        <div className="relative aspect-[3/4] overflow-hidden bg-gray-900 rounded-lg border border-white/[0.06]">
           {/* Product image with hover scale */}
           <motion.div
             animate={hovered ? { scale: 1.05 } : { scale: 1 }}

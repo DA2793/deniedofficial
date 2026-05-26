@@ -96,7 +96,7 @@ function CollectionContent() {
                 : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
             }`}
           >
-            ✦ New In
+            · New In
           </button>
 
           <button
@@ -111,7 +111,7 @@ function CollectionContent() {
                 : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
             }`}
           >
-            ✦ Signature
+            · Signature
           </button>
         </div>
 

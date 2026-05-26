@@ -157,7 +157,7 @@ export default function ProductPage() {
             {/* Main Image + Vertical Nav */}
             <div className="flex gap-4">
               {/* Image */}
-              <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-gray-900 cursor-zoom-in" onClick={() => setZoomOpen(true)}>
+              <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-gray-900 rounded-lg border border-white/[0.06] cursor-zoom-in" onClick={() => setZoomOpen(true)}>
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImage}
@@ -245,7 +245,7 @@ export default function ProductPage() {
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`relative w-20 h-24 overflow-hidden border transition-all duration-300 ${
+                    className={`relative w-20 h-24 overflow-hidden rounded-md border transition-all duration-300 ${
                       activeImage === i
                         ? "border-gold opacity-100"
                         : "border-white/[0.06] opacity-50 hover:opacity-100"
@@ -370,9 +370,9 @@ export default function ProductPage() {
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 py-8 border-t border-b border-white/[0.06] mb-10">
               {[
-                { icon: "◆", label: "Made to Order" },
-                { icon: "◆", label: "Premium Quality" },
-                { icon: "◆", label: "Made in India" },
+                { icon: "—", label: "Made to Order" },
+                { icon: "—", label: "Premium Quality" },
+                { icon: "—", label: "Made in India" },
               ].map((badge) => (
                 <div key={badge.label} className="text-center">
                   <div className="text-gold text-sm mb-1">{badge.icon}</div>

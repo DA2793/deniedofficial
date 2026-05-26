@@ -23,7 +23,7 @@ export default function Marquee() {
             <span className="text-[11px] uppercase tracking-brutal text-gray-600">
               {item}
             </span>
-            <span className="text-gold/30 text-xs">✦</span>
+            <span className="text-gold/30 text-xs">·</span>
           </span>
         ))}
       </motion.div>
