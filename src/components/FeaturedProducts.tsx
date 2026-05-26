@@ -13,7 +13,7 @@ export default function FeaturedProducts() {
     <section className="py-32 px-6 md:px-12 bg-black-soft">
       <div className="max-w-[1400px] mx-auto">
         <ScrollReveal>
-          <div className="flex items-end justify-between mb-20">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-20 gap-6">
             <div>
               <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
                 Too Original to Blend In
@@ -22,12 +22,6 @@ export default function FeaturedProducts() {
                 Featured
               </h2>
             </div>
-            <Link
-              href="/collection"
-              className="hidden md:block text-[11px] uppercase tracking-brutal text-gray-500 hover:text-gold transition-colors"
-            >
-              View All →
-            </Link>
           </div>
         </ScrollReveal>
 
@@ -39,16 +33,22 @@ export default function FeaturedProducts() {
           ))}
         </div>
 
-        <div className="mt-16 text-center md:hidden">
-          <MagneticButton strength={0.2}>
-            <Link
-              href="/collection"
-              className="inline-block text-[11px] uppercase tracking-brutal border border-white/20 px-10 py-4 text-white hover:bg-white hover:text-black transition-all duration-500"
-            >
-              View All Collection
-            </Link>
-          </MagneticButton>
-        </div>
+        {/* View All Button — centered, prominent */}
+        <ScrollReveal delay={0.3}>
+          <div className="mt-16 text-center">
+            <MagneticButton strength={0.2}>
+              <Link
+                href="/collection"
+                className="inline-flex items-center gap-3 text-[11px] uppercase tracking-brutal border border-white/20 px-12 py-5 text-white hover:bg-white hover:text-black transition-all duration-500 rounded-full"
+              >
+                View All Collections
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </MagneticButton>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
