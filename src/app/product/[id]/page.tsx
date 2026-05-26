@@ -369,16 +369,54 @@ export default function ProductPage() {
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 py-8 border-t border-b border-white/[0.06] mb-10">
-              {[
-                { icon: "—", label: "Made to Order" },
-                { icon: "—", label: "Premium Quality" },
-                { icon: "—", label: "Made in India" },
-              ].map((badge) => (
-                <div key={badge.label} className="text-center">
-                  <div className="text-gold text-sm mb-1">{badge.icon}</div>
-                  <div className="text-[9px] uppercase tracking-brutal text-gray-500">{badge.label}</div>
+              {/* Made to Order — T-shirt with print */}
+              <div className="text-center">
+                <div className="text-2xl mb-2">
+                  <svg width="28" height="28" viewBox="0 0 48 48" fill="none" className="mx-auto">
+                    <path d="M14 8L8 14V40C8 41.1 8.9 42 10 42H38C39.1 42 40 41.1 40 40V14L34 8H14Z" stroke="#c9a96e" strokeWidth="1.5" fill="none"/>
+                    <path d="M14 8L18 4H30L34 8" stroke="#c9a96e" strokeWidth="1.5" fill="none"/>
+                    <path d="M8 14H40" stroke="#c9a96e" strokeWidth="1.5"/>
+                    <rect x="18" y="22" width="12" height="12" rx="1" stroke="#c9a96e" strokeWidth="1" strokeDasharray="2 2" opacity="0.6"/>
+                    <path d="M22 26L24 28L26 26" stroke="#c9a96e" strokeWidth="1" opacity="0.8"/>
+                    <path d="M24 28V24" stroke="#c9a96e" strokeWidth="1" opacity="0.8"/>
+                  </svg>
                 </div>
-              ))}
+                <div className="text-[9px] uppercase tracking-brutal text-gray-400">Made to Order</div>
+              </div>
+
+              {/* Premium Quality — Shield with check */}
+              <div className="text-center">
+                <div className="text-2xl mb-2">
+                  <svg width="28" height="28" viewBox="0 0 48 48" fill="none" className="mx-auto">
+                    <path d="M24 4L6 12V22C6 34 14 42 24 46C34 42 42 34 42 22V12L24 4Z" stroke="#c9a96e" strokeWidth="1.5" fill="none"/>
+                    <path d="M16 24L22 30L32 18" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div className="text-[9px] uppercase tracking-brutal text-gray-400">Premium Quality</div>
+              </div>
+
+              {/* Made in India — Waving flag */}
+              <div className="text-center">
+                <div className="text-2xl mb-2 relative">
+                  <svg width="28" height="28" viewBox="0 0 48 48" fill="none" className="mx-auto">
+                    <line x1="10" y1="6" x2="10" y2="42" stroke="#c9a96e" strokeWidth="1.5"/>
+                    <path d="M10 8C14 6 18 10 22 8C26 6 30 10 34 8V22C30 24 26 20 22 22C18 24 14 20 10 22" fill="none" stroke="#c9a96e" strokeWidth="1.5">
+                      <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M10 8C14 6 18 10 22 8C26 6 30 10 34 8V22C30 24 26 20 22 22C18 24 14 20 10 22;M10 8C14 10 18 6 22 8C26 10 30 6 34 8V22C30 20 26 24 22 22C18 20 14 24 10 22;M10 8C14 6 18 10 22 8C26 6 30 10 34 8V22C30 24 26 20 22 22C18 24 14 20 10 22"/>
+                    </path>
+                    {/* Tricolor bands */}
+                    <path d="M10 8C14 6 18 10 22 8C26 6 30 10 34 8V12.5C30 14.5 26 10.5 22 12.5C18 14.5 14 10.5 10 12.5" fill="#FF9933" opacity="0.6">
+                      <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M10 8C14 6 18 10 22 8C26 6 30 10 34 8V12.5C30 14.5 26 10.5 22 12.5C18 14.5 14 10.5 10 12.5;M10 8C14 10 18 6 22 8C26 10 30 6 34 8V12.5C30 10.5 26 14.5 22 12.5C18 10.5 14 14.5 10 12.5;M10 8C14 6 18 10 22 8C26 6 30 10 34 8V12.5C30 14.5 26 10.5 22 12.5C18 14.5 14 10.5 10 12.5"/>
+                    </path>
+                    <path d="M10 12.5C14 10.5 18 14.5 22 12.5C26 10.5 30 14.5 34 12.5V17.5C30 19.5 26 15.5 22 17.5C18 19.5 14 15.5 10 17.5" fill="#FFFFFF" opacity="0.6">
+                      <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M10 12.5C14 10.5 18 14.5 22 12.5C26 10.5 30 14.5 34 12.5V17.5C30 19.5 26 15.5 22 17.5C18 19.5 14 15.5 10 17.5;M10 12.5C14 14.5 18 10.5 22 12.5C26 14.5 30 10.5 34 12.5V17.5C30 15.5 26 19.5 22 17.5C18 15.5 14 19.5 10 17.5;M10 12.5C14 10.5 18 14.5 22 12.5C26 10.5 30 14.5 34 12.5V17.5C30 19.5 26 15.5 22 17.5C18 19.5 14 15.5 10 17.5"/>
+                    </path>
+                    <path d="M10 17.5C14 15.5 18 19.5 22 17.5C26 15.5 30 19.5 34 17.5V22C30 24 26 20 22 22C18 24 14 20 10 22" fill="#138808" opacity="0.6">
+                      <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M10 17.5C14 15.5 18 19.5 22 17.5C26 15.5 30 19.5 34 17.5V22C30 24 26 20 22 22C18 24 14 20 10 22;M10 17.5C14 19.5 18 15.5 22 17.5C26 19.5 30 15.5 34 17.5V22C30 20 26 24 22 22C18 20 14 24 10 22;M10 17.5C14 15.5 18 19.5 22 17.5C26 15.5 30 19.5 34 17.5V22C30 24 26 20 22 22C18 24 14 20 10 22"/>
+                    </path>
+                  </svg>
+                </div>
+                <div className="text-[9px] uppercase tracking-brutal text-gray-400">Made in India</div>
+              </div>
             </div>
 
             {/* Product Details */}
