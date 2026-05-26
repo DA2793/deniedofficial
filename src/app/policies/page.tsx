@@ -25,7 +25,7 @@ export default function PoliciesPage() {
             <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8">
               <h3 className="font-display text-xl uppercase mb-4 text-gold">Made to Order — Crafted for You</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                Every DENIED. piece is printed and crafted only after you place your order. We do not hold ready stock. Your tee is created exclusively for you — making every piece truly one-of-one.
+                Every DENIED. piece is printed and crafted only after you place your order. We do not hold ready stock. Your order is created exclusively for you — making every piece truly one-of-one.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
                 Once your order is placed, it goes through our curation process: printing, quality check, premium packaging, and dispatch. This is not fast fashion — it&apos;s intentional luxury.
@@ -84,14 +84,21 @@ export default function PoliciesPage() {
             <div className="space-y-4 mb-6">
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white">Below ₹999</span>
-                <span className="text-sm text-gray-400">₹79</span>
+                <span className="text-sm text-gray-400">₹49</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white">₹999 & Above</span>
                 <span className="text-sm text-gold">Free Shipping</span>
               </div>
+              <div className="flex justify-between py-3 border-b border-white/[0.06]">
+                <span className="text-sm text-white">Express Shipping</span>
+                <span className="text-sm text-gray-400">₹99 (additional)</span>
+              </div>
             </div>
-            <p className="text-gray-500 text-xs">• Free shipping applies automatically at checkout.</p>
+            <ul className="space-y-2 text-gray-500 text-xs">
+              <li>• Free shipping applies automatically at checkout.</li>
+              <li>• Express shipping is available for select pincodes and prepaid orders only.</li>
+            </ul>
           </div>
         </ScrollReveal>
 
@@ -115,7 +122,7 @@ export default function PoliciesPage() {
             
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Accepted Payment Methods</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-              {["Credit Cards", "Debit Cards", "UPI (GPay, PhonePe, Paytm)", "Net Banking", "Wallets", "Cash on Delivery"].map((method) => (
+              {["Credit Cards", "Debit Cards", "UPI (GPay, PhonePe, Paytm)", "Wallets", "Cash on Delivery"].map((method) => (
                 <div key={method} className="border border-white/[0.06] px-4 py-3 text-xs text-gray-300">
                   {method}
                 </div>
@@ -127,7 +134,7 @@ export default function PoliciesPage() {
 
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Cash on Delivery (COD)</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              COD is available with a flat handling fee of ₹99. Available for orders up to ₹2,499 on eligible serviceable pincodes.
+              COD is available only on select options with a flat handling fee of ₹99. Available on eligible serviceable pincodes.
             </p>
             <p className="text-gray-500 text-xs">
               DENIED. reserves the right to disable COD for specific users, locations, or orders at its discretion.
@@ -145,8 +152,11 @@ export default function PoliciesPage() {
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 Since every DENIED. piece is printed and curated exclusively for you after your order is placed, cancellations are only possible before your order enters the <strong className="text-white">Printing</strong> stage.
               </p>
+              <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                We give you time to think. Your order stays in &quot;Placed&quot; and &quot;Confirmed&quot; status before we begin printing — use this window to double-check your colour, size, and details.
+              </p>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Once your order status changes to <strong className="text-white">&quot;Printing&quot;</strong>, cancellation is no longer possible and no refund will be issued. Your piece is already being crafted — it exists because of you.
+                Once your order status changes to <strong className="text-white">&quot;Printing&quot;</strong>, your piece is being crafted — cancellation is no longer possible and no refund or exchange will be issued. Please select your colour and size carefully.
               </p>
             </div>
 
@@ -154,6 +164,10 @@ export default function PoliciesPage() {
             <div className="space-y-4 mb-8">
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white">Order Placed</span>
+                <span className="text-sm text-green-400">Cancellation allowed</span>
+              </div>
+              <div className="flex justify-between py-3 border-b border-white/[0.06]">
+                <span className="text-sm text-white">Confirmed</span>
                 <span className="text-sm text-green-400">Cancellation allowed</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
@@ -182,7 +196,7 @@ export default function PoliciesPage() {
               Due to the made-to-order nature of our products, we do not accept returns, exchanges, or replacements once the order has been delivered. All sales are final after the Printing stage begins.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              We encourage customers to review product details, images, size charts, and descriptions carefully before placing an order.
+              We encourage customers to review product details, images, size charts, and descriptions carefully before placing an order. Select your colour and size with care — once printed, your piece cannot be returned or exchanged.
             </p>
           </div>
         </ScrollReveal>
@@ -205,8 +219,8 @@ export default function PoliciesPage() {
                 <span className="text-sm text-gray-400">7–10 business days</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Net Banking / Wallets</span>
-                <span className="text-sm text-gray-400">3–7 business days</span>
+                <span className="text-sm text-white">Wallets</span>
+                <span className="text-sm text-gray-400">1–3 business days</span>
               </div>
             </div>
             <p className="text-gray-500 text-xs">
@@ -220,7 +234,7 @@ export default function PoliciesPage() {
           <div className="mb-16">
             <h2 className="font-display text-3xl uppercase mb-8">Order Tracking</h2>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Once your order is dispatched, you will receive a shipping confirmation with a live tracking link via email and SMS.
+              Once your order is dispatched, you will receive a shipping confirmation with a live tracking link via email.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
               If you do not receive tracking details within 48 hours of your order entering the &quot;Shipped&quot; stage, please contact our support team.
@@ -274,7 +288,7 @@ export default function PoliciesPage() {
         <ScrollReveal delay={0.1}>
           <div className="border-t border-white/[0.06] pt-8">
             <p className="text-gray-600 text-xs">
-              Last updated: May 2026. DENIED. reserves the right to modify these policies at any time without prior notice.
+              DENIED. reserves the right to modify these policies at any time without prior notice.
             </p>
           </div>
         </ScrollReveal>
