@@ -10,9 +10,7 @@ const liveCategories = [
   { name: "Caps", href: "/collection" },
 ];
 
-const upcomingCategories = [
-  { name: "Watches" },
-];
+const upcomingCategories: { name: string }[] = [];
 
 export default function Categories() {
   return (
@@ -88,7 +86,7 @@ export default function Categories() {
                   <path d="M7 11V7a5 5 0 0110 0v4" />
                 </svg>
                 <span className="text-[9px] uppercase tracking-brutal text-gray-600 hidden md:inline">
-                  Perfumes · Belts · Wallets · &amp; More
+                  Perfumes · Watches · Belts · Wallets · &amp; More
                 </span>
               </div>
             </div>
