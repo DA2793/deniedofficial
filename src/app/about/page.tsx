@@ -131,59 +131,40 @@ export default function AboutPage() {
 
       {/* Founder's Letter */}
       <section className="py-28 px-6 md:px-12 bg-black-soft">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
-            {/* Left — Letter */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-                A Letter from the Founder
+        <div className="max-w-[700px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+              A Letter from the Founder
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl uppercase mb-12">
+              Why DENIED<span className="text-gold">.</span> Exists
+            </h2>
+
+            <div className="space-y-6">
+              <p className="text-gray-300 text-base leading-relaxed">
+                I started DENIED. because I was tired of seeing the same mass-produced apparel everywhere — no thought, no identity, no intention behind it.
               </p>
-              <h2 className="font-display text-3xl md:text-4xl uppercase mb-10">
-                Why DENIED<span className="text-gold">.</span> Exists
-              </h2>
+              <p className="text-gray-300 text-base leading-relaxed">
+                I wanted to build something that feels personal. Something where every piece is printed only when someone chooses it — not sitting in a warehouse waiting to be picked. When you order from DENIED., that product is born because of you.
+              </p>
+              <p className="text-gray-300 text-base leading-relaxed">
+                The name itself is a filter. Not everyone will get it. Not everyone is supposed to. And that&apos;s exactly the point.
+              </p>
+              <p className="text-gray-300 text-base leading-relaxed">
+                Because some standards still exist.
+              </p>
+            </div>
 
-              <div className="space-y-5">
-                <p className="text-gray-300 text-sm leading-relaxed italic font-serif">
-                  I started DENIED. because I was tired of seeing the same mass-produced apparel everywhere — no thought, no identity, no intention behind it.
-                </p>
-                <p className="text-gray-300 text-sm leading-relaxed italic font-serif">
-                  I wanted to build something that feels personal. Something where every piece is printed only when someone chooses it — not sitting in a warehouse waiting to be picked. When you order from DENIED., that product is born because of you.
-                </p>
-                <p className="text-gray-300 text-sm leading-relaxed italic font-serif">
-                  The name itself is a filter. Not everyone will get it. Not everyone is supposed to. And that&apos;s exactly the point.
-                </p>
-                <p className="text-gray-300 text-sm leading-relaxed italic font-serif">
-                  Because some standards still exist.
-                </p>
-              </div>
-
-              <div className="mt-10 flex items-center gap-4">
-                <div className="w-12 h-[1px] bg-gold" />
-                <span className="text-gold font-serif text-lg italic">Founder, DENIED.</span>
-              </div>
-            </motion.div>
-
-            {/* Right — Visual element */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent flex items-center justify-center">
-                <div className="text-center px-8">
-                  <span className="font-display text-[8rem] md:text-[10rem] text-white/[0.04] leading-none">D.</span>
-                  <p className="text-gold text-[10px] uppercase tracking-brutal mt-4">Est. 2026</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            <div className="mt-12 flex items-center gap-4">
+              <div className="w-12 h-[1px] bg-gold" />
+              <span className="text-gold font-serif text-lg italic">Founder, DENIED.</span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
