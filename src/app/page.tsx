@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Categories from "@/components/Categories";
 import FeaturedProducts from "@/components/FeaturedProducts";
+import BrandStory from "@/components/BrandStory";
 import Newsletter from "@/components/Newsletter";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <Marquee />
       <Categories />
       <FeaturedProducts />
+      <BrandStory />
       <Newsletter />
     </>
   );

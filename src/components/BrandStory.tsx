@@ -15,7 +15,7 @@ export default function BrandStory() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   return (
-    <section id="about" ref={sectionRef} className="relative py-40 px-6 md:px-12 overflow-hidden">
+    <section ref={sectionRef} className="relative py-40 px-6 md:px-12 overflow-hidden">
       {/* Parallax background text */}
       <motion.div
         style={{ y }}
@@ -31,7 +31,7 @@ export default function BrandStory() {
           {/* Left */}
           <ScrollReveal>
             <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-              The Brand
+              The Philosophy
             </p>
             <h2 className="font-display text-6xl md:text-8xl uppercase leading-[0.9]">
               DENIED
@@ -42,19 +42,19 @@ export default function BrandStory() {
           {/* Right */}
           <div className="space-y-8">
             <ScrollReveal delay={0.2}>
-              <p className="text-gray-400 text-lg leading-relaxed italic">
+              <p className="text-gray-300 text-lg leading-relaxed italic font-serif">
                 DENIED. is a filter — not everyone passes.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.3}>
-              <p className="text-gray-400 text-lg leading-relaxed italic">
+              <p className="text-gray-300 text-lg leading-relaxed italic font-serif">
                 True luxury is never about being loud. It is about being selected.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.35}>
-              <p className="text-gray-400 text-lg leading-relaxed italic">
+              <p className="text-gray-300 text-lg leading-relaxed italic font-serif">
                 Every piece carries intention. Every drop is limited.
               </p>
             </ScrollReveal>
@@ -63,23 +63,6 @@ export default function BrandStory() {
               <p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif mt-4">
                 <TextReveal text="Some standards still exist." delay={0.2} />
               </p>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.4}>
-              <div className="pt-8 space-y-6">
-                {[
-                  { label: "Premium Fabric", value: "240 GSM Combed Cotton" },
-                  { label: "Exclusive Drops", value: "Once gone, gone forever" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex justify-between items-center py-4 border-b border-white/[0.06]"
-                  >
-                    <span className="text-sm text-white">{item.label}</span>
-                    <span className="text-xs text-gray-500">{item.value}</span>
-                  </div>
-                ))}
-              </div>
             </ScrollReveal>
           </div>
         </div>
