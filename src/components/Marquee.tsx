@@ -6,8 +6,9 @@ const items = [
   "Premium Quality",
   "Luxury Packaging",
   "Soft Fabric",
-  "Limited Edition Drops",
-  "Handcrafted Details",
+  "Limited Drops",
+  "Curated Designs",
+  "Selected Pieces Only",
 ];
 
 export default function Marquee() {

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
 import InstagramFloater from "@/components/InstagramFloater";
+import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <InstagramFloater />
+        <BackToTop />
       </body>
     </html>
   );

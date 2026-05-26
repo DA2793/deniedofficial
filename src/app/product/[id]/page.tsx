@@ -9,6 +9,7 @@ import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import ProductCard from "@/components/ProductCard";
 import MagneticButton from "@/components/MagneticButton";
+import SizeGuide from "@/components/SizeGuide";
 
 // ===== IMAGE ZOOM MODAL =====
 function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -328,9 +329,12 @@ export default function ProductPage() {
 
             {/* Size Selection */}
             <div className="mb-10">
-              <p className="text-[10px] uppercase tracking-brutal text-gray-400 mb-4">
-                Size {selectedSize && <span className="text-white ml-2">— {selectedSize}</span>}
-              </p>
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[10px] uppercase tracking-brutal text-gray-400">
+                  Size {selectedSize && <span className="text-white ml-2">— {selectedSize}</span>}
+                </p>
+                <SizeGuide />
+              </div>
               <div className="flex flex-wrap gap-2">
                 {product.details.sizes.map((size) => (
                   <button

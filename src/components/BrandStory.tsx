@@ -21,7 +21,7 @@ export default function BrandStory() {
         style={{ y }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
       >
-        <span className="font-display text-[20vw] uppercase text-white/[0.02] whitespace-nowrap">
+        <span className="font-display text-[20vw] uppercase text-white/[0.035] whitespace-nowrap">
           DENIED.
         </span>
       </motion.div>

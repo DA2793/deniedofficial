@@ -47,12 +47,18 @@ export default function Categories() {
                   </MagneticButton>
                 </Link>
               ) : (
-                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 rounded-xl opacity-30">
-                  <span className="font-display text-2xl md:text-3xl uppercase block mb-3">
+                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 rounded-xl opacity-60 relative overflow-hidden">
+                  <div className="absolute top-3 right-3">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-600">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0110 0v4" />
+                    </svg>
+                  </div>
+                  <span className="font-display text-2xl md:text-3xl uppercase block mb-3 text-gray-600">
                     {cat.name}
                   </span>
-                  <span className="text-[10px] uppercase tracking-brutal text-gray-500">
-                    Coming Soon
+                  <span className="text-[10px] uppercase tracking-brutal text-gray-700">
+                    Classified — Dropping Soon
                   </span>
                 </div>
               )}
