@@ -31,7 +31,7 @@ export default function FeaturedProducts() {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-white/[0.04]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {featured.map((product, i) => (
             <ScrollReveal key={product.id} delay={i * 0.15}>
               <ProductCard product={product} />
