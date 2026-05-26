@@ -12,6 +12,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [accountHover, setAccountHover] = useState(false);
+  const [wishlistHover, setWishlistHover] = useState(false);
+  const [cartHover, setCartHover] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -45,7 +48,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden md:flex items-center gap-10">
             {/* Collection with dropdown */}
             <div
               className="relative"
@@ -54,54 +57,40 @@ export default function Navbar() {
             >
               <Link
                 href="/collection"
-                className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
+                className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
               >
                 Collection
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
               </Link>
 
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-full left-0 mt-4 w-[280px] bg-black border border-white/[0.06] p-6"
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-full left-0 mt-3 w-[200px] glass-subtle rounded-xl py-3 overflow-hidden"
                   >
-                    {/* Categories */}
-                    <p className="text-[9px] uppercase tracking-brutal text-gold mb-4">
-                      Products
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      {categories.map((cat) => (
-                        <Link
-                          key={cat}
-                          href="/collection"
-                          className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
-                        >
-                          {cat}
-                        </Link>
-                      ))}
-                    </div>
-
-                    {/* Divider */}
-                    <div className="border-t border-white/[0.06] my-4" />
-
-                    {/* Filters */}
-                    <p className="text-[9px] uppercase tracking-brutal text-gold mb-4">
-                      Browse
-                    </p>
-                    <div className="space-y-3">
-                      {filters.map((filter) => (
-                        <Link
-                          key={filter}
-                          href="/collection"
-                          className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
-                        >
-                          {filter}
-                        </Link>
-                      ))}
-                    </div>
+                    {["All Collection", ...categories].map((item) => (
+                      <Link
+                        key={item}
+                        href="/collection"
+                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+                      >
+                        {item}
+                      </Link>
+                    ))}
+                    <div className="border-t border-white/[0.06] my-2" />
+                    {filters.slice(0, 2).map((item) => (
+                      <Link
+                        key={item}
+                        href="/collection"
+                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                      >
+                        {item}
+                      </Link>
+                    ))}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -109,43 +98,102 @@ export default function Navbar() {
 
             <Link
               href="/about"
-              className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
+              className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
             >
               About
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
             </Link>
             <Link
               href="/contact"
-              className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
+              className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
             >
               Contact
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
             </Link>
           </div>
 
           {/* Right icons */}
           <div className="flex items-center gap-5">
+            {/* Account */}
+            <div
+              className="relative"
+              onMouseEnter={() => setAccountHover(true)}
+              onMouseLeave={() => setAccountHover(false)}
+            >
+              <Link href="/account" className="relative text-gray-400 hover:text-gold transition-colors p-1" aria-label="Account">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </Link>
+              <AnimatePresence>
+                {accountHover && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 mt-2 glass-subtle rounded-lg px-4 py-2 whitespace-nowrap"
+                  >
+                    <span className="text-[10px] uppercase tracking-brutal text-white">Account</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Wishlist */}
-            <Link href="/wishlist" className="relative text-gray-400 hover:text-white transition-colors" aria-label="Wishlist">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-              </svg>
-            </Link>
+            <div
+              className="relative"
+              onMouseEnter={() => setWishlistHover(true)}
+              onMouseLeave={() => setWishlistHover(false)}
+            >
+              <Link href="/wishlist" className="relative text-gray-400 hover:text-gold transition-colors p-1" aria-label="Wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                </svg>
+              </Link>
+              <AnimatePresence>
+                {wishlistHover && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 mt-2 glass-subtle rounded-lg px-4 py-2 whitespace-nowrap"
+                  >
+                    <span className="text-[10px] uppercase tracking-brutal text-white">Wishlist</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Cart */}
-            <Link href="/cart" className="relative text-gray-400 hover:text-white transition-colors" aria-label="Cart">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 01-8 0" />
-              </svg>
-            </Link>
-
-            {/* Profile */}
-            <Link href="/account" className="relative text-gray-400 hover:text-white transition-colors" aria-label="Account">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </Link>
+            <div
+              className="relative"
+              onMouseEnter={() => setCartHover(true)}
+              onMouseLeave={() => setCartHover(false)}
+            >
+              <Link href="/cart" className="relative text-gray-400 hover:text-gold transition-colors p-1" aria-label="Cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </Link>
+              <AnimatePresence>
+                {cartHover && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 mt-2 glass-subtle rounded-lg px-4 py-2 whitespace-nowrap"
+                  >
+                    <span className="text-[10px] uppercase tracking-brutal text-white">Cart</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Menu Toggle (mobile) */}
             <button
