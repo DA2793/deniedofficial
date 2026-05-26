@@ -154,65 +154,93 @@ export default function ProductPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Main Image */}
-            <div className="relative aspect-[3/4] overflow-hidden bg-gray-900 mb-4 cursor-zoom-in" onClick={() => setZoomOpen(true)}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeImage}
-                  initial={{ opacity: 0, scale: 1.02 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={product.images[activeImage]}
-                    alt={`${product.name} - ${activeImage + 1}`}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </motion.div>
-              </AnimatePresence>
+            {/* Main Image + Vertical Nav */}
+            <div className="flex gap-4">
+              {/* Image */}
+              <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-gray-900 cursor-zoom-in" onClick={() => setZoomOpen(true)}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImage}
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={product.images[activeImage]}
+                      alt={`${product.name} - ${activeImage + 1}`}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </motion.div>
+                </AnimatePresence>
 
-              {/* Zoom indicator */}
-              <div className="absolute top-4 right-4 w-9 h-9 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/50">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6M7 10h6" />
-                </svg>
+                {/* Zoom indicator */}
+                <div className="absolute top-4 right-4 w-9 h-9 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/50">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6M7 10h6" />
+                  </svg>
+                </div>
+
+                {/* Image counter */}
+                <div className="absolute bottom-4 left-4">
+                  <span className="text-[10px] uppercase tracking-brutal text-white/40">
+                    {String(activeImage + 1).padStart(2, "0")} / {String(product.images.length).padStart(2, "0")}
+                  </span>
+                </div>
               </div>
 
-              {/* Navigation Arrows */}
+              {/* Vertical navigation — outside image on the right */}
               {product.images.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1)); }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:border-gold transition-all"
-                    aria-label="Previous image"
+                <div className="flex flex-col items-center justify-center gap-4">
+                  {/* Up arrow */}
+                  <motion.button
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                    className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" /></svg>
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setActiveImage((prev) => (prev === product.images.length - 1 ? 0 : prev + 1)); }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:border-gold transition-all"
-                    aria-label="Next image"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" /></svg>
-                  </button>
-                </>
-              )}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                  </motion.button>
 
-              {/* Image counter */}
-              <div className="absolute bottom-4 left-4">
-                <span className="text-[10px] uppercase tracking-brutal text-white/40">
-                  {String(activeImage + 1).padStart(2, "0")} / {String(product.images.length).padStart(2, "0")}
-                </span>
-              </div>
+                  {/* Progress dots */}
+                  <div className="flex flex-col items-center gap-1.5">
+                    {product.images.map((_, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{
+                          height: activeImage === i ? 20 : 6,
+                          backgroundColor: activeImage === i ? "#c9a96e" : "rgba(255,255,255,0.15)",
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="w-[2px] rounded-full cursor-pointer"
+                        onClick={() => setActiveImage(i)}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Down arrow */}
+                  <motion.button
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setActiveImage((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                    className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </motion.button>
+                </div>
+              )}
             </div>
 
             {/* Thumbnails */}
             {product.images.length > 1 && (
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-4">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
