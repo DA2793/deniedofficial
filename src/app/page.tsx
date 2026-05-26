@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Categories from "@/components/Categories";
-import Collection from "@/components/Collection";
+import FeaturedProducts from "@/components/FeaturedProducts";
 import BrandStory from "@/components/BrandStory";
 import Newsletter from "@/components/Newsletter";
 
@@ -11,7 +11,7 @@ export default function Home() {
       <Hero />
       <Marquee />
       <Categories />
-      <Collection />
+      <FeaturedProducts />
       <BrandStory />
       <Newsletter />
     </>

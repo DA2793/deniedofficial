@@ -28,8 +28,8 @@ export default function Footer() {
               Shop
             </h4>
             <ul className="space-y-3">
-              <li><a href="#collection" className="text-gray-600 text-sm hover:text-white transition-colors">T-Shirts</a></li>
-              <li><a href="#collection" className="text-gray-600 text-sm hover:text-white transition-colors">Caps</a></li>
+              <li><Link href="/collection" className="text-gray-600 text-sm hover:text-white transition-colors">T-Shirts</Link></li>
+              <li><Link href="/collection" className="text-gray-600 text-sm hover:text-white transition-colors">Caps</Link></li>
               <li><span className="text-gray-800 text-sm">Watches — Soon</span></li>
               <li><span className="text-gray-800 text-sm">Perfumes — Soon</span></li>
             </ul>
@@ -41,7 +41,7 @@ export default function Footer() {
               Info
             </h4>
             <ul className="space-y-3">
-              <li><a href="#about" className="text-gray-600 text-sm hover:text-white transition-colors">About</a></li>
+              <li><Link href="/about" className="text-gray-600 text-sm hover:text-white transition-colors">About</Link></li>
               <li><a href="https://www.instagram.com/denied._official/" target="_blank" rel="noopener" className="text-gray-600 text-sm hover:text-white transition-colors">Instagram</a></li>
               <li><a href="#" className="text-gray-600 text-sm hover:text-white transition-colors">Shipping & Returns</a></li>
               <li><a href="#" className="text-gray-600 text-sm hover:text-white transition-colors">Privacy Policy</a></li>

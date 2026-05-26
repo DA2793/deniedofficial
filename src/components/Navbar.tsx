@@ -52,12 +52,12 @@ export default function Navbar() {
               onMouseEnter={() => setDropdownOpen(true)}
               onMouseLeave={() => setDropdownOpen(false)}
             >
-              <a
-                href="#collection"
+              <Link
+                href="/collection"
                 className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
               >
                 Collection
-              </a>
+              </Link>
 
               <AnimatePresence>
                 {dropdownOpen && (
@@ -74,13 +74,13 @@ export default function Navbar() {
                     </p>
                     <div className="space-y-3 mb-6">
                       {categories.map((cat) => (
-                        <a
+                        <Link
                           key={cat}
-                          href="#collection"
+                          href="/collection"
                           className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
                         >
                           {cat}
-                        </a>
+                        </Link>
                       ))}
                     </div>
 
@@ -93,13 +93,13 @@ export default function Navbar() {
                     </p>
                     <div className="space-y-3">
                       {filters.map((filter) => (
-                        <a
+                        <Link
                           key={filter}
-                          href="#collection"
+                          href="/collection"
                           className="block text-sm text-gray-400 hover:text-white transition-colors duration-200"
                         >
                           {filter}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </motion.div>
@@ -107,18 +107,18 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            <a
-              href="#about"
+            <Link
+              href="/about"
               className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
             >
               About
-            </a>
-            <a
-              href="#contact"
+            </Link>
+            <Link
+              href="/contact"
               className="text-[11px] uppercase tracking-brutal text-gray-400 hover:text-white transition-colors duration-300"
             >
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* Menu Toggle */}
@@ -154,22 +154,25 @@ export default function Navbar() {
             className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-12"
           >
             {[
-              { label: "Collection", href: "#collection" },
-              { label: "About", href: "#about" },
-              { label: "Contact", href: "#contact" },
+              { label: "Collection", href: "/collection" },
+              { label: "About", href: "/about" },
+              { label: "Contact", href: "/contact" },
             ].map((link, i) => (
-              <motion.a
+              <motion.div
                 key={link.label}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="text-4xl font-display uppercase tracking-wide text-white hover:text-gold transition-colors"
               >
-                {link.label}
-              </motion.a>
+                <Link
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-4xl font-display uppercase tracking-wide text-white hover:text-gold transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
             ))}
           </motion.div>
         )}
