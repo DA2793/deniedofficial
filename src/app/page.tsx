@@ -4,6 +4,7 @@ import Categories from "@/components/Categories";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import BrandStory from "@/components/BrandStory";
 import Newsletter from "@/components/Newsletter";
+import InstagramCTA from "@/components/InstagramCTA";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <FeaturedProducts />
       <BrandStory />
       <Newsletter />
+      <InstagramCTA />
     </>
   );
 }

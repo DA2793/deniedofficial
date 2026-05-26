@@ -35,7 +35,7 @@ export default function Categories() {
                   <MagneticButton strength={0.15}>
                     <motion.div
                       whileHover={{ backgroundColor: "rgba(201, 169, 110, 0.04)" }}
-                      className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-12 group cursor-pointer transition-all duration-500 hover:border-gold/30"
+                      className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-12 rounded-xl group cursor-pointer transition-all duration-500 hover:border-gold/30"
                     >
                       <span className="font-display text-2xl md:text-3xl uppercase block mb-3 group-hover:text-gold transition-colors duration-500">
                         {cat.name}
@@ -47,7 +47,7 @@ export default function Categories() {
                   </MagneticButton>
                 </Link>
               ) : (
-                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 opacity-30">
+                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 rounded-xl opacity-30">
                   <span className="font-display text-2xl md:text-3xl uppercase block mb-3">
                     {cat.name}
                   </span>

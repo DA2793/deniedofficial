@@ -17,9 +17,12 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-32 px-6 md:px-12 bg-black-soft border-t border-white/[0.04]">
-      <div className="max-w-[600px] mx-auto text-center">
+    <section className="py-36 px-6 md:px-12 bg-black-soft border-t border-white/[0.04]">
+      <div className="max-w-[640px] mx-auto text-center">
         <ScrollReveal>
+          <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+            Stay in the Loop
+          </p>
           <h2 className="font-display text-4xl md:text-6xl uppercase mb-4">
             Join the Selected
             <span className="text-gold">.</span>
@@ -27,25 +30,25 @@ export default function Newsletter() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <p className="text-gray-400 text-base mb-12">
+          <p className="text-gray-400 text-base mb-14">
             Early access to drops. No noise.
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <form onSubmit={handleSubmit} className="flex">
+          <form onSubmit={handleSubmit} className="flex gap-3">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               required
-              className="flex-1 bg-transparent border border-white/10 border-r-0 px-5 py-4 text-sm text-white placeholder:text-gray-600 outline-none focus:border-gold/50 transition-colors"
+              className="flex-1 bg-white/[0.04] border border-white/10 rounded-full px-7 py-4 text-sm text-white placeholder:text-gray-600 outline-none focus:border-gold/50 transition-colors"
             />
             <MagneticButton strength={0.15}>
               <button
                 type="submit"
-                className="bg-white text-black text-[10px] uppercase tracking-brutal px-8 py-4 hover:bg-gold transition-colors duration-300"
+                className="bg-white text-black text-[10px] uppercase tracking-brutal px-8 py-4 rounded-full hover:bg-gold transition-colors duration-300"
               >
                 {submitted ? "✓" : "Join"}
               </button>

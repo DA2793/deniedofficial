@@ -80,3 +80,8 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #c9a96e;
 }
+
+/* ===== GRADIENT GOLD ===== */
+.gradient-gold {
+  background: linear-gradient(135deg, #c9a96e, #e0c992, #c9a96e);
+}
