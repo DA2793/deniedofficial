@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
+import MagneticButton from "./MagneticButton";
 import Link from "next/link";
 
 const categories = [
@@ -26,34 +27,34 @@ export default function Categories() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-[1px] bg-white/[0.04]">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {categories.map((cat, i) => (
             <ScrollReveal key={cat.name} delay={i * 0.1}>
               {cat.status === "live" ? (
                 <Link href={cat.href}>
-                  <motion.div
-                    whileHover={{ backgroundColor: "rgba(201, 169, 110, 0.03)" }}
-                    className="bg-black p-8 md:p-12 group cursor-pointer transition-colors duration-500"
-                  >
-                    <span className="font-display text-2xl md:text-3xl uppercase block mb-3 group-hover:text-gold transition-colors duration-500">
-                      {cat.name}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-brutal text-gray-500">
-                      Shop Now →
-                    </span>
-                  </motion.div>
+                  <MagneticButton strength={0.15}>
+                    <motion.div
+                      whileHover={{ backgroundColor: "rgba(201, 169, 110, 0.04)" }}
+                      className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-12 group cursor-pointer transition-all duration-500 hover:border-gold/30"
+                    >
+                      <span className="font-display text-2xl md:text-3xl uppercase block mb-3 group-hover:text-gold transition-colors duration-500">
+                        {cat.name}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-brutal text-gold">
+                        Shop Now →
+                      </span>
+                    </motion.div>
+                  </MagneticButton>
                 </Link>
               ) : (
-                <motion.div
-                  className="bg-black p-8 md:p-12 opacity-30 cursor-default"
-                >
+                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 opacity-30">
                   <span className="font-display text-2xl md:text-3xl uppercase block mb-3">
                     {cat.name}
                   </span>
                   <span className="text-[10px] uppercase tracking-brutal text-gray-500">
                     Coming Soon
                   </span>
-                </motion.div>
+                </div>
               )}
             </ScrollReveal>
           ))}
