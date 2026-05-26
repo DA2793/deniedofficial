@@ -29,15 +29,35 @@ export default function BrandStory() {
       <div className="max-w-[1400px] mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32 items-start">
           {/* Left */}
-          <ScrollReveal>
-            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-              The Philosophy
-            </p>
-            <h2 className="font-display text-6xl md:text-8xl uppercase leading-[0.9]">
-              DENIED
-              <span className="text-gold">.</span>
-            </h2>
-          </ScrollReveal>
+          <div>
+            <ScrollReveal>
+              <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+                The Philosophy
+              </p>
+              <h2 className="font-display text-6xl md:text-8xl uppercase leading-[0.9]">
+                DENIED
+                <span className="text-gold">.</span>
+              </h2>
+            </ScrollReveal>
+
+            {/* Trust badges — below DENIED. */}
+            <ScrollReveal delay={0.5}>
+              <div className="grid grid-cols-3 gap-6 mt-16 pt-12 border-t border-white/[0.06]">
+                <div className="text-center">
+                  <span className="text-gold text-sm mb-2 block">◆</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made to Order</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-gold text-sm font-medium mb-2 block">100%</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Quality Assured</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-gold text-sm mb-2 block">◆</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made in India</span>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
 
           {/* Right */}
           <div className="space-y-8">
@@ -63,24 +83,6 @@ export default function BrandStory() {
               <p className="text-white text-xl md:text-2xl leading-relaxed italic font-serif mt-4">
                 <TextReveal text="Some standards still exist." delay={0.2} />
               </p>
-            </ScrollReveal>
-
-            {/* Trust badges */}
-            <ScrollReveal delay={0.5}>
-              <div className="grid grid-cols-3 gap-6 mt-16 pt-12 border-t border-white/[0.06]">
-                <div className="text-center">
-                  <span className="text-gold text-lg mb-2 block">✦</span>
-                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made to Order</span>
-                </div>
-                <div className="text-center">
-                  <span className="text-gold text-lg mb-2 block">100%</span>
-                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Quality Assured</span>
-                </div>
-                <div className="text-center">
-                  <span className="text-gold text-lg mb-2 block">✦</span>
-                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made in India</span>
-                </div>
-              </div>
             </ScrollReveal>
           </div>
         </div>
