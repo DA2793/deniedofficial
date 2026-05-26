@@ -64,6 +64,24 @@ export default function BrandStory() {
                 <TextReveal text="Some standards still exist." delay={0.2} />
               </p>
             </ScrollReveal>
+
+            {/* Trust badges */}
+            <ScrollReveal delay={0.5}>
+              <div className="grid grid-cols-3 gap-6 mt-16 pt-12 border-t border-white/[0.06]">
+                <div className="text-center">
+                  <span className="text-gold text-lg mb-2 block">✦</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made to Order</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-gold text-lg mb-2 block">100%</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Quality Assured</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-gold text-lg mb-2 block">✦</span>
+                  <span className="text-[9px] uppercase tracking-brutal text-gray-400">Made in India</span>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </div>
