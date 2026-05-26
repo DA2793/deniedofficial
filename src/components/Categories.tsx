@@ -5,13 +5,13 @@ import ScrollReveal from "./ScrollReveal";
 import MagneticButton from "./MagneticButton";
 import Link from "next/link";
 
-const categories = [
-  { name: "T-Shirts", status: "live", href: "/collection" },
-  { name: "Caps", status: "live", href: "/collection" },
-  { name: "Watches", status: "soon", href: "#" },
-  { name: "Perfumes", status: "soon", href: "#" },
-  { name: "Belts", status: "soon", href: "#" },
-  { name: "Wallets", status: "soon", href: "#" },
+const liveCategories = [
+  { name: "T-Shirts", href: "/collection" },
+  { name: "Caps", href: "/collection" },
+];
+
+const upcomingCategories = [
+  { name: "Watches" },
 ];
 
 export default function Categories() {
@@ -27,44 +27,73 @@ export default function Categories() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {categories.map((cat, i) => (
+        {/* Live categories */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+          {liveCategories.map((cat, i) => (
             <ScrollReveal key={cat.name} delay={i * 0.1}>
-              {cat.status === "live" ? (
-                <Link href={cat.href}>
-                  <MagneticButton strength={0.15}>
-                    <motion.div
-                      whileHover={{ backgroundColor: "rgba(201, 169, 110, 0.04)" }}
-                      className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-12 rounded-xl group cursor-pointer transition-all duration-500 hover:border-gold/30"
-                    >
-                      <span className="font-display text-2xl md:text-3xl uppercase block mb-3 group-hover:text-gold transition-colors duration-500">
-                        {cat.name}
-                      </span>
-                      <span className="text-[10px] uppercase tracking-brutal text-gold">
-                        Shop Now →
-                      </span>
-                    </motion.div>
-                  </MagneticButton>
-                </Link>
-              ) : (
-                <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 rounded-xl opacity-60 relative overflow-hidden">
-                  <div className="absolute top-3 right-3">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-600">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0110 0v4" />
-                    </svg>
-                  </div>
-                  <span className="font-display text-2xl md:text-3xl uppercase block mb-3 text-gray-600">
-                    {cat.name}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-brutal text-gray-700">
-                    Classified — Dropping Soon
-                  </span>
+              <Link href={cat.href}>
+                <MagneticButton strength={0.15}>
+                  <motion.div
+                    whileHover={{ backgroundColor: "rgba(201, 169, 110, 0.04)" }}
+                    className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-12 rounded-xl group cursor-pointer transition-all duration-500 hover:border-gold/30"
+                  >
+                    <span className="font-display text-2xl md:text-3xl uppercase block mb-3 group-hover:text-gold transition-colors duration-500">
+                      {cat.name}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-brutal text-gold">
+                      Shop Now →
+                    </span>
+                  </motion.div>
+                </MagneticButton>
+              </Link>
+            </ScrollReveal>
+          ))}
+
+          {/* Upcoming — single visible card */}
+          {upcomingCategories.map((cat, i) => (
+            <ScrollReveal key={cat.name} delay={(liveCategories.length + i) * 0.1}>
+              <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-12 rounded-xl opacity-60 relative overflow-hidden">
+                <div className="absolute top-3 right-3">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-600">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
                 </div>
-              )}
+                <span className="font-display text-2xl md:text-3xl uppercase block mb-3 text-gray-600">
+                  {cat.name}
+                </span>
+                <span className="text-[10px] uppercase tracking-brutal text-gray-700">
+                  Classified — Dropping Soon
+                </span>
+              </div>
             </ScrollReveal>
           ))}
         </div>
+
+        {/* More Categories — Classified */}
+        <ScrollReveal delay={0.3}>
+          <div className="border border-white/[0.04] bg-white/[0.01] backdrop-blur-sm p-8 md:p-10 rounded-xl relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="font-display text-xl md:text-2xl uppercase block mb-2 text-gray-500">
+                  More Categories
+                </span>
+                <span className="text-[10px] uppercase tracking-brutal text-gray-600">
+                  Classified — Unveiling Soon
+                </span>
+              </div>
+              <div className="flex items-center gap-3 opacity-40">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-500">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+                <span className="text-[9px] uppercase tracking-brutal text-gray-600 hidden md:inline">
+                  Perfumes · Belts · Wallets · &amp; More
+                </span>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
