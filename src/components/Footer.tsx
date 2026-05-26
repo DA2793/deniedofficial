@@ -43,8 +43,8 @@ export default function Footer() {
             <ul className="space-y-3">
               <li><Link href="/about" className="text-gray-600 text-sm hover:text-white transition-colors">About</Link></li>
               <li><a href="https://www.instagram.com/denied._official/" target="_blank" rel="noopener" className="text-gray-600 text-sm hover:text-white transition-colors">Instagram</a></li>
-              <li><a href="#" className="text-gray-600 text-sm hover:text-white transition-colors">Shipping & Returns</a></li>
-              <li><a href="#" className="text-gray-600 text-sm hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><Link href="/policies" className="text-gray-600 text-sm hover:text-white transition-colors">Shipping & Returns</Link></li>
+              <li><Link href="/policies" className="text-gray-600 text-sm hover:text-white transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>
