@@ -38,17 +38,13 @@ export const products: Product[] = [
         "/Products/Signature/Oversized/2.png",
         "/Products/Signature/Oversized/3.png",
       ],
-      "Navy Blue": [
-        "/Products/Signature/Oversized/navy-front.jpg",
-        "/Products/Signature/Oversized/navy-left.jpg",
-      ],
     },
     description: "The DENIED. Signature Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
       fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
       fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
       care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
-      colors: ["Black", "Navy Blue"],
+      colors: ["Black"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
