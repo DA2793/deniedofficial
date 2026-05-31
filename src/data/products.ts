@@ -7,6 +7,7 @@ export interface Product {
   badge: string | null;
   image: string;
   images: string[];
+  colorImages: Record<string, string[]>;
   description: string;
   details: {
     fabric: string;
@@ -31,6 +32,17 @@ export const products: Product[] = [
       "/Products/Signature/Oversized/2.png",
       "/Products/Signature/Oversized/3.png",
     ],
+    colorImages: {
+      "Black": [
+        "/Products/Signature/Oversized/1.png",
+        "/Products/Signature/Oversized/2.png",
+        "/Products/Signature/Oversized/3.png",
+      ],
+      "Navy Blue": [
+        "/Products/Signature/Oversized/navy-front.jpg",
+        "/Products/Signature/Oversized/navy-left.jpg",
+      ],
+    },
     description: "The DENIED. Signature Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
       fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
@@ -53,6 +65,13 @@ export const products: Product[] = [
       "/Products/AcidWashed/2.png",
       "/Products/AcidWashed/3.png",
     ],
+    colorImages: {
+      "Acid Wash": [
+        "/Products/AcidWashed/1.png",
+        "/Products/AcidWashed/2.png",
+        "/Products/AcidWashed/3.png",
+      ],
+    },
     description: "Unique acid wash effect — each piece has subtle variations for a one-of-a-kind look. Heavyweight yet breathable with a lived-in finish.",
     details: {
       fabric: "100% Cotton, 240 GSM heavyweight with acid-washed finish",
@@ -76,6 +95,14 @@ export const products: Product[] = [
       "/Products/Gear/3.png",
       "/Products/Gear/4.png",
     ],
+    colorImages: {
+      "Black": [
+        "/Products/Gear/1.png",
+        "/Products/Gear/2.png",
+        "/Products/Gear/3.png",
+        "/Products/Gear/4.png",
+      ],
+    },
     description: "Supima cotton luxury. Soft, breathable, and designed for all-day comfort with a classic silhouette.",
     details: {
       fabric: "100% Supima Cotton, 160 GSM – luxury feel, soft and breathable",
@@ -97,6 +124,12 @@ export const products: Product[] = [
       "/Products/Polo/1.png",
       "/Products/Polo/2.png",
     ],
+    colorImages: {
+      "Black": [
+        "/Products/Polo/1.png",
+        "/Products/Polo/2.png",
+      ],
+    },
     description: "Textured Airtex finish with embroidered print. Structured collar and cuff — polished style for any day, any plan.",
     details: {
       fabric: "100% Cotton, 220 GSM Airtex – textured finish with embroidered print",

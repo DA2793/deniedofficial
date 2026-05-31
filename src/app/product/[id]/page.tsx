@@ -119,6 +119,11 @@ export default function ProductPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [zoomOpen, setZoomOpen] = useState(false);
 
+  // Get images based on selected color
+  const currentImages = selectedColor && product?.colorImages[selectedColor]
+    ? product.colorImages[selectedColor]
+    : product?.images || [];
+
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center pt-20 gap-4">
@@ -169,7 +174,7 @@ export default function ProductPage() {
                     className="absolute inset-0"
                   >
                     <Image
-                      src={product.images[activeImage]}
+                      src={currentImages[activeImage]}
                       alt={`${product.name} - ${activeImage + 1}`}
                       fill
                       className="object-cover"
@@ -188,19 +193,19 @@ export default function ProductPage() {
                 {/* Image counter */}
                 <div className="absolute bottom-4 left-4">
                   <span className="text-[10px] uppercase tracking-brutal text-white/40">
-                    {String(activeImage + 1).padStart(2, "0")} / {String(product.images.length).padStart(2, "0")}
+                    {String(activeImage + 1).padStart(2, "0")} / {String(currentImages.length).padStart(2, "0")}
                   </span>
                 </div>
               </div>
 
               {/* Vertical navigation — outside image on the right */}
-              {product.images.length > 1 && (
+              {currentImages.length > 1 && (
                 <div className="flex flex-col items-center justify-center gap-4">
                   {/* Up arrow */}
                   <motion.button
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                    onClick={() => setActiveImage((prev) => (prev === 0 ? currentImages.length - 1 : prev - 1))}
                     className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -210,7 +215,7 @@ export default function ProductPage() {
 
                   {/* Progress dots */}
                   <div className="flex flex-col items-center gap-1.5">
-                    {product.images.map((_, i) => (
+                    {currentImages.map((_, i) => (
                       <motion.div
                         key={i}
                         animate={{
@@ -228,7 +233,7 @@ export default function ProductPage() {
                   <motion.button
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => setActiveImage((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                    onClick={() => setActiveImage((prev) => (prev === currentImages.length - 1 ? 0 : prev + 1))}
                     className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -240,9 +245,9 @@ export default function ProductPage() {
             </div>
 
             {/* Thumbnails */}
-            {product.images.length > 1 && (
+            {currentImages.length > 1 && (
               <div className="flex gap-2 mt-4">
-                {product.images.map((img, i) => (
+                {currentImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
@@ -314,7 +319,7 @@ export default function ProductPage() {
                 {product.details.colors.map((color) => (
                   <button
                     key={color}
-                    onClick={() => setSelectedColor(color)}
+                    onClick={() => { setSelectedColor(color); setActiveImage(0); }}
                     className={`px-5 py-2.5 text-xs uppercase tracking-wide border transition-all duration-300 ${
                       selectedColor === color
                         ? "border-gold text-white bg-gold/10"
@@ -472,7 +477,7 @@ export default function ProductPage() {
       <AnimatePresence>
         {zoomOpen && (
           <ImageZoomModal
-            src={product.images[activeImage]}
+            src={currentImages[activeImage]}
             alt={product.name}
             onClose={() => setZoomOpen(false)}
           />
