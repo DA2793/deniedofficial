@@ -116,7 +116,7 @@ export default function ProductPage() {
   const product = getProductById(Number(params.id));
   const [activeImage, setActiveImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>(product?.details.colors[0] || "");
   const [zoomOpen, setZoomOpen] = useState(false);
 
   // Get images based on selected color
@@ -338,7 +338,7 @@ export default function ProductPage() {
                 <p className="text-[10px] uppercase tracking-brutal text-gray-400">
                   Size {selectedSize && <span className="text-white ml-2">— {selectedSize}</span>}
                 </p>
-                <SizeGuide />
+                <SizeGuide sizeChart={product.sizeChart} />
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.details.sizes.map((size) => (
