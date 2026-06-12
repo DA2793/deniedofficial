@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, name?: string, phone?: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signInWithOtp: (phone: string) => Promise<{ error: string | null }>;
+  signInWithOtp: (phone: string, name?: string) => Promise<{ error: string | null }>;
   verifyOtp: (phone: string, token: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
@@ -72,8 +72,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   };
 
-  const signInWithOtp = async (phone: string) => {
-    const { error } = await supabase.auth.signInWithOtp({ phone });
+  const signInWithOtp = async (phone: string, name?: string) => {
+    const { error } = await supabase.auth.signInWithOtp({
+      phone,
+      options: {
+        data: {
+          full_name: name || "",
+        },
+      },
+    });
     return { error: error?.message ?? null };
   };
 

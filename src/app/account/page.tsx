@@ -30,7 +30,7 @@ export default function AccountPage() {
       if (!otpSent) {
         // Send OTP
         const phoneNum = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
-        const { error } = await signInWithOtp(phoneNum);
+        const { error } = await signInWithOtp(phoneNum, name);
         if (error) {
           setError(error);
         } else {
@@ -154,19 +154,34 @@ export default function AccountPage() {
             {mode === "phone" ? (
               <>
                 {!otpSent ? (
-                  <div>
-                    <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                      className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                      placeholder="+91 XXXXX XXXXX"
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                        placeholder="+91 XXXXX XXXXX"
+                      />
+                    </div>
+                  </>
                 ) : (
                   <div>
                     <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
