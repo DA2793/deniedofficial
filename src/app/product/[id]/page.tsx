@@ -10,6 +10,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ProductCard from "@/components/ProductCard";
 import MagneticButton from "@/components/MagneticButton";
 import SizeGuide from "@/components/SizeGuide";
+import { useCart } from "@/context/CartContext";
 
 // ===== IMAGE ZOOM MODAL =====
 function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -118,6 +119,7 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>(product?.details.colors[0] || "");
   const [zoomOpen, setZoomOpen] = useState(false);
+  const { addToCart } = useCart();
 
   // Get images based on selected color
   const currentImages = selectedColor && product?.colorImages[selectedColor]
@@ -360,7 +362,13 @@ export default function ProductPage() {
             {/* CTA Buttons */}
             <div className="space-y-3 mb-8">
               <MagneticButton strength={0.1} className="w-full">
-                <button className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 hover:bg-gold transition-colors duration-300 flex items-center justify-center gap-3">
+                <button
+                  onClick={() => {
+                    if (!selectedSize) { alert("Please select a size"); return; }
+                    addToCart(product, selectedColor, selectedSize);
+                  }}
+                  className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 hover:bg-gold transition-colors duration-300 flex items-center justify-center gap-3 rounded-full"
+                >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
@@ -368,7 +376,7 @@ export default function ProductPage() {
                 </button>
               </MagneticButton>
 
-              <button className="w-full border border-white/10 text-white text-[11px] uppercase tracking-brutal py-4 hover:border-gold hover:text-gold transition-all duration-300 flex items-center justify-center gap-3">
+              <button className="w-full border border-white/10 text-white text-[11px] uppercase tracking-brutal py-4 hover:border-gold hover:text-gold transition-all duration-300 flex items-center justify-center gap-3 rounded-full">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                 </svg>

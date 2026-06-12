@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 
 const categories = ["T-Shirts", "Caps"];
 const filters = ["New In", "Best Sellers", "All Collection"];
@@ -15,6 +16,7 @@ export default function Navbar() {
   const [accountHover, setAccountHover] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -179,6 +181,11 @@ export default function Navbar() {
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
                 </svg>
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-black text-[8px] font-bold rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
               </Link>
               <AnimatePresence>
                 {cartHover && (

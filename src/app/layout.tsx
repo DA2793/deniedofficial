@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
 import InstagramFloater from "@/components/InstagramFloater";
 import BackToTop from "@/components/BackToTop";
+import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,12 +50,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable} ${bebas.variable}`}>
       <body className="bg-black text-white font-body antialiased overflow-x-hidden">
-        <GrainOverlay />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <InstagramFloater />
-        <BackToTop />
+        <AuthProvider>
+          <CartProvider>
+            <GrainOverlay />
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <InstagramFloater />
+            <BackToTop />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
