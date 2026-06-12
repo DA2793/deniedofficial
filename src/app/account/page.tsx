@@ -7,13 +7,15 @@ import ScrollReveal from "@/components/ScrollReveal";
 import MagneticButton from "@/components/MagneticButton";
 
 export default function AccountPage() {
-  const { user, loading, signIn, signUp, signOut } = useAuth();
+  const { user, loading, signIn, signUp, signInWithOtp, verifyOtp, signOut } = useAuth();
   const router = useRouter();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "phone">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -24,7 +26,28 @@ export default function AccountPage() {
     setSuccess(null);
     setSubmitting(true);
 
-    if (mode === "signup") {
+    if (mode === "phone") {
+      if (!otpSent) {
+        // Send OTP
+        const phoneNum = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
+        const { error } = await signInWithOtp(phoneNum);
+        if (error) {
+          setError(error);
+        } else {
+          setOtpSent(true);
+          setSuccess("OTP sent to " + phoneNum);
+        }
+      } else {
+        // Verify OTP
+        const phoneNum = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
+        const { error } = await verifyOtp(phoneNum, otp);
+        if (error) {
+          setError(error);
+        } else {
+          router.push("/");
+        }
+      }
+    } else if (mode === "signup") {
       const { error } = await signUp(email, password, name, phone);
       if (error) {
         setError(error);
@@ -105,41 +128,98 @@ export default function AccountPage() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
+          {/* Auth method tabs */}
+          <div className="flex justify-center gap-2 mb-10">
+            <button
+              onClick={() => { setMode("signin"); setError(null); setSuccess(null); setOtpSent(false); }}
+              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signin" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
+            >
+              Email
+            </button>
+            <button
+              onClick={() => { setMode("phone"); setError(null); setSuccess(null); setOtpSent(false); }}
+              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "phone" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
+            >
+              Phone OTP
+            </button>
+            <button
+              onClick={() => { setMode("signup"); setError(null); setSuccess(null); setOtpSent(false); }}
+              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signup" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
+            >
+              Sign Up
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-5">
-            {mode === "signup" && (
+            {mode === "phone" ? (
               <>
-                <div>
-                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                    placeholder="Your full name"
-                  />
-                </div>
-                <div>
-                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                    placeholder="+91 XXXXX XXXXX"
-                  />
-                </div>
+                {!otpSent ? (
+                  <div>
+                    <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                      placeholder="+91 XXXXX XXXXX"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                      Enter OTP
+                    </label>
+                    <input
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      required
+                      maxLength={6}
+                      className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors text-center tracking-[8px] text-lg"
+                      placeholder="------"
+                    />
+                  </div>
+                )}
               </>
-            )}
-            <div>
-              <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                Email
-              </label>
+            ) : (
+              <>
+                {mode === "signup" && (
+                  <>
+                    <div>
+                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                        placeholder="+91 XXXXX XXXXX"
+                      />
+                    </div>
+                  </>
+                )}
+                <div>
+                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                    Email
+                  </label>
               <input
                 type="email"
                 value={email}
@@ -164,6 +244,8 @@ export default function AccountPage() {
                 placeholder={mode === "signup" ? "Min 6 characters" : "••••••••"}
               />
             </div>
+              </>
+            )}
 
             {error && (
               <p className="text-red-400 text-xs text-center">{error}</p>
@@ -179,19 +261,27 @@ export default function AccountPage() {
                 disabled={submitting}
                 className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 rounded-full hover:bg-gold transition-colors duration-300 disabled:opacity-50"
               >
-                {submitting ? "..." : mode === "signin" ? "Sign In" : "Create Account"}
+                {submitting
+                  ? "..."
+                  : mode === "phone"
+                  ? otpSent ? "Verify OTP" : "Send OTP"
+                  : mode === "signin"
+                  ? "Sign In"
+                  : "Create Account"}
               </button>
             </MagneticButton>
           </form>
 
-          <div className="mt-8 text-center">
-            <button
-              onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); setSuccess(null); }}
-              className="text-gray-500 text-xs hover:text-gold transition-colors"
-            >
-              {mode === "signin" ? "Don't have an account? Create one" : "Already have an account? Sign in"}
-            </button>
-          </div>
+          {mode === "phone" && otpSent && (
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => { setOtpSent(false); setOtp(""); setError(null); setSuccess(null); }}
+                className="text-gray-500 text-xs hover:text-gold transition-colors"
+              >
+                Didn&apos;t receive? Send again
+              </button>
+            </div>
+          )}
         </ScrollReveal>
       </div>
     </section>
