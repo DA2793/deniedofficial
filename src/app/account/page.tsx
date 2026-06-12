@@ -12,6 +12,8 @@ export default function AccountPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -23,13 +25,15 @@ export default function AccountPage() {
     setSubmitting(true);
 
     if (mode === "signup") {
-      const { error } = await signUp(email, password);
+      const { error } = await signUp(email, password, name, phone);
       if (error) {
         setError(error);
       } else {
         setSuccess("Account created. Check your email to confirm.");
         setEmail("");
         setPassword("");
+        setName("");
+        setPhone("");
       }
     } else {
       const { error } = await signIn(email, password);
@@ -102,6 +106,36 @@ export default function AccountPage() {
 
         <ScrollReveal delay={0.1}>
           <form onSubmit={handleSubmit} className="space-y-5">
+            {mode === "signup" && (
+              <>
+                <div>
+                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                    placeholder="Your full name"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
+                    placeholder="+91 XXXXX XXXXX"
+                  />
+                </div>
+              </>
+            )}
             <div>
               <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
                 Email
