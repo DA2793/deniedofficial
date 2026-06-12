@@ -17,7 +17,7 @@ declare global {
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -32,8 +32,64 @@ export default function CheckoutPage() {
 
   const [processing, setProcessing] = useState(false);
 
+  // Require auth
+  if (!user && !loading) {
+    return (
+      <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
+        <div className="max-w-[500px] mx-auto text-center">
+          <ScrollReveal>
+            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+              One More Step
+            </p>
+            <h1 className="font-display text-5xl uppercase mb-6">
+              Sign In to Checkout
+            </h1>
+            <p className="text-gray-400 text-sm mb-10">
+              Create an account or sign in to complete your order. This helps us track your order and keep you updated.
+            </p>
+            <MagneticButton strength={0.15}>
+              <Link
+                href="/account"
+                className="inline-block text-[11px] uppercase tracking-brutal bg-white text-black px-10 py-4 rounded-full hover:bg-gold transition-colors duration-300"
+              >
+                Sign In / Create Account
+              </Link>
+            </MagneticButton>
+          </ScrollReveal>
+        </div>
+      </section>
+    );
+  }
+
   const shipping = totalPrice >= 999 ? 0 : 49;
-  const finalTotal = totalPrice + shipping;
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoError, setPromoError] = useState<string | null>(null);
+
+  // Promo codes — add more as needed
+  const PROMO_CODES: Record<string, { type: "percent" | "flat"; value: number }> = {
+    "FIRST10": { type: "percent", value: 10 },
+    "DENIED20": { type: "percent", value: 20 },
+    "FLAT100": { type: "flat", value: 100 },
+  };
+
+  const applyPromo = () => {
+    const code = promoCode.trim().toUpperCase();
+    const promo = PROMO_CODES[code];
+    if (!promo) {
+      setPromoError("Invalid promo code");
+      setPromoApplied(false);
+      setPromoDiscount(0);
+      return;
+    }
+    const discount = promo.type === "percent" ? Math.round(totalPrice * promo.value / 100) : promo.value;
+    setPromoDiscount(discount);
+    setPromoApplied(true);
+    setPromoError(null);
+  };
+
+  const finalTotal = totalPrice - promoDiscount + shipping;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -235,10 +291,37 @@ export default function CheckoutPage() {
               </div>
 
               <div className="space-y-3 mb-8">
+                {/* Promo Code */}
+                <div className="flex gap-2 mb-4">
+                  <input
+                    type="text"
+                    placeholder="Promo Code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    disabled={promoApplied}
+                    className="flex-1 bg-white/[0.03] border border-white/10 rounded-full px-5 py-3 text-white text-xs outline-none focus:border-gold transition-colors uppercase tracking-wide disabled:opacity-50"
+                  />
+                  <button
+                    onClick={applyPromo}
+                    disabled={promoApplied || !promoCode.trim()}
+                    className="text-[10px] uppercase tracking-brutal px-6 py-3 border border-white/10 rounded-full text-white hover:border-gold hover:text-gold transition-all disabled:opacity-50"
+                  >
+                    {promoApplied ? "Applied ✓" : "Apply"}
+                  </button>
+                </div>
+                {promoError && <p className="text-red-400 text-xs">{promoError}</p>}
+                {promoApplied && <p className="text-green-400 text-xs">Promo applied! You save ₹{promoDiscount.toLocaleString()}</p>}
+
                 <div className="flex justify-between">
                   <span className="text-gray-400 text-sm">Subtotal</span>
                   <span className="text-white text-sm">₹{totalPrice.toLocaleString()}</span>
                 </div>
+                {promoApplied && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-400 text-sm">Discount</span>
+                    <span className="text-green-400 text-sm">-₹{promoDiscount.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-gray-400 text-sm">Shipping</span>
                   <span className="text-white text-sm">{shipping === 0 ? "Free" : `₹${shipping}`}</span>
