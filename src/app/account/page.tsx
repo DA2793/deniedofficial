@@ -9,7 +9,7 @@ import MagneticButton from "@/components/MagneticButton";
 export default function AccountPage() {
   const { user, loading, signIn, signUp, signInWithOtp, verifyOtp, signOut } = useAuth();
   const router = useRouter();
-  const [mode, setMode] = useState<"signin" | "signup" | "phone">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "phone">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -128,27 +128,23 @@ export default function AccountPage() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          {/* Auth method tabs */}
-          <div className="flex justify-center gap-2 mb-10">
-            <button
-              onClick={() => { setMode("signin"); setError(null); setSuccess(null); setOtpSent(false); }}
-              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signin" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
-            >
-              Email
-            </button>
-            <button
-              onClick={() => { setMode("phone"); setError(null); setSuccess(null); setOtpSent(false); }}
-              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "phone" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
-            >
-              Phone OTP
-            </button>
-            <button
-              onClick={() => { setMode("signup"); setError(null); setSuccess(null); setOtpSent(false); }}
-              className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signup" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
-            >
-              Sign Up
-            </button>
-          </div>
+          {/* Auth method tabs — only show for sign-in */}
+          {mode !== "signup" && (
+            <div className="flex justify-center gap-2 mb-10">
+              <button
+                onClick={() => { setMode("signin"); setError(null); setSuccess(null); setOtpSent(false); }}
+                className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signin" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
+              >
+                Email
+              </button>
+              <button
+                onClick={() => { setMode("phone"); setError(null); setSuccess(null); setOtpSent(false); }}
+                className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "phone" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
+              >
+                Phone OTP
+              </button>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {mode === "phone" ? (
@@ -297,6 +293,24 @@ export default function AccountPage() {
               </button>
             </div>
           )}
+
+          <div className="mt-10 text-center">
+            {mode === "signup" ? (
+              <button
+                onClick={() => { setMode("signin"); setError(null); setSuccess(null); }}
+                className="text-gray-500 text-xs hover:text-gold transition-colors"
+              >
+                Already have an account? Sign in
+              </button>
+            ) : (
+              <button
+                onClick={() => { setMode("signup"); setError(null); setSuccess(null); setOtpSent(false); }}
+                className="text-gray-500 text-xs hover:text-gold transition-colors"
+              >
+                Don&apos;t have an account? Create one
+              </button>
+            )}
+          </div>
         </ScrollReveal>
       </div>
     </section>
