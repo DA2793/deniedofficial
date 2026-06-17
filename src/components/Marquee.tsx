@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const items = [
   "Premium Quality",
@@ -12,11 +13,17 @@ const items = [
 ];
 
 export default function Marquee() {
+  const [duration, setDuration] = useState(15);
+
+  useEffect(() => {
+    setDuration(window.innerWidth < 768 ? 10 : 15);
+  }, []);
+
   return (
     <div className="border-y border-white/[0.04] py-5 overflow-hidden bg-black-soft">
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        transition={{ duration, repeat: Infinity, ease: "linear" }}
         className="flex gap-12 whitespace-nowrap"
       >
         {[...items, ...items, ...items, ...items].map((item, i) => (
