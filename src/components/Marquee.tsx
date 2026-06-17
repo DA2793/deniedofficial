@@ -16,7 +16,7 @@ export default function Marquee() {
     <div className="border-y border-white/[0.04] py-5 overflow-hidden bg-black-soft">
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
         className="flex gap-12 whitespace-nowrap"
       >
         {[...items, ...items, ...items, ...items].map((item, i) => (
