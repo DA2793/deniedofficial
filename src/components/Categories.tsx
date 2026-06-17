@@ -6,8 +6,8 @@ import MagneticButton from "./MagneticButton";
 import Link from "next/link";
 
 const liveCategories = [
-  { name: "T-Shirts", href: "/collection" },
-  { name: "Caps", href: "/collection" },
+  { name: "T-Shirts", href: "/collection?category=T-Shirts" },
+  { name: "Caps", href: "/collection?category=Caps" },
 ];
 
 const upcomingCategories: { name: string }[] = [];

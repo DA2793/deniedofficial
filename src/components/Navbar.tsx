@@ -77,7 +77,7 @@ export default function Navbar() {
                     {["All Collection", ...categories].map((item) => (
                       <Link
                         key={item}
-                        href="/collection"
+                        href={item === "All Collection" ? "/collection" : `/collection?category=${encodeURIComponent(item)}`}
                         className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
                       >
                         {item}
@@ -87,7 +87,7 @@ export default function Navbar() {
                     {filters.slice(0, 2).map((item) => (
                       <Link
                         key={item}
-                        href="/collection"
+                        href={`/collection?filter=${item === "New In" ? "new" : "signature"}`}
                         className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                       >
                         {item}
