@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 import MagneticButton from "@/components/MagneticButton";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase/client";
 
 declare global {
   interface Window {
@@ -29,6 +30,31 @@ export default function CheckoutPage() {
     state: "",
     pincode: "",
   });
+
+  // Pre-fill saved address
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({ ...prev, email: user.email || "" }));
+      supabase
+        .from("user_addresses")
+        .select("*")
+        .eq("user_id", user.id)
+        .single()
+        .then(({ data }) => {
+          if (data) {
+            setForm((prev) => ({
+              ...prev,
+              name: data.name || prev.name,
+              phone: data.phone || prev.phone,
+              address: data.address || prev.address,
+              city: data.city || prev.city,
+              state: data.state || prev.state,
+              pincode: data.pincode || prev.pincode,
+            }));
+          }
+        });
+    }
+  }, [user]);
 
   const [processing, setProcessing] = useState(false);
 
@@ -159,7 +185,7 @@ export default function CheckoutPage() {
         color: "#c9a96e",
       },
       handler: async function (response: any) {
-        // Verify payment
+        // Verify payment and save order
         const verifyRes = await fetch("/api/verify-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -167,6 +193,28 @@ export default function CheckoutPage() {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
+            orderDetails: {
+              userId: user?.id,
+              items: items.map((item) => ({
+                productId: item.product.id,
+                name: item.product.name,
+                price: item.product.price,
+                quantity: item.quantity,
+                color: item.selectedColor,
+                size: item.selectedSize,
+              })),
+              total: finalTotal,
+              shipping,
+              promoCode: promoApplied ? promoCode : null,
+              promoDiscount,
+              shippingName: form.name,
+              shippingEmail: form.email,
+              shippingPhone: form.phone,
+              shippingAddress: form.address,
+              shippingCity: form.city,
+              shippingState: form.state,
+              shippingPincode: form.pincode,
+            },
           }),
         });
 
