@@ -80,6 +80,8 @@ export default function AccountPage() {
 
   // Signed in state
   if (user) {
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email;
+
     return (
       <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
         <div className="max-w-[600px] mx-auto text-center">
@@ -87,11 +89,11 @@ export default function AccountPage() {
             <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
               Welcome Back
             </p>
-            <h1 className="font-display text-5xl md:text-7xl uppercase mb-8">
-              Account
+            <h1 className="font-display text-3xl md:text-4xl uppercase mb-6">
+              {displayName}
             </h1>
-            <p className="text-gray-400 text-sm mb-4">{user.email}</p>
-            <p className="text-gray-600 text-xs mb-12">Member since {new Date(user.created_at).toLocaleDateString()}</p>
+            <p className="text-gray-500 text-xs mb-2">{user.email}</p>
+            <p className="text-gray-600 text-[10px] mb-10">Member since {new Date(user.created_at).toLocaleDateString()}</p>
 
             <MagneticButton strength={0.15} className="inline-block">
               <button
