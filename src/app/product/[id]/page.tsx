@@ -164,12 +164,8 @@ export default function ProductPage() {
           >
             {/* Main Image + Vertical Nav */}
             <div className="flex gap-4">
-              {/* Image with dramatic backdrop */}
+              {/* Image */}
               <div className="relative flex-1 aspect-[3/4] overflow-hidden rounded-lg border border-white/[0.06] cursor-zoom-in" onClick={() => setZoomOpen(true)}>
-                {/* Dramatic gradient backdrop */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,169,110,0.06)_0%,transparent_70%)]" />
-                
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImage}
