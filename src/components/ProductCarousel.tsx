@@ -28,11 +28,11 @@ export default function ProductCarousel() {
     const absPos = Math.abs(normalizedDiff);
 
     return {
-      rotateY: normalizedDiff * 35,
-      x: normalizedDiff * 180,
-      z: -absPos * 200,
-      scale: absPos === 0 ? 1 : 0.75 - absPos * 0.08,
-      opacity: absPos > 2 ? 0 : 1 - absPos * 0.25,
+      rotateY: normalizedDiff * 45,
+      x: normalizedDiff * 240,
+      z: -absPos * 150,
+      scale: absPos === 0 ? 1 : 0.8 - absPos * 0.06,
+      opacity: absPos > 2 ? 0 : 1 - absPos * 0.2,
       zIndex: total - absPos,
     };
   };
