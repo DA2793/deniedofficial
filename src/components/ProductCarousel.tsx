@@ -51,7 +51,7 @@ export default function ProductCarousel() {
 
         {/* 3D Carousel */}
         <div
-          className="relative h-[480px] md:h-[560px] flex items-center justify-center"
+          className="relative h-[520px] md:h-[600px] flex items-center justify-center"
           style={{ perspective: "1200px" }}
           onMouseEnter={() => setAutoPlay(false)}
           onMouseLeave={() => setAutoPlay(true)}
@@ -71,7 +71,7 @@ export default function ProductCarousel() {
                 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 style={{ zIndex: style.zIndex, transformStyle: "preserve-3d" }}
-                className="absolute w-[300px] md:w-[340px] cursor-pointer"
+                className="absolute w-[320px] md:w-[380px] cursor-pointer"
                 onClick={() => setActiveIndex(index)}
               >
                 <Link href={`/product/${product.id}`}>
