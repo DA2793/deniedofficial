@@ -8,6 +8,7 @@ import InstagramFloater from "@/components/InstagramFloater";
 import BackToTop from "@/components/BackToTop";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -52,12 +53,14 @@ export default function RootLayout({
       <body className="bg-black text-white font-body antialiased overflow-x-hidden">
         <AuthProvider>
           <CartProvider>
-            <GrainOverlay />
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-            <InstagramFloater />
-            <BackToTop />
+            <WishlistProvider>
+              <GrainOverlay />
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+              <InstagramFloater />
+              <BackToTop />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </body>

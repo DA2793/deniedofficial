@@ -4,12 +4,16 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/data/products";
+import { useWishlist } from "@/context/WishlistContext";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const wishlisted = isInWishlist(product.id);
+
   return (
     <Link href={`/product/${product.id}`}>
       <motion.div
@@ -42,11 +46,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Wishlist — appears on hover */}
           <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-all duration-400 translate-y-1 group-hover:translate-y-0">
             <button
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-              className="w-9 h-9 glass-subtle flex items-center justify-center text-white/70 hover:text-gold transition-colors duration-200"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product.id); }}
+              className={`w-9 h-9 glass-subtle flex items-center justify-center transition-colors duration-200 ${wishlisted ? "text-gold" : "text-white/70 hover:text-gold"}`}
               aria-label="Add to wishlist"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>
             </button>

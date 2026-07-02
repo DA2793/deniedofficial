@@ -11,6 +11,7 @@ import ProductCard from "@/components/ProductCard";
 import MagneticButton from "@/components/MagneticButton";
 import SizeGuide from "@/components/SizeGuide";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 // ===== IMAGE ZOOM MODAL =====
 function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -120,6 +121,8 @@ export default function ProductPage() {
   const [selectedColor, setSelectedColor] = useState<string>(product?.details.colors[0] || "");
   const [zoomOpen, setZoomOpen] = useState(false);
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const wishlisted = product ? isInWishlist(product.id) : false;
 
   // Get images based on selected color
   const currentImages = selectedColor && product?.colorImages[selectedColor]
@@ -376,11 +379,18 @@ export default function ProductPage() {
                 </button>
               </MagneticButton>
 
-              <button className="w-full border border-white/10 text-white text-[11px] uppercase tracking-brutal py-4 hover:border-gold hover:text-gold transition-all duration-300 flex items-center justify-center gap-3 rounded-full">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <button
+                onClick={() => product && toggleWishlist(product.id)}
+                className={`w-full border text-[11px] uppercase tracking-brutal py-4 transition-all duration-300 flex items-center justify-center gap-3 rounded-full ${
+                  wishlisted
+                    ? "border-gold text-gold bg-gold/10"
+                    : "border-white/10 text-white hover:border-gold hover:text-gold"
+                }`}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                 </svg>
-                Add to Wishlist
+                {wishlisted ? "Added to Wishlist" : "Add to Wishlist"}
               </button>
             </div>
 
