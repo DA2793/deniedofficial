@@ -64,7 +64,7 @@ export default function StoreEntrance() {
             className="absolute inset-0"
           >
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className="absolute inset-0 bg-contain bg-center bg-no-repeat bg-black"
               style={{ backgroundImage: "url('/assets/Storefront.png')" }}
             />
           </motion.div>
