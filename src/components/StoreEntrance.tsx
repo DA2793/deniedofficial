@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function StoreEntrance() {
   const [show, setShow] = useState(false);
   const [doorsOpen, setDoorsOpen] = useState(false);
-  const [showInterior, setShowInterior] = useState(false);
   const [zoomIn, setZoomIn] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -17,26 +16,24 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // 1.8s — Doors slide open
-    const doorsTimer = setTimeout(() => setDoorsOpen(true), 1800);
+    // Doors slide open
+    const doorsTimer = setTimeout(() => setDoorsOpen(true), 2000);
 
-    // 3.2s — Storefront replaced by interior, then zooms
-    const interiorTimer = setTimeout(() => setShowInterior(true), 3200);
-    const zoomTimer = setTimeout(() => setZoomIn(true), 3200);
+    // Zoom into the store interior
+    const zoomTimer = setTimeout(() => setZoomIn(true), 3500);
 
-    // 4.5s — Fade to black
-    const fadeTimer = setTimeout(() => setFadeOut(true), 4500);
+    // Fade to black
+    const fadeTimer = setTimeout(() => setFadeOut(true), 4800);
 
-    // 5.2s — Site revealed
+    // Remove
     const removeTimer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 5200);
+    }, 5500);
 
     return () => {
       clearTimeout(doorsTimer);
-      clearTimeout(interiorTimer);
       clearTimeout(zoomTimer);
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
@@ -64,31 +61,11 @@ export default function StoreEntrance() {
           className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
           onClick={handleSkip}
         >
-          {/* Layer 1: Storefront (visible from 0s) */}
+          {/* Layer 1: Store interior (revealed when doors open) */}
           <motion.div
-            initial={{ opacity: 1 }}
-            animate={showInterior ? { opacity: 0 } : { opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            <img
-              src="/assets/Storefront.png"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* Layer 2: Store interior (replaces storefront at 3.2s, then zooms) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 1 }}
-            animate={{
-              opacity: showInterior ? 1 : 0,
-              scale: zoomIn ? 1.8 : 1,
-            }}
-            transition={{
-              opacity: { duration: 0.5 },
-              scale: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
-            }}
+            initial={{ scale: 1 }}
+            animate={zoomIn ? { scale: 2 } : { scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0"
           >
             <img
@@ -98,39 +75,40 @@ export default function StoreEntrance() {
             />
           </motion.div>
 
-          {/* Layer 3: Left frosted door — positioned over the storefront door area */}
+          {/* Layer 2: Full storefront with frosted doors — splits in half */}
+          {/* Left half of storefront */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-1/2 -translate-x-full w-1/2 h-full z-10"
+            className="absolute inset-0 w-1/2 overflow-hidden"
           >
             <img
-              src="/assets/door-left.png"
+              src="/assets/Storefront.png"
               alt=""
-              className="w-full h-full object-cover object-right"
+              className="h-full w-[200%] object-cover object-left"
             />
           </motion.div>
 
-          {/* Layer 4: Right frosted door — positioned over the storefront door area */}
+          {/* Right half of storefront */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-1/2 w-1/2 h-full z-10"
+            className="absolute inset-0 left-1/2 w-1/2 overflow-hidden"
           >
             <img
-              src="/assets/door-right.png"
+              src="/assets/Storefront.png"
               alt=""
-              className="w-full h-full object-cover object-left"
+              className="h-full w-[200%] object-cover object-right"
             />
           </motion.div>
 
           {/* Fade to black */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.5 } : { opacity: 0 }}
-            transition={{ duration: fadeOut ? 0.7 : 1 }}
+            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.6 } : { opacity: 0 }}
+            transition={{ duration: fadeOut ? 0.7 : 1.2 }}
             className="absolute inset-0 bg-black z-20"
           />
 
@@ -138,7 +116,7 @@ export default function StoreEntrance() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
-            transition={{ delay: 2.5 }}
+            transition={{ delay: 3 }}
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-[9px] uppercase tracking-brutal z-30"
           >
             Tap to enter
