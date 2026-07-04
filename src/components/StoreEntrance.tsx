@@ -75,7 +75,7 @@ export default function StoreEntrance() {
             />
           </motion.div>
 
-          {/* Layer 2: Storefront (visible frame around the doors, hides once doors open) */}
+          {/* Layer 2: Store interior (visible frame, hides once doors open) */}
           <motion.div
             initial={{ opacity: 1 }}
             animate={doorsOpen ? { opacity: 0 } : { opacity: 1 }}
@@ -83,7 +83,7 @@ export default function StoreEntrance() {
             className="absolute inset-0 z-[5] pointer-events-none"
           >
             <img
-              src="/assets/Storefront.png"
+              src="/assets/Store-interior.png"
               alt=""
               className="w-full h-full object-cover"
             />
