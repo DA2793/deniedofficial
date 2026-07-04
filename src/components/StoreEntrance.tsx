@@ -16,11 +16,11 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // Doors slide open after 2s
-    const doorsTimer = setTimeout(() => setDoorsOpen(true), 2000);
+    // Doors slide open
+    const doorsTimer = setTimeout(() => setDoorsOpen(true), 1800);
 
-    // Zoom into the store after doors are open
-    const zoomTimer = setTimeout(() => setZoomIn(true), 3500);
+    // Zoom into the store
+    const zoomTimer = setTimeout(() => setZoomIn(true), 3200);
 
     // Fade to black
     const fadeTimer = setTimeout(() => setFadeOut(true), 4500);
@@ -61,50 +61,53 @@ export default function StoreEntrance() {
           className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
           onClick={handleSkip}
         >
-          {/* Clear storefront behind (revealed when doors open) */}
+          {/* Background — clear storefront (revealed when doors open) */}
           <motion.div
             initial={{ scale: 1 }}
-            animate={zoomIn ? { scale: 2.2 } : { scale: 1 }}
+            animate={zoomIn ? { scale: 1.8 } : { scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
           >
-            <div
-              className="absolute inset-0 bg-contain bg-center bg-no-repeat bg-black"
-              style={{ backgroundImage: "url('/assets/Storefront_clear.png')" }}
+            <img
+              src="/assets/Storefront_clear.png"
+              alt=""
+              className="w-full h-full object-contain"
             />
           </motion.div>
 
-          {/* Left Door */}
+          {/* Left door */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-0 w-1/2 h-full z-10"
+            className="absolute top-0 left-0 w-1/2 h-full flex items-center justify-end"
           >
-            <div
-              className="absolute inset-0 bg-cover bg-left bg-no-repeat"
-              style={{ backgroundImage: "url('/assets/door-left.png')" }}
+            <img
+              src="/assets/door-left.png"
+              alt=""
+              className="h-full object-cover object-right"
             />
           </motion.div>
 
-          {/* Right Door */}
+          {/* Right door */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 right-0 w-1/2 h-full z-10"
+            className="absolute top-0 right-0 w-1/2 h-full flex items-center justify-start"
           >
-            <div
-              className="absolute inset-0 bg-cover bg-right bg-no-repeat"
-              style={{ backgroundImage: "url('/assets/door-right.png')" }}
+            <img
+              src="/assets/door-right.png"
+              alt=""
+              className="h-full object-cover object-left"
             />
           </motion.div>
 
           {/* Fade to black */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={fadeOut ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.7 }}
+            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.5 } : { opacity: 0 }}
+            transition={{ duration: fadeOut ? 0.7 : 1 }}
             className="absolute inset-0 bg-black z-20"
           />
 
@@ -112,7 +115,7 @@ export default function StoreEntrance() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
-            transition={{ delay: 1.5 }}
+            transition={{ delay: 2.5 }}
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-[9px] uppercase tracking-brutal z-30"
           >
             Tap to enter
