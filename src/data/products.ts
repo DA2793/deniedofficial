@@ -1,3 +1,9 @@
+export interface SizeChartRow {
+  size: string;
+  chest: number;
+  length: number;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -8,7 +14,7 @@ export interface Product {
   image: string;
   images: string[];
   colorImages: Record<string, string[]>;
-  sizeChart: string | null;
+  sizeChart: SizeChartRow[] | null;
   description: string;
   details: {
     fabric: string;
@@ -45,7 +51,14 @@ export const products: Product[] = [
         "/Products/Oversized/Signature/NavyBlue/3.png",
       ],
     },
-    sizeChart: null,
+    sizeChart: [
+      { size: "XS", chest: 39, length: 26 },
+      { size: "S", chest: 41, length: 27 },
+      { size: "M", chest: 43, length: 28 },
+      { size: "L", chest: 45, length: 29 },
+      { size: "XL", chest: 47, length: 30 },
+      { size: "XXL", chest: 49, length: 31 },
+    ],
     description: "The DENIED. Signature Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
       fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
@@ -75,7 +88,14 @@ export const products: Product[] = [
         "/Products/AcidWashed/FewSurvive/3.png",
       ],
     },
-    sizeChart: null,
+    sizeChart: [
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
+    ],
     description: "Unique acid wash effect — each piece has subtle variations for a one-of-a-kind look. Heavyweight yet breathable with a lived-in finish.",
     details: {
       fabric: "100% Cotton, 240 GSM heavyweight with acid-washed finish",
@@ -119,7 +139,14 @@ export const products: Product[] = [
         "/Products/Supima/DriveOrRide/White/white-4.png",
       ],
     },
-    sizeChart: null,
+    sizeChart: [
+      { size: "XS", chest: 36, length: 25 },
+      { size: "S", chest: 38, length: 26 },
+      { size: "M", chest: 40, length: 27 },
+      { size: "L", chest: 42, length: 28 },
+      { size: "XL", chest: 44, length: 29 },
+      { size: "XXL", chest: 46, length: 30 },
+    ],
     description: "Supima cotton luxury. Soft, breathable, and designed for all-day comfort with a classic silhouette.",
     details: {
       fabric: "100% Supima Cotton, 160 GSM – luxury feel, soft and breathable",
@@ -167,7 +194,14 @@ export const products: Product[] = [
         "/Products/Polo/RoyalBlue/polo-2.png",
       ],
     },
-    sizeChart: null,
+    sizeChart: [
+      { size: "S", chest: 38, length: 26 },
+      { size: "M", chest: 40, length: 27 },
+      { size: "L", chest: 42, length: 28 },
+      { size: "XL", chest: 44, length: 29 },
+      { size: "XXL", chest: 46, length: 30 },
+      { size: "3XL", chest: 48, length: 31 },
+    ],
     description: "Textured Airtex finish with embroidered print. Structured collar and cuff — polished style for any day, any plan.",
     details: {
       fabric: "100% Cotton, 220 GSM Airtex – textured finish with embroidered print",

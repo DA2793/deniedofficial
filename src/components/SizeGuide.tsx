@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import type { SizeChartRow } from "@/data/products";
 
 interface SizeGuideProps {
-  sizeChart?: string | null;
+  sizeChart?: SizeChartRow[] | null;
 }
 
 export default function SizeGuide({ sizeChart }: SizeGuideProps) {
   const [open, setOpen] = useState(false);
 
-  if (!sizeChart) return null;
+  if (!sizeChart || sizeChart.length === 0) return null;
 
   return (
     <>
@@ -51,17 +51,28 @@ export default function SizeGuide({ sizeChart }: SizeGuideProps) {
               </div>
 
               <div className="relative w-full rounded-lg overflow-hidden">
-                <Image
-                  src={sizeChart}
-                  alt="Size Guide"
-                  width={800}
-                  height={600}
-                  className="w-full h-auto object-contain"
-                />
+                <table className="w-full text-center border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/[0.12]">
+                      <th className="py-3 text-[10px] uppercase tracking-brutal text-gold font-medium">Size</th>
+                      <th className="py-3 text-[10px] uppercase tracking-brutal text-gold font-medium">Chest (in)</th>
+                      <th className="py-3 text-[10px] uppercase tracking-brutal text-gold font-medium">Length (in)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sizeChart.map((row) => (
+                      <tr key={row.size} className="border-b border-white/[0.06] last:border-0">
+                        <td className="py-3 text-sm uppercase tracking-wide text-white">{row.size}</td>
+                        <td className="py-3 text-sm text-gray-300">{row.chest}</td>
+                        <td className="py-3 text-sm text-gray-300">{row.length}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
               <p className="text-gray-500 text-[10px] mt-4 uppercase tracking-brutal text-center">
-                Tip: Measure a tee that fits you well and compare with our chart.
+                Measurements in inches. Tip: measure a tee that fits you well and compare with our chart.
               </p>
             </motion.div>
           </motion.div>
