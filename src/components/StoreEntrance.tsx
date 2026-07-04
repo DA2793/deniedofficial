@@ -16,21 +16,21 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // Doors slide open
-    const doorsTimer = setTimeout(() => setDoorsOpen(true), 2000);
+    // Doors slide open at 1.8s
+    const doorsTimer = setTimeout(() => setDoorsOpen(true), 1800);
 
-    // Zoom into the store interior
-    const zoomTimer = setTimeout(() => setZoomIn(true), 3500);
+    // Zoom into the store interior at 3.2s
+    const zoomTimer = setTimeout(() => setZoomIn(true), 3200);
 
-    // Fade to black
-    const fadeTimer = setTimeout(() => setFadeOut(true), 4800);
+    // Fade to black at 4.5s
+    const fadeTimer = setTimeout(() => setFadeOut(true), 4500);
 
-    // Remove
+    // Remove at 5.2s
     const removeTimer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 5500);
+    }, 5200);
 
     return () => {
       clearTimeout(doorsTimer);
@@ -61,10 +61,10 @@ export default function StoreEntrance() {
           className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
           onClick={handleSkip}
         >
-          {/* Layer 1: Store interior (revealed when doors open) */}
+          {/* Layer 1 (back): Store interior — revealed when storefront slides apart */}
           <motion.div
             initial={{ scale: 1 }}
-            animate={zoomIn ? { scale: 2 } : { scale: 1 }}
+            animate={zoomIn ? { scale: 1.8 } : { scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0"
           >
@@ -75,39 +75,39 @@ export default function StoreEntrance() {
             />
           </motion.div>
 
-          {/* Layer 2: Full storefront with frosted doors — splits in half */}
-          {/* Left half of storefront */}
+          {/* Layer 2 (front): Storefront — visible initially, splits as doors */}
+          {/* Left door (left half of storefront) */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute inset-0 w-1/2 overflow-hidden"
+            className="absolute top-0 left-0 w-1/2 h-full overflow-hidden z-10"
           >
             <img
-              src="/assets/Storefront.png"
+              src="/assets/door-left.png"
               alt=""
-              className="h-full w-[200%] object-cover object-left"
+              className="h-full w-full object-cover"
             />
           </motion.div>
 
-          {/* Right half of storefront */}
+          {/* Right door (right half of storefront) */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute inset-0 left-1/2 w-1/2 overflow-hidden"
+            className="absolute top-0 right-0 w-1/2 h-full overflow-hidden z-10"
           >
             <img
-              src="/assets/Storefront.png"
+              src="/assets/door-right.png"
               alt=""
-              className="h-full w-[200%] object-cover object-right"
+              className="h-full w-full object-cover"
             />
           </motion.div>
 
           {/* Fade to black */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.6 } : { opacity: 0 }}
+            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.5 } : { opacity: 0 }}
             transition={{ duration: fadeOut ? 0.7 : 1.2 }}
             className="absolute inset-0 bg-black z-20"
           />
@@ -116,7 +116,7 @@ export default function StoreEntrance() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
-            transition={{ delay: 3 }}
+            transition={{ delay: 2.5 }}
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-[9px] uppercase tracking-brutal z-30"
           >
             Tap to enter
