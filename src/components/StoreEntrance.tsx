@@ -103,7 +103,7 @@ export default function StoreEntrance() {
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-1/2 -translate-x-full w-[25%] h-full z-10"
+            className="absolute top-0 left-1/2 -translate-x-full w-1/2 h-full z-10"
           >
             <img
               src="/assets/door-left.png"
@@ -117,7 +117,7 @@ export default function StoreEntrance() {
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-1/2 w-[25%] h-full z-10"
+            className="absolute top-0 left-1/2 w-1/2 h-full z-10"
           >
             <img
               src="/assets/door-right.png"
