@@ -61,45 +61,60 @@ export default function StoreEntrance() {
           className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
           onClick={handleSkip}
         >
-          {/* Background — store interior (revealed when doors open) */}
+          {/* Layer 1: Store interior (behind everything, revealed when doors open) */}
           <motion.div
             initial={{ scale: 1 }}
             animate={zoomIn ? { scale: 1.8 } : { scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0"
           >
             <img
               src="/assets/Store-interior.png"
               alt=""
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </motion.div>
 
-          {/* Left door */}
+          {/* Layer 2: Storefront (the full shop exterior with frosted doors) */}
+          {/* This fades out as doors open so the interior is revealed */}
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={doorsOpen ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
+            className="absolute inset-0 z-[5]"
+          >
+            <img
+              src="/assets/Storefront.png"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
+          {/* Layer 3: Left frosted door (slides left) */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-0 w-1/2 h-full flex items-center justify-end"
+            className="absolute top-0 left-0 w-1/2 h-full z-10"
           >
             <img
               src="/assets/door-left.png"
               alt=""
-              className="h-full object-cover object-right"
+              className="w-full h-full object-cover object-right"
             />
           </motion.div>
 
-          {/* Right door */}
+          {/* Layer 4: Right frosted door (slides right) */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 right-0 w-1/2 h-full flex items-center justify-start"
+            className="absolute top-0 right-0 w-1/2 h-full z-10"
           >
             <img
               src="/assets/door-right.png"
               alt=""
-              className="h-full object-cover object-left"
+              className="w-full h-full object-cover object-left"
             />
           </motion.div>
 
