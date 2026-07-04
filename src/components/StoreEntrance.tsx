@@ -3,13 +3,25 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * Sequence (dead simple, no doors):
+ *
+ *   0.0s  — Full storefront visible (object-contain, scale 1). HOLD.
+ *   1.2s  — Storefront starts slow zoom-in ("walking towards it")
+ *   4.2s  — Storefront fades out
+ *   4.2s  — Interior fades in, gently zooming
+ *   6.5s  — Interior fades out, revealing the site
+ *   7.8s  — Overlay removed from DOM
+ *
+ * Add ?replay=1 to any URL to replay without clearing sessionStorage.
+ */
 export default function StoreEntrance() {
   const [show, setShow] = useState(false);
+  const [startZoom, setStartZoom] = useState(false);
   const [showInterior, setShowInterior] = useState(false);
   const [revealSite, setRevealSite] = useState(false);
 
   useEffect(() => {
-    // Add ?replay=1 to force-replay the entrance.
     const params = new URLSearchParams(window.location.search);
     const forceReplay = params.get("replay") === "1";
     const seen = sessionStorage.getItem("denied-entrance-seen");
@@ -18,18 +30,17 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // 3.5s — storefront fades to interior
-    const interiorTimer = setTimeout(() => setShowInterior(true), 3500);
-    // 6.2s — interior fades to site
-    const revealTimer = setTimeout(() => setRevealSite(true), 6200);
-    // 7.5s — remove overlay
+    const zoomTimer = setTimeout(() => setStartZoom(true), 1200);
+    const interiorTimer = setTimeout(() => setShowInterior(true), 4200);
+    const revealTimer = setTimeout(() => setRevealSite(true), 6500);
     const removeTimer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 7500);
+    }, 7800);
 
     return () => {
+      clearTimeout(zoomTimer);
       clearTimeout(interiorTimer);
       clearTimeout(revealTimer);
       clearTimeout(removeTimer);
@@ -51,7 +62,7 @@ export default function StoreEntrance() {
   return (
     <motion.div
       animate={{ opacity: revealSite ? 0 : 1 }}
-      transition={{ duration: 1.2, ease: "easeInOut" }}
+      transition={{ duration: 1.3, ease: "easeInOut" }}
       onAnimationComplete={() => {
         if (revealSite) {
           setShow(false);
@@ -62,26 +73,34 @@ export default function StoreEntrance() {
       className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
       onClick={handleSkip}
     >
-      {/* Interior — behind, full-bleed. Slow zoom for immersion. */}
+      {/* Interior — behind, full-bleed. Kicks in with a gentle zoom once
+          the storefront has faded out. */}
       <motion.img
         src="/assets/Store-interior.png"
         alt=""
-        initial={{ scale: 1 }}
-        animate={{ scale: showInterior ? 1.15 : 1 }}
-        transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ scale: 1, opacity: 0 }}
+        animate={{
+          scale: showInterior ? 1.12 : 1,
+          opacity: showInterior ? 1 : 0,
+        }}
+        transition={{
+          opacity: { duration: 1.4, ease: "easeInOut" },
+          scale: { duration: 3, ease: [0.16, 1, 0.3, 1] },
+        }}
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Storefront — ENTIRE image visible (object-contain), scales up like
-          walking towards it. Container scales, image stays contained inside. */}
+      {/* Storefront — ENTIRE image visible at start (object-contain, scale 1).
+          After a 1.2s hold, container scales up over 3s to feel like walking
+          towards it. Then fades out on cue. */}
       <motion.div
-        initial={{ scale: 0.95, opacity: 1 }}
+        initial={{ scale: 1, opacity: 1 }}
         animate={{
-          scale: showInterior ? 1.4 : 1.2,
+          scale: startZoom ? 1.3 : 1,
           opacity: showInterior ? 0 : 1,
         }}
         transition={{
-          scale: { duration: 4.5, ease: [0.16, 1, 0.3, 1] },
+          scale: { duration: 3, ease: [0.16, 1, 0.3, 1] },
           opacity: { duration: 1.4, ease: "easeInOut" },
         }}
         className="absolute inset-0 z-[5]"
