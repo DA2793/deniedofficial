@@ -18,16 +18,16 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // 3s — storefront fades to interior
-    const interiorTimer = setTimeout(() => setShowInterior(true), 3000);
-    // 6s — interior fades to site
-    const revealTimer = setTimeout(() => setRevealSite(true), 6000);
-    // 7.2s — remove overlay
+    // 3.5s — storefront fades to interior
+    const interiorTimer = setTimeout(() => setShowInterior(true), 3500);
+    // 6.2s — interior fades to site
+    const revealTimer = setTimeout(() => setRevealSite(true), 6200);
+    // 7.5s — remove overlay
     const removeTimer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 7200);
+    }, 7500);
 
     return () => {
       clearTimeout(interiorTimer);
@@ -62,31 +62,36 @@ export default function StoreEntrance() {
       className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
       onClick={handleSkip}
     >
-      {/* Interior — sits behind. Slow zoom for immersion. */}
+      {/* Interior — behind, full-bleed. Slow zoom for immersion. */}
       <motion.img
         src="/assets/Store-interior.png"
         alt=""
         initial={{ scale: 1 }}
         animate={{ scale: showInterior ? 1.15 : 1 }}
-        transition={{ duration: 3.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Storefront — full-bleed, zooms in like walking towards it, then fades. */}
-      <motion.img
-        src="/assets/Storefront.png"
-        alt=""
-        initial={{ scale: 1, opacity: 1 }}
+      {/* Storefront — ENTIRE image visible (object-contain), scales up like
+          walking towards it. Container scales, image stays contained inside. */}
+      <motion.div
+        initial={{ scale: 0.95, opacity: 1 }}
         animate={{
-          scale: showInterior ? 1.5 : 1.35,
+          scale: showInterior ? 1.4 : 1.2,
           opacity: showInterior ? 0 : 1,
         }}
         transition={{
-          scale: { duration: 3.5, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 1.2, ease: "easeInOut" },
+          scale: { duration: 4.5, ease: [0.16, 1, 0.3, 1] },
+          opacity: { duration: 1.4, ease: "easeInOut" },
         }}
-        className="absolute inset-0 w-full h-full object-cover z-[5]"
-      />
+        className="absolute inset-0 z-[5]"
+      >
+        <img
+          src="/assets/Storefront.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-contain"
+        />
+      </motion.div>
 
       {/* Skip hint */}
       <motion.p
