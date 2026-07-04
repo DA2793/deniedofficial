@@ -69,7 +69,7 @@ export default function StoreEntrance() {
             className="absolute inset-0 flex items-center justify-center"
           >
             <img
-              src="/assets/Storefront_clear.png"
+              src="/assets/Store-interior.png"
               alt=""
               className="w-full h-full object-contain"
             />
