@@ -16,16 +16,16 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    // 1.8s — Frosted doors slide open, revealing the store interior
+    // Doors slide open
     const doorsTimer = setTimeout(() => setDoorsOpen(true), 1800);
 
-    // 3.2s — Interior zooms in (walking into the store)
+    // Zoom into the store
     const zoomTimer = setTimeout(() => setZoomIn(true), 3200);
 
-    // 4.5s — Fade to black
+    // Fade to black
     const fadeTimer = setTimeout(() => setFadeOut(true), 4500);
 
-    // 5.2s — Site revealed
+    // Remove
     const removeTimer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
@@ -61,67 +61,53 @@ export default function StoreEntrance() {
           className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
           onClick={handleSkip}
         >
-          {/* Layer 1: Store interior (revealed when doors slide open) */}
+          {/* Background — store interior (revealed when doors open) */}
           <motion.div
             initial={{ scale: 1 }}
             animate={zoomIn ? { scale: 1.8 } : { scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
           >
             <img
               src="/assets/Store-interior.png"
               alt=""
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </motion.div>
 
-          {/* Layer 2: Store interior (visible frame, hides once doors open) */}
-          <motion.div
-            initial={{ opacity: 1 }}
-            animate={doorsOpen ? { opacity: 0 } : { opacity: 1 }}
-            transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute inset-0 z-[5] pointer-events-none"
-          >
-            <img
-              src="/assets/Store-interior.png"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* Layer 3: Left frosted door (slides left) */}
+          {/* Left door */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-0 w-1/2 h-full z-10"
+            className="absolute top-0 left-0 w-1/2 h-full flex items-center justify-end"
           >
             <img
               src="/assets/door-left.png"
               alt=""
-              className="w-full h-full object-cover object-right"
+              className="h-full object-cover object-right"
             />
           </motion.div>
 
-          {/* Layer 4: Right frosted door (slides right) */}
+          {/* Right door */}
           <motion.div
             initial={{ x: "0%" }}
             animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 right-0 w-1/2 h-full z-10"
+            className="absolute top-0 right-0 w-1/2 h-full flex items-center justify-start"
           >
             <img
               src="/assets/door-right.png"
               alt=""
-              className="w-full h-full object-cover object-left"
+              className="h-full object-cover object-left"
             />
           </motion.div>
 
           {/* Fade to black */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={fadeOut ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.7 }}
+            animate={fadeOut ? { opacity: 1 } : zoomIn ? { opacity: 0.5 } : { opacity: 0 }}
+            transition={{ duration: fadeOut ? 0.7 : 1 }}
             className="absolute inset-0 bg-black z-20"
           />
 
