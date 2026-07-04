@@ -79,7 +79,7 @@ export const products: Product[] = [
     description: "Unique acid wash effect — each piece has subtle variations for a one-of-a-kind look. Heavyweight yet breathable with a lived-in finish.",
     details: {
       fabric: "100% Cotton, 240 GSM heavyweight with acid-washed finish",
-      fit: "Unisex oversized fit – relaxed shoulders, sleeves for a streetwear-ready silhouette",
+      fit: "Unisex oversized fit – relaxed shoulders, dropped sleeves for a streetwear-ready silhouette",
       care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
       colors: ["Acid Wash"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
@@ -126,7 +126,7 @@ export const products: Product[] = [
       fit: "Unisex regular fit – classic, flattering silhouette",
       care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
       colors: ["Black", "Navy Blue", "White"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL", "3XL"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
   {
