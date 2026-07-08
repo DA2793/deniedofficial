@@ -62,6 +62,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       },
     });
+
+    // Send welcome email on successful signup (fire and forget)
+    if (!error) {
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "welcome",
+          data: { name: name || "", email },
+        }),
+      }).catch(() => {});
+    }
+
     return { error: error?.message ?? null };
   };
 

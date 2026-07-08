@@ -64,6 +64,62 @@ export async function POST(req: NextRequest) {
       console.error("Address save error:", addressError);
     }
 
+    // Send order confirmation to customer (fire and forget)
+    const baseUrl = req.nextUrl.origin;
+    const emailPayload = {
+      orderId: razorpay_order_id,
+      paymentId: razorpay_payment_id,
+      name: orderDetails.shippingName,
+      email: orderDetails.shippingEmail,
+      phone: orderDetails.shippingPhone,
+      items: orderDetails.items,
+      total: orderDetails.total,
+      shipping: orderDetails.shipping,
+      promoCode: orderDetails.promoCode || null,
+      promoDiscount: orderDetails.promoDiscount || 0,
+      shippingAddress: orderDetails.shippingAddress,
+      shippingCity: orderDetails.shippingCity,
+      shippingState: orderDetails.shippingState,
+      shippingPincode: orderDetails.shippingPincode,
+    };
+
+    try {
+      await fetch(`${baseUrl}/api/send-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "order-confirmation", data: emailPayload }),
+      });
+    } catch (emailError) {
+      console.error("Customer email error:", emailError);
+    }
+
+    // Send admin notification (fire and forget)
+    try {
+      await fetch(`${baseUrl}/api/admin-notification`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          order: {
+            payment_id: razorpay_payment_id,
+            items: orderDetails.items,
+            total: orderDetails.total,
+            shipping: orderDetails.shipping,
+            promo_code: orderDetails.promoCode || null,
+            promo_discount: orderDetails.promoDiscount || 0,
+            shipping_name: orderDetails.shippingName,
+            shipping_email: orderDetails.shippingEmail,
+            shipping_phone: orderDetails.shippingPhone,
+            shipping_address: orderDetails.shippingAddress,
+            shipping_city: orderDetails.shippingCity,
+            shipping_state: orderDetails.shippingState,
+            shipping_pincode: orderDetails.shippingPincode,
+          },
+        }),
+      });
+    } catch (adminError) {
+      console.error("Admin notification error:", adminError);
+    }
+
     return NextResponse.json({ verified: true, paymentId: razorpay_payment_id });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
