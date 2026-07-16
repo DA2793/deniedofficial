@@ -15,8 +15,10 @@ import { products } from "@/data/products";
 import type { Product } from "@/data/products";
 
 const ROTATE_DEG_PER_SEC = 9; // continuous drift speed — full loop ≈ 40s
-const RADIUS = 380;
-const DEPTH_SCALE = 480;
+const RADIUS_X = 540;
+const RADIUS_Z = 260;
+const FLOAT_HEIGHT = 16;
+const PERSPECTIVE = 1800;
 const TOTAL = products.length;
 const ANGLE_PER_CARD = 360 / TOTAL;
 
@@ -134,7 +136,7 @@ export default function ProductCarousel() {
             {/* Rotating ring */}
             <div
               className="relative h-[620px] flex items-center justify-center"
-              style={{ perspective: "1400px" }}
+              style={{ perspective: `${PERSPECTIVE}px` }}
               onMouseEnter={() => setHoverPause(true)}
               onMouseLeave={() => setHoverPause(false)}
               onTouchStart={() => setTouchPause(true)}
@@ -238,16 +240,20 @@ function CarouselCard({
 }) {
   const theta = useTransform(spin, (s) => normalizeAngle(s + index * ANGLE_PER_CARD));
   const rotateY = theta;
-  const x = useTransform(theta, (t) => Math.sin((t * Math.PI) / 180) * RADIUS);
-  const z = useTransform(theta, (t) => (Math.cos((t * Math.PI) / 180) - 1) * DEPTH_SCALE);
-  const scale = useTransform(theta, (t) =>
-    Math.max(0.55, 1 - (1 - Math.cos((t * Math.PI) / 180)) * 0.6)
+  const x = useTransform(theta, (t) => Math.sin((t * Math.PI) / 180) * RADIUS_X);
+  const z = useTransform(theta, (t) => (Math.cos((t * Math.PI) / 180) - 1) * RADIUS_Z);
+  const y = useTransform(theta, (t) => Math.sin((t * Math.PI) / 90) * FLOAT_HEIGHT);
+
+  // Normalized depth (0 = directly behind, 1 = front-and-center) — every visual
+  // property below is derived from this one value so they stay in sync.
+  const depth = useTransform(theta, (t) => (Math.cos((t * Math.PI) / 180) + 1) / 2);
+  const scale = useTransform(depth, [0, 1], [0.68, 1]);
+  const opacity = useTransform(depth, [0, 1], [0.18, 1]);
+  const filter = useTransform(
+    depth,
+    (d) => `blur(${(1 - d) * 6}px) brightness(${0.65 + d * 0.35})`
   );
-  const opacity = useTransform(theta, (t) => {
-    const abs = Math.abs(t);
-    return abs > 150 ? 0 : 1 - (abs / 150) * 0.85;
-  });
-  const zIndex = useTransform(theta, (t) => Math.round(1000 - Math.abs(t)));
+  const zIndex = useTransform(depth, (d) => Math.round(d * 1000));
 
   const cardInner = (
     <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
@@ -282,7 +288,7 @@ function CarouselCard({
 
   return (
     <motion.div
-      style={{ x, z, rotateY, scale, opacity, zIndex, transformStyle: "preserve-3d" }}
+      style={{ x, y, z, rotateY, scale, opacity, zIndex, filter, transformStyle: "preserve-3d" }}
       className="absolute w-[340px] md:w-[420px] cursor-pointer"
       aria-hidden={!isActive}
       tabIndex={-1}
