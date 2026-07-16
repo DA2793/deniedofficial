@@ -119,47 +119,47 @@ export default function InvoicePage() {
   const paymentLabel = order.payment_id.startsWith("test_") ? "TEST ORDER" : "PAID ONLINE";
 
   return (
-    <div className="invoice-print-page min-h-screen bg-[#e9e7e2] px-3 py-6 sm:px-6 sm:py-10">
+    <div className="invoice-print-page min-h-screen bg-black px-3 py-6 sm:px-6 sm:py-10">
       <article
         id="invoice"
-        className="relative mx-auto min-h-[1120px] max-w-[794px] overflow-hidden border border-black/5 bg-white p-6 text-black shadow-xl sm:p-10 md:p-12"
+        className="relative mx-auto min-h-[1120px] max-w-[794px] overflow-hidden border border-gold/40 border-t-4 border-t-gold bg-white p-6 text-black shadow-2xl sm:p-10 md:p-12"
       >
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden" aria-hidden="true">
           <Image
             src="/assets/Brand Logo.png"
             alt=""
-            width={420}
-            height={450}
-            className="w-[48%] max-w-[360px] opacity-[0.025] grayscale"
+            width={520}
+            height={556}
+            className="w-[62%] max-w-[470px] opacity-[0.1] contrast-200"
           />
         </div>
 
         <div className="relative z-10 flex min-h-[1010px] flex-col">
-          <header className="flex items-start justify-between gap-6 border-b border-[#c9a96e]/45 pb-7">
+          <header className="flex items-start justify-between gap-6 border-b-2 border-black pb-7">
             <div className="flex min-w-0 items-center gap-4">
               <Image
                 src="/assets/Brand Logo.png"
                 alt="DENIED. logo"
                 width={54}
                 height={58}
-                className="h-12 w-12 shrink-0 object-contain grayscale"
+                className="h-12 w-12 shrink-0 object-contain"
                 priority
               />
               <div>
                 <h1 className="font-display text-3xl uppercase leading-none tracking-[0.08em] text-black">DENIED.</h1>
-                <p className="mt-1 text-[9px] uppercase tracking-[0.2em] text-[#9a7945]">Premium Apparel & Accessories</p>
-                <p className="mt-1 text-[9px] text-gray-400">deniedofficial.com</p>
+                <p className="mt-2 text-[9px] font-medium uppercase tracking-[0.2em] text-gold-dark">Not for Everyone</p>
+                <p className="mt-1 text-[9px] text-gray-500">deniedofficial.com</p>
               </div>
             </div>
 
             <div className="shrink-0 text-right">
-              <p className="font-serif text-2xl uppercase tracking-[0.12em] text-[#b28c50]">Invoice</p>
+              <p className="font-display text-3xl uppercase tracking-[0.12em] text-black">Invoice</p>
               <dl className="mt-3 space-y-1 text-[9px]">
                 <div className="flex justify-end gap-2"><dt className="font-semibold">Invoice No:</dt><dd>{invoiceNumber}</dd></div>
                 <div className="flex justify-end gap-2"><dt className="font-semibold">Date:</dt><dd>{invoiceDate}</dd></div>
                 <div className="flex max-w-[230px] justify-end gap-2"><dt className="shrink-0 font-semibold">Order ID:</dt><dd className="truncate">{order.order_id}</dd></div>
               </dl>
-              <span className={`mt-3 inline-flex rounded-full px-3 py-1 text-[8px] font-semibold uppercase tracking-wider ${paymentLabel === "TEST ORDER" ? "bg-amber-100 text-amber-800" : "bg-emerald-50 text-emerald-700"}`}>
+              <span className={`mt-3 inline-flex rounded-full px-3 py-1 text-[8px] font-semibold uppercase tracking-wider ${paymentLabel === "TEST ORDER" ? "bg-amber-100 text-amber-900" : "bg-black text-gold"}`}>
                 {paymentLabel}
               </span>
             </div>
@@ -183,12 +183,12 @@ export default function InvoicePage() {
           <div className="invoice-desktop-items hidden overflow-x-auto sm:block">
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr className="border-y border-[#c9a96e]/35 bg-[#faf8f4]">
-                  <th className="px-3 py-3 text-[8px] font-semibold uppercase tracking-[0.2em] text-gray-500">Item</th>
-                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gray-500">Variant</th>
-                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gray-500">Qty</th>
-                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gray-500">Price</th>
-                  <th className="px-3 py-3 text-right text-[8px] font-semibold uppercase tracking-[0.2em] text-gray-500">Amount</th>
+                <tr className="border-y border-black bg-black">
+                  <th className="px-3 py-3 text-[8px] font-semibold uppercase tracking-[0.2em] text-gold">Item</th>
+                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gold">Variant</th>
+                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gold">Qty</th>
+                  <th className="px-3 py-3 text-center text-[8px] font-semibold uppercase tracking-[0.2em] text-gold">Price</th>
+                  <th className="px-3 py-3 text-right text-[8px] font-semibold uppercase tracking-[0.2em] text-gold">Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,7 +205,7 @@ export default function InvoicePage() {
             </table>
           </div>
 
-          <div className="invoice-mobile-items divide-y divide-gray-100 border-y border-[#c9a96e]/35 sm:hidden">
+          <div className="invoice-mobile-items divide-y divide-gray-100 border-y border-black sm:hidden">
             {order.items.map((item, index) => (
               <div key={`${item.productId}-${item.color}-${item.size}-${index}`} className="py-4">
                 <div className="flex justify-between gap-4">
@@ -231,11 +231,11 @@ export default function InvoicePage() {
             </div>
           </section>
 
-          <footer className="mt-auto border-t border-[#c9a96e]/45 bg-[#faf8f4] px-5 py-5 text-center">
-            <p className="font-serif text-sm uppercase tracking-[0.12em] text-[#b28c50]">Thank you for choosing DENIED.</p>
-            <p className="mt-2 text-[8px] leading-4 text-gray-500">This is a computer-generated invoice and does not require a signature.</p>
-            <p className="text-[8px] leading-4 text-gray-500">For queries, contact contact@deniedofficial.com</p>
-            <p className="text-[8px] leading-4 text-gray-500">deniedofficial.com</p>
+          <footer className="mt-auto border-t-4 border-gold bg-black px-5 py-5 text-center">
+            <p className="font-display text-base uppercase tracking-[0.14em] text-gold">Thank you for choosing DENIED.</p>
+            <p className="mt-2 text-[8px] leading-4 text-gray-300">This is a computer-generated invoice and does not require a signature.</p>
+            <p className="text-[8px] leading-4 text-gray-300">For queries, contact contact@deniedofficial.com</p>
+            <p className="text-[8px] leading-4 text-gray-300">deniedofficial.com</p>
           </footer>
         </div>
       </article>
@@ -247,6 +247,12 @@ export default function InvoicePage() {
       </div>
 
       <style jsx global>{`
+        body:has(.invoice-print-page) nav,
+        body:has(.invoice-print-page) #contact,
+        body:has(.invoice-print-page) [aria-label="Follow on Instagram"],
+        body:has(.invoice-print-page) [aria-label="Back to top"] {
+          display: none !important;
+        }
         @media print {
           @page { size: A4 portrait; margin: 0; }
           html, body {

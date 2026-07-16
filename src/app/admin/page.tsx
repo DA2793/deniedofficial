@@ -319,9 +319,17 @@ export default function AdminPage() {
                             </div>
                           )}
 
-                          {!order.shipment_email_sent_at && !["delivered", "cancelled"].includes(order.status) && (
+                          {!["delivered", "cancelled"].includes(order.status) && (
                             <form onSubmit={(event) => void submitShipment(event, order)} className="rounded-xl border border-white/[0.08] bg-black/20 p-4">
-                              <h4 className="text-white text-xs uppercase tracking-brutal mb-4">Ship & Notify Customer</h4>
+                              <h4 className="text-white text-xs uppercase tracking-brutal mb-2">Ship & Notify Customer</h4>
+                              <p className="mb-4 text-xs leading-relaxed text-gray-500">
+                                Add the courier details to mark this order as shipped and email the customer.
+                              </p>
+                              {order.shipment_email_sent_at && (
+                                <p className="mb-4 rounded-lg border border-amber-400/20 bg-amber-400/[0.05] p-3 text-xs leading-relaxed text-amber-200">
+                                  A shipment notification is already recorded. Tracking changes and duplicate emails remain protected by the server.
+                                </p>
+                              )}
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                 <label className="block">
                                   <span className="block text-[9px] uppercase tracking-brutal text-gray-500 mb-2">Courier Partner *</span>
