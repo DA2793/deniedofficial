@@ -81,6 +81,15 @@ html {
   background: #c9a96e;
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===== GRADIENT GOLD ===== */
 .gradient-gold {
   background: linear-gradient(135deg, #c9a96e, #e0c992, #c9a96e);
