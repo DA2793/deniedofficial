@@ -124,7 +124,7 @@ function buildWelcomeEmail(data: { name: string; email: string }) {
   <div style="width: 40px; height: 1px; background: rgba(255,255,255,0.1); margin: 32px auto;"></div>
 
   <p style="font-size: 10px; color: #444444; text-align: center; letter-spacing: 1px;">
-    <a href="https://www.deniedofficial.com" style="color: #c9a96e; text-decoration: none;">deniedofficial.com</a> · <a href="https://www.instagram.com/deniedofficial" style="color: #c9a96e; text-decoration: none;">@deniedofficial</a>
+    <a href="https://deniedofficial.com" style="color: #c9a96e; text-decoration: none;">deniedofficial.com</a> · <a href="https://www.instagram.com/denied._official/" style="color: #c9a96e; text-decoration: none;">@denied._official</a>
   </p>
 </div>`,
   };

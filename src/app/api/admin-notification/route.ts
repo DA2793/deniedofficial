@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
   </div>
 
   <p style="color: #666; font-size: 11px; margin-top: 20px; text-align: center;">
-    Manage this order at <a href="https://www.deniedofficial.com/admin" style="color: #c9a96e; text-decoration: none;">Admin Dashboard</a>
+    Manage this order at <a href="${new URL("/admin", request.nextUrl.origin).toString()}" style="color: #c9a96e; text-decoration: none;">Admin Dashboard</a>
   </p>
 </div>`;
 
