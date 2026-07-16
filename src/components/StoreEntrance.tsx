@@ -5,10 +5,11 @@ import { motion } from "framer-motion";
 
 /**
  * Sequence:
- *   0.0s  — Storefront visible (cover, centered). HOLD.
- *   1.5s  — Doors slide open (left goes left, right goes right)
- *   3.5s  — Whole overlay fades out, website revealed
- *   4.8s  — Overlay removed from DOM
+ *   0.0s  — Zoomed-in doors fill the screen (frosted glass texture).
+ *           Full storefront sits behind them, hidden.
+ *   1.5s  — Doors slide apart, revealing the entire storefront.
+ *   3.5s  — Everything fades out, website revealed.
+ *   4.8s  — Overlay removed from DOM.
  *
  * ?replay=1 to replay.
  */
@@ -68,23 +69,21 @@ export default function StoreEntrance() {
       className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
       onClick={handleSkip}
     >
-      {/* Storefront background — fills the screen */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/assets/Storefront.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+      {/* Behind doors: Full storefront (entire image visible, centered) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <img
+          src="/assets/Storefront.png"
+          alt=""
+          className="max-w-full max-h-full object-contain"
+        />
+      </div>
 
-      {/* Left door — slides left */}
+      {/* Left door — zoomed in (cover), slides left to reveal storefront */}
       <motion.div
         initial={{ x: "0%" }}
         animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
         transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute top-0 left-0 w-1/2 h-full z-10"
+        className="absolute top-0 left-0 w-1/2 h-full z-10 overflow-hidden"
       >
         <img
           src="/assets/door-left.png"
@@ -93,12 +92,12 @@ export default function StoreEntrance() {
         />
       </motion.div>
 
-      {/* Right door — slides right */}
+      {/* Right door — zoomed in (cover), slides right to reveal storefront */}
       <motion.div
         initial={{ x: "0%" }}
         animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
         transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute top-0 right-0 w-1/2 h-full z-10"
+        className="absolute top-0 right-0 w-1/2 h-full z-10 overflow-hidden"
       >
         <img
           src="/assets/door-right.png"
