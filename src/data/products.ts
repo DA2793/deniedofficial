@@ -271,6 +271,49 @@ export const products: Product[] = [
       sizes: ["One Size"],
     },
   },
+  {
+    id: 7,
+    name: "Unique Oversized Tee",
+    category: "T-Shirts",
+    price: 1399,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/Oversized/Unique/Black/1.png",
+    images: [
+      "/Products/Oversized/Unique/Black/1.png",
+      "/Products/Oversized/Unique/Black/2.png",
+    ],
+    colorImages: {
+      "Black": [
+        "/Products/Oversized/Unique/Black/1.png",
+        "/Products/Oversized/Unique/Black/2.png",
+      ],
+      "Maroon": [
+        "/Products/Oversized/Unique/Maroon/1.png",
+        "/Products/Oversized/Unique/Maroon/2.png",
+      ],
+      "Navy Blue": [
+        "/Products/Oversized/Unique/NavyBlue/1.png",
+        "/Products/Oversized/Unique/NavyBlue/2.png",
+      ],
+    },
+    sizeChart: [
+      { size: "XS", chest: 39, length: 26 },
+      { size: "S", chest: 41, length: 27 },
+      { size: "M", chest: 43, length: 28 },
+      { size: "L", chest: 45, length: 29 },
+      { size: "XL", chest: 47, length: 30 },
+      { size: "XXL", chest: 49, length: 31 },
+    ],
+    description: "The DENIED. Unique Oversized Tee. A bold statement graphic on heavyweight terry-knit, cut for an effortless oversized silhouette.",
+    details: {
+      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
+      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
+      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      colors: ["Black", "Maroon", "Navy Blue"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
 ];
 
 // Helper functions
