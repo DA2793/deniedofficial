@@ -5,18 +5,17 @@ import { motion } from "framer-motion";
 
 /**
  * Sequence:
- *   0.0s  — Full storefront fills viewport (cover, centered on top half
- *            so the signage + door are visible). HOLD.
- *   1.5s  — Slow zoom begins (walking towards the store)
- *   4.0s  — Storefront crossfades to interior
- *   6.5s  — Everything fades out, site revealed
- *   7.8s  — Overlay removed
+ *   0.0s  — Storefront visible (cover, centered). HOLD.
+ *   1.5s  — Doors slide open (left goes left, right goes right)
+ *   3.5s  — Whole overlay fades out, website revealed
+ *   4.8s  — Overlay removed from DOM
  *
  * ?replay=1 to replay.
  */
 export default function StoreEntrance() {
-  const [phase, setPhase] = useState<"idle" | "zoom" | "interior" | "reveal">("idle");
   const [show, setShow] = useState(false);
+  const [doorsOpen, setDoorsOpen] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -27,26 +26,25 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    const t1 = setTimeout(() => setPhase("zoom"), 1500);
-    const t2 = setTimeout(() => setPhase("interior"), 4000);
-    const t3 = setTimeout(() => setPhase("reveal"), 6500);
-    const t4 = setTimeout(() => {
+    const t1 = setTimeout(() => setDoorsOpen(true), 1500);
+    const t2 = setTimeout(() => setFadeOut(true), 3500);
+    const t3 = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 7800);
+    }, 4800);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      clearTimeout(t4);
       document.body.style.overflow = "";
     };
   }, []);
 
   const handleSkip = () => {
-    setPhase("reveal");
+    setDoorsOpen(true);
+    setFadeOut(true);
     setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
@@ -55,10 +53,6 @@ export default function StoreEntrance() {
   };
 
   if (!show) return null;
-
-  const isZooming = phase === "zoom" || phase === "interior" || phase === "reveal";
-  const showInterior = phase === "interior" || phase === "reveal";
-  const fadeOut = phase === "reveal";
 
   return (
     <motion.div
@@ -74,39 +68,9 @@ export default function StoreEntrance() {
       className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
       onClick={handleSkip}
     >
-      {/* Interior — behind, full-bleed cover. Gentle zoom on reveal. */}
-      <motion.div
-        initial={{ scale: 1, opacity: 0 }}
-        animate={{
-          scale: showInterior ? 1.08 : 1,
-          opacity: showInterior ? 1 : 0,
-        }}
-        transition={{
-          opacity: { duration: 1.2, ease: "easeInOut" },
-          scale: { duration: 2.5, ease: [0.16, 1, 0.3, 1] },
-        }}
+      {/* Storefront background — fills the screen */}
+      <div
         className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/assets/Store-interior.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-
-      {/* Storefront — fills viewport with cover, centered so the DENIED.
-          signage and door area stay visible. Sides (racks) may crop on
-          narrow screens — that's fine. Zooms in on cue, then fades. */}
-      <motion.div
-        initial={{ scale: 1, opacity: 1 }}
-        animate={{
-          scale: isZooming ? 1.35 : 1,
-          opacity: showInterior ? 0 : 1,
-        }}
-        transition={{
-          scale: { duration: 4, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 1.2, ease: "easeInOut" },
-        }}
-        className="absolute inset-0 z-[5]"
         style={{
           backgroundImage: "url(/assets/Storefront.png)",
           backgroundSize: "cover",
@@ -114,6 +78,34 @@ export default function StoreEntrance() {
           backgroundRepeat: "no-repeat",
         }}
       />
+
+      {/* Left door — slides left */}
+      <motion.div
+        initial={{ x: "0%" }}
+        animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
+        transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
+        className="absolute top-0 left-0 w-1/2 h-full z-10"
+      >
+        <img
+          src="/assets/door-left.png"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+
+      {/* Right door — slides right */}
+      <motion.div
+        initial={{ x: "0%" }}
+        animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
+        transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
+        className="absolute top-0 right-0 w-1/2 h-full z-10"
+      >
+        <img
+          src="/assets/door-right.png"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
 
       {/* Skip hint */}
       <motion.p
