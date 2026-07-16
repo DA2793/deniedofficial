@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
 import InstagramFloater from "@/components/InstagramFloater";
 import BackToTop from "@/components/BackToTop";
+import CartDrawer from "@/components/CartDrawer";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
@@ -96,6 +97,7 @@ export default function RootLayout({
             <WishlistProvider>
               <GrainOverlay />
               <Navbar />
+              <CartDrawer />
               <main>{children}</main>
               <Footer />
               <InstagramFloater />
