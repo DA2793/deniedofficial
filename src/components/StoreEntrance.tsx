@@ -4,22 +4,19 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 /**
- * Sequence (dead simple, no doors):
+ * Sequence:
+ *   0.0s  — Full storefront fills viewport (cover, centered on top half
+ *            so the signage + door are visible). HOLD.
+ *   1.5s  — Slow zoom begins (walking towards the store)
+ *   4.0s  — Storefront crossfades to interior
+ *   6.5s  — Everything fades out, site revealed
+ *   7.8s  — Overlay removed
  *
- *   0.0s  — Full storefront visible (object-contain, scale 1). HOLD.
- *   1.2s  — Storefront starts slow zoom-in ("walking towards it")
- *   4.2s  — Storefront fades out
- *   4.2s  — Interior fades in, gently zooming
- *   6.5s  — Interior fades out, revealing the site
- *   7.8s  — Overlay removed from DOM
- *
- * Add ?replay=1 to any URL to replay without clearing sessionStorage.
+ * ?replay=1 to replay.
  */
 export default function StoreEntrance() {
+  const [phase, setPhase] = useState<"idle" | "zoom" | "interior" | "reveal">("idle");
   const [show, setShow] = useState(false);
-  const [startZoom, setStartZoom] = useState(false);
-  const [showInterior, setShowInterior] = useState(false);
-  const [revealSite, setRevealSite] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -30,26 +27,26 @@ export default function StoreEntrance() {
     setShow(true);
     document.body.style.overflow = "hidden";
 
-    const zoomTimer = setTimeout(() => setStartZoom(true), 1200);
-    const interiorTimer = setTimeout(() => setShowInterior(true), 4200);
-    const revealTimer = setTimeout(() => setRevealSite(true), 6500);
-    const removeTimer = setTimeout(() => {
+    const t1 = setTimeout(() => setPhase("zoom"), 1500);
+    const t2 = setTimeout(() => setPhase("interior"), 4000);
+    const t3 = setTimeout(() => setPhase("reveal"), 6500);
+    const t4 = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
       sessionStorage.setItem("denied-entrance-seen", "true");
     }, 7800);
 
     return () => {
-      clearTimeout(zoomTimer);
-      clearTimeout(interiorTimer);
-      clearTimeout(revealTimer);
-      clearTimeout(removeTimer);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
       document.body.style.overflow = "";
     };
   }, []);
 
   const handleSkip = () => {
-    setRevealSite(true);
+    setPhase("reveal");
     setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
@@ -59,12 +56,16 @@ export default function StoreEntrance() {
 
   if (!show) return null;
 
+  const isZooming = phase === "zoom" || phase === "interior" || phase === "reveal";
+  const showInterior = phase === "interior" || phase === "reveal";
+  const fadeOut = phase === "reveal";
+
   return (
     <motion.div
-      animate={{ opacity: revealSite ? 0 : 1 }}
+      animate={{ opacity: fadeOut ? 0 : 1 }}
       transition={{ duration: 1.3, ease: "easeInOut" }}
       onAnimationComplete={() => {
-        if (revealSite) {
+        if (fadeOut) {
           setShow(false);
           document.body.style.overflow = "";
           sessionStorage.setItem("denied-entrance-seen", "true");
@@ -73,49 +74,51 @@ export default function StoreEntrance() {
       className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
       onClick={handleSkip}
     >
-      {/* Interior — behind, full-bleed. Kicks in with a gentle zoom once
-          the storefront has faded out. */}
-      <motion.img
-        src="/assets/Store-interior.png"
-        alt=""
+      {/* Interior — behind, full-bleed cover. Gentle zoom on reveal. */}
+      <motion.div
         initial={{ scale: 1, opacity: 0 }}
         animate={{
-          scale: showInterior ? 1.12 : 1,
+          scale: showInterior ? 1.08 : 1,
           opacity: showInterior ? 1 : 0,
         }}
         transition={{
-          opacity: { duration: 1.4, ease: "easeInOut" },
-          scale: { duration: 3, ease: [0.16, 1, 0.3, 1] },
+          opacity: { duration: 1.2, ease: "easeInOut" },
+          scale: { duration: 2.5, ease: [0.16, 1, 0.3, 1] },
         }}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/assets/Store-interior.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       />
 
-      {/* Storefront — ENTIRE image visible at start (object-contain, scale 1).
-          After a 1.2s hold, container scales up over 3s to feel like walking
-          towards it. Then fades out on cue. */}
+      {/* Storefront — fills viewport with cover, centered so the DENIED.
+          signage and door area stay visible. Sides (racks) may crop on
+          narrow screens — that's fine. Zooms in on cue, then fades. */}
       <motion.div
         initial={{ scale: 1, opacity: 1 }}
         animate={{
-          scale: startZoom ? 1.3 : 1,
+          scale: isZooming ? 1.35 : 1,
           opacity: showInterior ? 0 : 1,
         }}
         transition={{
-          scale: { duration: 3, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 1.4, ease: "easeInOut" },
+          scale: { duration: 4, ease: [0.16, 1, 0.3, 1] },
+          opacity: { duration: 1.2, ease: "easeInOut" },
         }}
         className="absolute inset-0 z-[5]"
-      >
-        <img
-          src="/assets/Storefront.png"
-          alt=""
-          className="absolute inset-0 w-full h-full object-contain"
-        />
-      </motion.div>
+        style={{
+          backgroundImage: "url(/assets/Storefront.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center 30%",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
 
       {/* Skip hint */}
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: revealSite ? 0 : 0.4 }}
+        animate={{ opacity: fadeOut ? 0 : 0.4 }}
         transition={{ delay: 2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-[9px] uppercase tracking-brutal z-30"
       >
