@@ -101,6 +101,14 @@ export default function Navbar() {
             </div>
 
             <Link
+              href="/inner-sanctum"
+              className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
+            >
+              Inner Sanctum
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
+            </Link>
+
+            <Link
               href="/about"
               className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
             >
@@ -248,6 +256,7 @@ export default function Navbar() {
           >
             {[
               { label: "Collection", href: "/collection" },
+              { label: "Inner Sanctum", href: "/inner-sanctum" },
               { label: "About", href: "/about" },
               { label: "Contact", href: "/contact" },
               { label: "Account", href: "/account" },

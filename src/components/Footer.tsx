@@ -22,15 +22,14 @@ export default function Footer() {
             <ul className="space-y-4">
               <li><Link href="/collection?category=T-Shirts" className={linkClass}>T-Shirts</Link></li>
               <li><Link href="/collection?category=Caps" className={linkClass}>Caps</Link></li>
-              <li><span className="text-gray-700 text-sm">Watches — Soon</span></li>
-              <li><span className="text-gray-700 text-sm">Perfumes — Soon</span></li>
             </ul>
           </div>
           <div>
             <h4 className="text-[10px] uppercase tracking-brutal text-gray-400 mb-6">Info</h4>
             <ul className="space-y-4">
-              <li><Link href="/about" className={linkClass}>About</Link></li><li><Link href="/contact" className={linkClass}>Contact</Link></li>
-              <li><Link href="/inner-sanctum" className={linkClass}>Inner Sanctum</Link></li><li><Link href="/policies" className={linkClass}>Shipping & Returns</Link></li>
+              <li><Link href="/about" className={linkClass}>About</Link></li>
+              <li><Link href="/contact" className={linkClass}>Contact</Link></li>
+              <li><Link href="/policies" className={linkClass}>Shipping & Returns</Link></li>
             </ul>
           </div>
         </div>
