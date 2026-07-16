@@ -1,120 +1,168 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-/**
- * Sequence:
- *   0.0s  — Zoomed-in doors fill the screen (frosted glass texture).
- *           Full storefront sits behind them, hidden.
- *   1.5s  — Doors slide apart, revealing the entire storefront.
- *   3.5s  — Everything fades out, website revealed.
- *   4.8s  — Overlay removed from DOM.
- *
- * ?replay=1 to replay.
- */
+type Phase = "loading" | "approach" | "transition" | "interior" | "exit";
+type Scene = "storefront" | "interior";
+const SEEN_KEY = "denied-entrance-seen";
+const DESKTOP_ASSETS = {
+  storefront: "/assets/Desktop storefront.png",
+  interior: "/assets/Desktop store interior.png",
+};
+const MOBILE_ASSETS = {
+  storefront: "/assets/Mobile storefront.png",
+  interior: "/assets/Mobile store interior.png",
+};
+
 export default function StoreEntrance() {
   const [show, setShow] = useState(false);
-  const [doorsOpen, setDoorsOpen] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [phase, setPhase] = useState<Phase>("loading");
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [loaded, setLoaded] = useState<Record<Scene, boolean>>({ storefront: false, interior: false });
+  const timers = useRef<number[]>([]);
+
+  const clearTimers = useCallback(() => {
+    timers.current.forEach(window.clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const finish = useCallback(() => {
+    clearTimers();
+    setShow(false);
+    document.body.style.overflow = "";
+    try { sessionStorage.setItem(SEEN_KEY, "true"); } catch { /* Storage may be unavailable. */ }
+  }, [clearTimers]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const forceReplay = params.get("replay") === "1";
-    const seen = sessionStorage.getItem("denied-entrance-seen");
+    let seen = false;
+    try { seen = sessionStorage.getItem(SEEN_KEY) === "true"; } catch { /* Continue without persistence. */ }
     if (seen && !forceReplay) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      try { sessionStorage.setItem(SEEN_KEY, "true"); } catch { /* Storage may be unavailable. */ }
+      return;
+    }
 
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
     setShow(true);
+    setPhase("loading");
     document.body.style.overflow = "hidden";
-
-    const t1 = setTimeout(() => setDoorsOpen(true), 1500);
-    const t2 = setTimeout(() => setFadeOut(true), 3500);
-    const t3 = setTimeout(() => {
-      setShow(false);
-      document.body.style.overflow = "";
-      sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 4800);
+    timers.current = [window.setTimeout(() => {
+      setLoaded({ storefront: true, interior: true });
+    }, 5000)];
 
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
+      clearTimers();
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [clearTimers]);
 
-  const handleSkip = () => {
-    setDoorsOpen(true);
-    setFadeOut(true);
-    setTimeout(() => {
-      setShow(false);
-      document.body.style.overflow = "";
-      sessionStorage.setItem("denied-entrance-seen", "true");
-    }, 700);
+  useEffect(() => {
+    if (!show || phase !== "loading" || !loaded.storefront || !loaded.interior) return;
+    clearTimers();
+    setPhase("approach");
+    timers.current = [
+      window.setTimeout(() => setPhase("transition"), 2600),
+      window.setTimeout(() => setPhase("interior"), 3150),
+      window.setTimeout(() => setPhase("exit"), 5150),
+      window.setTimeout(finish, 6200),
+    ];
+  }, [finish, loaded, phase, show]);
+
+  const markLoaded = (scene: Scene) => {
+    setLoaded((current) => current[scene] ? current : { ...current, [scene]: true });
   };
 
-  if (!show) return null;
+  const handleSkip = () => {
+    if (phase === "exit") return;
+    clearTimers();
+    setPhase("exit");
+    timers.current = [window.setTimeout(finish, 800)];
+  };
+
+  if (!show || isMobile === null) return null;
+  const assets = isMobile ? MOBILE_ASSETS : DESKTOP_ASSETS;
 
   return (
     <motion.div
-      animate={{ opacity: fadeOut ? 0 : 1 }}
-      transition={{ duration: 1.3, ease: "easeInOut" }}
-      onAnimationComplete={() => {
-        if (fadeOut) {
-          setShow(false);
-          document.body.style.overflow = "";
-          sessionStorage.setItem("denied-entrance-seen", "true");
-        }
-      }}
-      className="fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-black"
-      onClick={handleSkip}
+      initial={{ opacity: 1 }}
+      animate={{ opacity: phase === "exit" ? 0 : 1 }}
+      transition={{ duration: phase === "exit" ? 0.75 : 0.3, ease: "easeInOut" }}
+      onAnimationComplete={() => { if (phase === "exit") finish(); }}
+      className="fixed inset-0 z-[9999] overflow-hidden bg-black"
+      aria-label="DENIED. store entrance"
     >
-      {/* Behind doors: Full storefront (entire image visible, centered) */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <img
-          src="/assets/Storefront.png"
-          alt=""
-          className="max-w-full max-h-full object-contain"
-        />
-      </div>
-
-      {/* Left door — zoomed in (cover), slides left to reveal storefront */}
       <motion.div
-        initial={{ x: "0%" }}
-        animate={doorsOpen ? { x: "-100%" } : { x: "0%" }}
-        transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute top-0 left-0 w-1/2 h-full z-10 overflow-hidden"
+        initial={{ opacity: 0, scale: 1.02 }}
+        animate={{
+          opacity: phase === "approach" ? 1 : 0,
+          scale: phase === "approach" ? 1.18 : 1.21,
+        }}
+        transition={{
+          opacity: { duration: phase === "approach" ? 0.7 : 0.45, ease: "easeInOut" },
+          scale: { duration: 2.9, ease: [0.22, 1, 0.36, 1] },
+        }}
+        className="absolute inset-0"
       >
-        <img
-          src="/assets/door-left.png"
+        <Image
+          src={assets.storefront}
           alt=""
-          className="w-full h-full object-cover"
+          fill
+          priority
+          quality={88}
+          sizes="100vw"
+          onLoad={() => markLoaded("storefront")}
+          onError={() => markLoaded("storefront")}
+          className="object-cover object-center"
         />
       </motion.div>
 
-      {/* Right door — zoomed in (cover), slides right to reveal storefront */}
       <motion.div
-        initial={{ x: "0%" }}
-        animate={doorsOpen ? { x: "100%" } : { x: "0%" }}
-        transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-        className="absolute top-0 right-0 w-1/2 h-full z-10 overflow-hidden"
+        initial={{ opacity: 0, scale: 1.07 }}
+        animate={{
+          opacity: phase === "interior" || phase === "exit" ? 1 : 0,
+          scale: phase === "interior" || phase === "exit" ? 1.01 : 1.07,
+        }}
+        transition={{
+          opacity: { duration: 0.85, ease: "easeOut" },
+          scale: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
+        }}
+        className="absolute inset-0"
       >
-        <img
-          src="/assets/door-right.png"
+        <Image
+          src={assets.interior}
           alt=""
-          className="w-full h-full object-cover"
+          fill
+          priority
+          quality={88}
+          sizes="100vw"
+          onLoad={() => markLoaded("interior")}
+          onError={() => markLoaded("interior")}
+          className="object-cover object-center"
         />
       </motion.div>
 
-      {/* Skip hint */}
-      <motion.p
+      <motion.div
+        animate={{ opacity: phase === "loading" || phase === "transition" ? 1 : 0 }}
+        transition={{ duration: phase === "transition" ? 0.45 : 0.7, ease: "easeInOut" }}
+        className="pointer-events-none absolute inset-0 bg-black"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-black/10" />
+
+      <motion.button
+        type="button"
+        onClick={handleSkip}
         initial={{ opacity: 0 }}
-        animate={{ opacity: fadeOut ? 0 : 0.4 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-[9px] uppercase tracking-brutal z-30"
+        animate={{ opacity: phase === "loading" || phase === "approach" || phase === "interior" ? 0.55 : 0 }}
+        transition={{ delay: phase === "approach" ? 0.8 : 0.25, duration: 0.4 }}
+        className="absolute bottom-7 left-1/2 z-20 min-h-11 -translate-x-1/2 rounded-full border border-white/15 bg-black/35 px-5 text-[9px] uppercase tracking-brutal text-white backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
+        aria-label="Skip store entrance"
       >
         Tap to enter
-      </motion.p>
+      </motion.button>
     </motion.div>
   );
 }

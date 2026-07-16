@@ -21,6 +21,7 @@ export default function Footer() {
             <h4 className="text-[10px] uppercase tracking-brutal text-gray-400 mb-6">Shop</h4>
             <ul className="space-y-4">
               <li><Link href="/collection?category=T-Shirts" className={linkClass}>T-Shirts</Link></li>
+              <li><Link href="/collection?category=Women" className={linkClass}>Women</Link></li>
               <li><Link href="/collection?category=Caps" className={linkClass}>Caps</Link></li>
             </ul>
           </div>

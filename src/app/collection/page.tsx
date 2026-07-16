@@ -10,6 +10,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 const categoryFilters = [
   { slug: "all", name: "All" },
   { slug: "T-Shirts", name: "T-Shirts" },
+  { slug: "Women", name: "Women" },
   { slug: "Caps", name: "Caps" },
 ];
 

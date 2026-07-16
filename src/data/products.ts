@@ -314,6 +314,61 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
+  {
+    id: 8,
+    name: "SHE IS Classic Tee",
+    category: "Women",
+    price: 1199,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/Women/Classic/SheIs/Black/1.png",
+    images: [
+      "/Products/Women/Classic/SheIs/Black/1.png",
+      "/Products/Women/Classic/SheIs/Black/2.png",
+    ],
+    colorImages: {
+      "Black": [
+        "/Products/Women/Classic/SheIs/Black/1.png",
+        "/Products/Women/Classic/SheIs/Black/2.png",
+      ],
+      "Bottle Green": [
+        "/Products/Women/Classic/SheIs/BottleGreen/1.png",
+        "/Products/Women/Classic/SheIs/BottleGreen/2.png",
+      ],
+      "Coffee Brown": [
+        "/Products/Women/Classic/SheIs/CoffeeBrown/1.png",
+        "/Products/Women/Classic/SheIs/CoffeeBrown/2.png",
+      ],
+      "Maroon": [
+        "/Products/Women/Classic/SheIs/Maroon/1.png",
+        "/Products/Women/Classic/SheIs/Maroon/2.png",
+      ],
+      "Navy Blue": [
+        "/Products/Women/Classic/SheIs/NavyBlue/1.png",
+        "/Products/Women/Classic/SheIs/NavyBlue/2.png",
+      ],
+      "Red": [
+        "/Products/Women/Classic/SheIs/Red/1.png",
+        "/Products/Women/Classic/SheIs/Red/2.png",
+      ],
+    },
+    sizeChart: [
+      { size: "XS", chest: 32, length: 23 },
+      { size: "S", chest: 34, length: 24 },
+      { size: "M", chest: 36, length: 25 },
+      { size: "L", chest: 38, length: 26 },
+      { size: "XL", chest: 40, length: 27 },
+      { size: "XXL", chest: 42, length: 28 },
+    ],
+    description: "The DENIED. SHE IS Classic Tee. Soft, breathable cotton cut in a flattering everyday silhouette for effortless comfort.",
+    details: {
+      fabric: "Pre-shrunk 100% Cotton, 180 GSM – soft, breathable, and made to stay true to size",
+      fit: "Women's regular fit – tailored for a flattering everyday silhouette without compromising comfort",
+      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      colors: ["Black", "Bottle Green", "Coffee Brown", "Maroon", "Navy Blue", "Red"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
 ];
 
 // Helper functions

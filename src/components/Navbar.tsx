@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
-const categories = ["T-Shirts", "Caps"];
+const categories = ["T-Shirts", "Women", "Caps"];
 const filters = ["New In", "Signature"];
 
 export default function Navbar() {
