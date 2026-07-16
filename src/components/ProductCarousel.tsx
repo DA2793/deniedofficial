@@ -1,13 +1,37 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useAnimationFrame,
+  animate,
+  type MotionValue,
+} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/data/products";
+import type { Product } from "@/data/products";
 
-const AUTOPLAY_MS = 4200; // Slightly slower for a luxury feel
-const VISIBLE_WINDOW = 2; // cards rendered on each side of the active card
+const ROTATE_DEG_PER_SEC = 9; // continuous drift speed — full loop ≈ 40s
+const RADIUS = 380;
+const DEPTH_SCALE = 480;
+const TOTAL = products.length;
+const ANGLE_PER_CARD = 360 / TOTAL;
+
+function normalizeAngle(deg: number) {
+  let a = deg % 360;
+  if (a > 180) a -= 360;
+  if (a <= -180) a += 360;
+  return a;
+}
+
+function computeTarget(currentSpin: number, index: number) {
+  const desired = -index * ANGLE_PER_CARD;
+  const k = Math.round((currentSpin - desired) / 360);
+  return desired + k * 360;
+}
 
 export default function ProductCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,8 +43,7 @@ export default function ProductCarousel() {
   const [touchPause, setTouchPause] = useState(false);
   const [tabHidden, setTabHidden] = useState(false);
 
-  const sceneRef = useRef<HTMLDivElement>(null);
-  const total = products.length;
+  const spin = useMotionValue(0);
 
   const isPlaying =
     manualPlay && !hoverPause && !focusPause && !touchPause && !tabHidden && !reducedMotion;
@@ -50,14 +73,21 @@ export default function ProductCarousel() {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
 
-  // Autoplay loop (desktop only).
-  useEffect(() => {
+  // Continuous rotation, driven every frame — this is what gives the silky drift.
+  useAnimationFrame((_, delta) => {
     if (isMobile || !isPlaying) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % total);
-    }, AUTOPLAY_MS);
-    return () => clearInterval(interval);
-  }, [isMobile, isPlaying, total]);
+    spin.set(spin.get() - (ROTATE_DEG_PER_SEC / 1000) * delta);
+  });
+
+  // Track which card is currently front-and-center, without re-rendering every frame.
+  useEffect(() => {
+    const unsubscribe = spin.on("change", (latest) => {
+      const idx = Math.round(-latest / ANGLE_PER_CARD);
+      const normalized = ((idx % TOTAL) + TOTAL) % TOTAL;
+      setActiveIndex((prev) => (prev === normalized ? prev : normalized));
+    });
+    return () => unsubscribe();
+  }, [spin]);
 
   const handleFocusCapture = () => setFocusPause(true);
   const handleBlurCapture = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -66,25 +96,17 @@ export default function ProductCarousel() {
     }
   };
 
-  const goTo = useCallback((index: number) => {
-    setActiveIndex(((index % total) + total) % total);
-  }, [total]);
-
-  const getCardStyle = (index: number) => {
-    const diff = index - activeIndex;
-    const normalizedDiff = ((diff + total) % total) - Math.floor(total / 2);
-    const absPos = Math.abs(normalizedDiff);
-
-    return {
-      rotateY: normalizedDiff * 48,
-      x: normalizedDiff * 260,
-      z: -absPos * 160,
-      scale: absPos === 0 ? 1.05 : 0.82 - absPos * 0.07,
-      opacity: absPos > 2 ? 0 : 1 - absPos * 0.18,
-      zIndex: total - absPos,
-      absPos,
-    };
-  };
+  const goTo = useCallback(
+    (index: number) => {
+      const normalizedIndex = ((index % TOTAL) + TOTAL) % TOTAL;
+      const target = computeTarget(spin.get(), normalizedIndex);
+      animate(spin, target, {
+        duration: reducedMotion ? 0 : 0.8,
+        ease: [0.22, 1, 0.36, 1],
+      });
+    },
+    [spin, reducedMotion]
+  );
 
   if (isMobile === null) {
     return <section className="py-24 px-6 md:px-12 h-[620px]" aria-hidden="true" />;
@@ -109,9 +131,8 @@ export default function ProductCarousel() {
           <MobileCarousel />
         ) : (
           <>
-            {/* 3D Carousel */}
+            {/* Rotating ring */}
             <div
-              ref={sceneRef}
               className="relative h-[620px] flex items-center justify-center"
               style={{ perspective: "1400px" }}
               onMouseEnter={() => setHoverPause(true)}
@@ -121,89 +142,16 @@ export default function ProductCarousel() {
               onFocusCapture={handleFocusCapture}
               onBlurCapture={handleBlurCapture}
             >
-              {products.map((product, index) => {
-                const style = getCardStyle(index);
-                const isActive = index === activeIndex;
-                if (style.absPos > VISIBLE_WINDOW) return null;
-
-                const cardInner = (
-                  <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(min-width: 768px) 420px, 340px"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      priority={isActive}
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8">
-                      <p className="text-white text-xl font-medium tracking-tight mb-1">
-                        {product.name}
-                      </p>
-                      <p className="text-gold text-sm tracking-wider">
-                        ₹{product.price.toLocaleString("en-IN")}
-                      </p>
-                    </div>
-
-                    {/* Badge */}
-                    {product.badge && (
-                      <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
-                        {product.badge}
-                      </div>
-                    )}
-
-                    {/* Gold glow ring on active card */}
-                    {isActive && (
-                      <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
-                    )}
-                  </div>
-                );
-
-                return (
-                  <motion.div
-                    key={product.id}
-                    animate={{
-                      rotateY: style.rotateY,
-                      x: style.x,
-                      z: style.z,
-                      scale: style.scale,
-                      opacity: style.opacity,
-                    }}
-                    transition={
-                      reducedMotion
-                        ? { duration: 0 }
-                        : { duration: 0.9, ease: [0.23, 1.0, 0.32, 1.0] }
-                    }
-                    style={{ zIndex: style.zIndex, transformStyle: "preserve-3d" }}
-                    className="absolute w-[340px] md:w-[420px] cursor-pointer"
-                    aria-hidden={!isActive}
-                    tabIndex={-1}
-                  >
-                    {isActive ? (
-                      <Link
-                        href={`/product/${product.id}`}
-                        aria-label={`View ${product.name}, ₹${product.price.toLocaleString("en-IN")}`}
-                      >
-                        {cardInner}
-                      </Link>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => goTo(index)}
-                        aria-label={`Show ${product.name}`}
-                        tabIndex={-1}
-                        className="block w-full text-left"
-                      >
-                        {cardInner}
-                      </button>
-                    )}
-                  </motion.div>
-                );
-              })}
+              {products.map((product, index) => (
+                <CarouselCard
+                  key={product.id}
+                  product={product}
+                  index={index}
+                  spin={spin}
+                  isActive={index === activeIndex}
+                  onSelect={() => goTo(index)}
+                />
+              ))}
             </div>
 
             {/* Controls */}
@@ -272,6 +220,92 @@ export default function ProductCarousel() {
         )}
       </div>
     </section>
+  );
+}
+
+function CarouselCard({
+  product,
+  index,
+  spin,
+  isActive,
+  onSelect,
+}: {
+  product: Product;
+  index: number;
+  spin: MotionValue<number>;
+  isActive: boolean;
+  onSelect: () => void;
+}) {
+  const theta = useTransform(spin, (s) => normalizeAngle(s + index * ANGLE_PER_CARD));
+  const rotateY = theta;
+  const x = useTransform(theta, (t) => Math.sin((t * Math.PI) / 180) * RADIUS);
+  const z = useTransform(theta, (t) => (Math.cos((t * Math.PI) / 180) - 1) * DEPTH_SCALE);
+  const scale = useTransform(theta, (t) =>
+    Math.max(0.55, 1 - (1 - Math.cos((t * Math.PI) / 180)) * 0.6)
+  );
+  const opacity = useTransform(theta, (t) => {
+    const abs = Math.abs(t);
+    return abs > 150 ? 0 : 1 - (abs / 150) * 0.85;
+  });
+  const zIndex = useTransform(theta, (t) => Math.round(1000 - Math.abs(t)));
+
+  const cardInner = (
+    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
+      <Image
+        src={product.image}
+        alt={product.name}
+        fill
+        sizes="(min-width: 768px) 420px, 340px"
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
+        priority={isActive}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+      <div className="absolute bottom-0 left-0 right-0 p-8">
+        <p className="text-white text-xl font-medium tracking-tight mb-1">{product.name}</p>
+        <p className="text-gold text-sm tracking-wider">
+          ₹{product.price.toLocaleString("en-IN")}
+        </p>
+      </div>
+
+      {product.badge && (
+        <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
+          {product.badge}
+        </div>
+      )}
+
+      {isActive && (
+        <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
+      )}
+    </div>
+  );
+
+  return (
+    <motion.div
+      style={{ x, z, rotateY, scale, opacity, zIndex, transformStyle: "preserve-3d" }}
+      className="absolute w-[340px] md:w-[420px] cursor-pointer"
+      aria-hidden={!isActive}
+      tabIndex={-1}
+    >
+      {isActive ? (
+        <Link
+          href={`/product/${product.id}`}
+          aria-label={`View ${product.name}, ₹${product.price.toLocaleString("en-IN")}`}
+        >
+          {cardInner}
+        </Link>
+      ) : (
+        <button
+          type="button"
+          onClick={onSelect}
+          aria-label={`Show ${product.name}`}
+          tabIndex={-1}
+          className="block w-full text-left"
+        >
+          {cardInner}
+        </button>
+      )}
+    </motion.div>
   );
 }
 
