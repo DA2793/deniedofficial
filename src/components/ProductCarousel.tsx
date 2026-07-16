@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/data/products";
 
-const AUTOPLAY_MS = 3500;
+const AUTOPLAY_MS = 4200; // Slightly slower for a luxury feel
 const VISIBLE_WINDOW = 2; // cards rendered on each side of the active card
 
 export default function ProductCarousel() {
@@ -76,31 +76,31 @@ export default function ProductCarousel() {
     const absPos = Math.abs(normalizedDiff);
 
     return {
-      rotateY: normalizedDiff * 45,
-      x: normalizedDiff * 240,
-      z: -absPos * 150,
-      scale: absPos === 0 ? 1 : 0.8 - absPos * 0.06,
-      opacity: absPos > 2 ? 0 : 1 - absPos * 0.2,
+      rotateY: normalizedDiff * 48,
+      x: normalizedDiff * 260,
+      z: -absPos * 160,
+      scale: absPos === 0 ? 1.05 : 0.82 - absPos * 0.07,
+      opacity: absPos > 2 ? 0 : 1 - absPos * 0.18,
       zIndex: total - absPos,
       absPos,
     };
   };
 
   if (isMobile === null) {
-    return <section className="py-24 px-6 md:px-12 h-[420px]" aria-hidden="true" />;
+    return <section className="py-24 px-6 md:px-12 h-[620px]" aria-hidden="true" />;
   }
 
   return (
     <section
-      className="py-24 px-6 md:px-12 overflow-hidden"
+      className="py-24 px-6 md:px-12 overflow-hidden bg-black"
       aria-label="Product carousel"
     >
       <div className="max-w-[1400px] mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
             The Collection
           </p>
-          <h2 className="font-display text-4xl md:text-6xl uppercase">
+          <h2 className="font-display text-5xl md:text-7xl uppercase text-white">
             Explore
           </h2>
         </div>
@@ -112,8 +112,8 @@ export default function ProductCarousel() {
             {/* 3D Carousel */}
             <div
               ref={sceneRef}
-              className="relative h-[520px] md:h-[600px] flex items-center justify-center"
-              style={{ perspective: "1200px" }}
+              className="relative h-[620px] flex items-center justify-center"
+              style={{ perspective: "1400px" }}
               onMouseEnter={() => setHoverPause(true)}
               onMouseLeave={() => setHoverPause(false)}
               onTouchStart={() => setTouchPause(true)}
@@ -127,23 +127,38 @@ export default function ProductCarousel() {
                 if (style.absPos > VISIBLE_WINDOW) return null;
 
                 const cardInner = (
-                  <div className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/[0.08] bg-black shadow-2xl shadow-black/50">
+                  <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
                     <Image
                       src={product.image}
                       alt={product.name}
                       fill
-                      sizes="(min-width: 768px) 380px, 320px"
-                      className="object-cover"
+                      sizes="(min-width: 768px) 420px, 340px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      priority={isActive}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white text-sm font-medium mb-1">{product.name}</p>
-                      <p className="text-gold text-xs">₹{product.price.toLocaleString()}</p>
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8">
+                      <p className="text-white text-xl font-medium tracking-tight mb-1">
+                        {product.name}
+                      </p>
+                      <p className="text-gold text-sm tracking-wider">
+                        ₹{product.price.toLocaleString("en-IN")}
+                      </p>
                     </div>
+
+                    {/* Badge */}
                     {product.badge && (
-                      <div className="absolute top-3 left-3 bg-gold/90 text-black text-[8px] uppercase tracking-brutal px-2 py-1 rounded-sm font-medium">
+                      <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
                         {product.badge}
                       </div>
+                    )}
+
+                    {/* Gold glow ring on active card */}
+                    {isActive && (
+                      <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
                     )}
                   </div>
                 );
@@ -161,17 +176,17 @@ export default function ProductCarousel() {
                     transition={
                       reducedMotion
                         ? { duration: 0 }
-                        : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+                        : { duration: 0.9, ease: [0.23, 1.0, 0.32, 1.0] }
                     }
                     style={{ zIndex: style.zIndex, transformStyle: "preserve-3d" }}
-                    className="absolute w-[320px] md:w-[380px] cursor-pointer"
+                    className="absolute w-[340px] md:w-[420px] cursor-pointer"
                     aria-hidden={!isActive}
                     tabIndex={-1}
                   >
                     {isActive ? (
                       <Link
                         href={`/product/${product.id}`}
-                        aria-label={`View ${product.name}, ₹${product.price.toLocaleString()}`}
+                        aria-label={`View ${product.name}, ₹${product.price.toLocaleString("en-IN")}`}
                       >
                         {cardInner}
                       </Link>
@@ -192,57 +207,61 @@ export default function ProductCarousel() {
             </div>
 
             {/* Controls */}
-            <div className="flex items-center justify-center gap-6 mt-8">
+            <div className="flex items-center justify-center gap-8 mt-12">
               <button
+                type="button"
                 onClick={() => goTo(activeIndex - 1)}
                 aria-label="Previous product"
-                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-gold transition-all"
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-gold hover:border-gold transition-all duration-300"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
 
               {/* Dots */}
-              <div className="flex justify-center gap-2" role="tablist" aria-label="Select product">
+              <div className="flex gap-3" role="tablist" aria-label="Select product">
                 {products.map((product, index) => (
                   <button
                     key={product.id}
+                    type="button"
                     role="tab"
                     onClick={() => goTo(index)}
                     aria-label={`Go to ${product.name}`}
                     aria-current={activeIndex === index ? "true" : undefined}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      activeIndex === index ? "bg-gold w-6" : "bg-white/20"
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      activeIndex === index ? "bg-gold w-10" : "bg-white/20 w-5 hover:bg-white/40"
                     }`}
                   />
                 ))}
               </div>
 
               <button
+                type="button"
                 onClick={() => goTo(activeIndex + 1)}
                 aria-label="Next product"
-                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-gold transition-all"
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-gold hover:border-gold transition-all duration-300"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M9 5l7 7-7 7" />
                 </svg>
               </button>
 
               {!reducedMotion && (
                 <button
+                  type="button"
                   onClick={() => setManualPlay((prev) => !prev)}
                   aria-pressed={isPlaying}
                   aria-label={isPlaying ? "Pause autoplay" : "Play autoplay"}
-                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-gold transition-all"
+                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-gold hover:border-gold transition-all"
                 >
                   {isPlaying ? (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <rect x="6" y="5" width="4" height="14" />
                       <rect x="14" y="5" width="4" height="14" />
                     </svg>
                   ) : (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   )}
@@ -259,7 +278,7 @@ export default function ProductCarousel() {
 function MobileCarousel() {
   return (
     <div
-      className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-hide"
+      className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 -mx-6 px-6 scrollbar-hide"
       role="list"
       aria-label="Products, swipe to browse"
     >
@@ -268,23 +287,27 @@ function MobileCarousel() {
           key={product.id}
           href={`/product/${product.id}`}
           role="listitem"
-          className="snap-center shrink-0 w-[78vw] max-w-[320px]"
+          className="snap-center shrink-0 w-[82vw] max-w-[340px]"
         >
-          <div className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/[0.08] bg-black shadow-2xl shadow-black/50">
+          <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl">
             <Image
               src={product.image}
               alt={product.name}
               fill
-              sizes="80vw"
+              sizes="82vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <p className="text-white text-sm font-medium mb-1">{product.name}</p>
-              <p className="text-gold text-xs">₹{product.price.toLocaleString()}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-8">
+              <p className="text-white text-xl font-medium tracking-tight mb-1">
+                {product.name}
+              </p>
+              <p className="text-gold text-sm tracking-wider">
+                ₹{product.price.toLocaleString("en-IN")}
+              </p>
             </div>
             {product.badge && (
-              <div className="absolute top-3 left-3 bg-gold/90 text-black text-[8px] uppercase tracking-brutal px-2 py-1 rounded-sm font-medium">
+              <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
                 {product.badge}
               </div>
             )}
