@@ -6,7 +6,6 @@ export const dynamic = "force-dynamic";
 const ADMIN_EMAILS = [
   "da.2793@yahoo.com",
   "geetikatyagi75@gmail.com",
-  "lokendras69@gmail.com",
 ];
 
 export async function POST(request: NextRequest) {
