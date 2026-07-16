@@ -12,6 +12,7 @@ Thumbs.db
 
 # debug
 npm-debug.log*
+*.tsbuildinfo
 
 # env
 .env*.local
@@ -21,4 +22,8 @@ npm-debug.log*
 
 # IDE
 .vscode/
-node_modules
+
+# local credentials and temporary Office files
+Business/*key*.csv
+supabase pw.txt
+**/~$*

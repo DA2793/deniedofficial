@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You Card - Front & Back</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        @page {
+            size: 152mm 102mm;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1a1a;
+        }
+
+        .card {
+            width: 152mm;
+            height: 102mm;
+            background: #0a0a0a;
+            margin: 20mm auto;
+            position: relative;
+            page-break-after: always;
+        }
+
+        /* ===== FRONT ===== */
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5mm;
+        }
+
+        .front-logo img { height: 26mm; width: auto; }
+        .front-brand { font-family: 'Bebas Neue', sans-serif; font-size: 28pt; color: #fff; letter-spacing: 4px; }
+
+        /* ===== BACK ===== */
+        .card-back {
+            display: flex;
+            overflow: hidden;
+        }
+
+        .back-left {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5mm;
+            border-right: 0.3px solid rgba(201,169,110,0.4);
+            margin: 15mm 0;
+            padding: 8mm;
+        }
+
+        .qr-item { text-align: center; }
+        .qr-item img { width: 18mm; height: 18mm; border-radius: 1mm; }
+        .qr-label { font-size: 5.5pt; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-top: 1.5mm; }
+
+        .back-right {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10mm 12mm;
+        }
+
+        .back-thankyou {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18pt;
+            font-style: italic;
+            color: #c9a96e;
+            margin-bottom: 3mm;
+        }
+
+        .back-highlight {
+            font-size: 8pt;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 3mm;
+        }
+
+        .back-message {
+            font-size: 7pt;
+            color: #bbb;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 5mm;
+        }
+
+        .back-closing {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 8pt;
+            font-style: italic;
+            color: #c9a96e;
+        }
+
+        .back-bottom {
+            position: absolute;
+            bottom: 4mm;
+            left: 35%;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3mm;
+        }
+
+        .back-bottom svg { width: 3mm; height: 3mm; stroke: #999; }
+
+        .back-bottom span {
+            font-size: 5.5pt;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .back-bottom .dot {
+            font-size: 5pt;
+            color: #c9a96e;
+        }
+
+        @media print {
+            body { background: #0a0a0a; }
+            .card { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Front -->
+    <div class="card card-front">
+        <div class="front-logo"><img src="../../Designs/denied_brand_logo_hd.png" alt="DENIED."></div>
+        <div class="front-brand">DENIED.</div>
+    </div>
+
+    <!-- Page 2: Back -->
+    <div class="card card-back">
+        <div class="back-left">
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://deniedofficial.com&color=ffffff&bgcolor=0a0a0a" alt="Website">
+                <div class="qr-label">Website</div>
+            </div>
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.instagram.com/denied._official/&color=ffffff&bgcolor=0a0a0a" alt="Instagram">
+                <div class="qr-label">Instagram</div>
+            </div>
+        </div>
+
+        <div class="back-right">
+            <div class="back-thankyou">Thank you.</div>
+            <div class="back-highlight">You're now one of the Selected.</div>
+            <div class="back-message">Every DENIED. piece is crafted exclusively for you. No ready stock, no mass production — just intention.<br><br>We hope you feel the difference every time you wear it.</div>
+            <div class="back-closing">Some standards still exist.</div>
+        </div>
+
+        <div class="back-bottom">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <span>deniedofficial.com</span>
+            <span class="dot">·</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <span>@denied._official</span>
+        </div>
+    </div>
+</body>
+</html>
