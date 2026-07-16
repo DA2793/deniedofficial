@@ -1,3 +1,4 @@
+import StoreEntrance from "@/components/StoreEntrance";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Categories from "@/components/Categories";
@@ -9,6 +10,7 @@ import InstagramCTA from "@/components/InstagramCTA";
 export default function Home() {
   return (
     <>
+      <StoreEntrance />
       <Hero />
       <Marquee />
       <Categories />
