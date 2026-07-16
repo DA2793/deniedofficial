@@ -1,58 +1,90 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { getRequestUser } from "@/lib/auth/server";
+import { isInternalRequest } from "@/lib/internal-auth";
 
 export const dynamic = "force-dynamic";
+
+function escapeText(value: unknown, maxLength = 500) {
+  return String(value ?? "").slice(0, maxLength).replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
+  })[character]!);
+}
+
+function validEmail(value: unknown) {
+  const email = String(value ?? "").trim().toLowerCase();
+  return /^\S+@\S+\.\S+$/.test(email) ? email : null;
+}
+
+function safeItems(items: unknown) {
+  if (!Array.isArray(items) || items.length > 25) throw new Error("Invalid email items");
+  return items.map((item: any) => ({
+    name: escapeText(item.name, 150),
+    color: escapeText(item.color, 80),
+    size: escapeText(item.size, 30),
+    quantity: Math.max(1, Math.min(10, Number(item.quantity) || 1)),
+    price: Math.max(0, Number(item.price) || 0),
+  }));
+}
 
 export async function POST(request: NextRequest) {
   try {
     const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "Email service not configured" },
-        { status: 500 }
-      );
+    if (!apiKey) return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+
+    const body = await request.json();
+    const type = body?.type;
+    const raw = body?.data || {};
+    let emailConfig: { from: string; to: string; replyTo?: string; subject: string; html: string };
+
+    if (type === "welcome") {
+      const user = await getRequestUser(request);
+      const email = validEmail(user?.email);
+      if (!user || !email) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      emailConfig = buildWelcomeEmail({
+        name: escapeText(user.user_metadata?.full_name || user.user_metadata?.name, 120),
+        email,
+      });
+    } else {
+      if (!isInternalRequest(request)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      const email = validEmail(raw.email);
+      if (!email) return NextResponse.json({ error: "Invalid recipient" }, { status: 400 });
+
+      if (type === "order-confirmation") {
+        emailConfig = buildOrderConfirmationEmail({
+          email,
+          name: escapeText(raw.name, 120),
+          orderId: escapeText(raw.orderId, 100),
+          paymentId: escapeText(raw.paymentId, 100),
+          invoiceUrl: typeof raw.invoiceUrl === "string" && raw.invoiceUrl.startsWith("https://") ? raw.invoiceUrl : undefined,
+          total: Number(raw.total) || 0,
+          shipping: Number(raw.shipping) || 0,
+          promoCode: raw.promoCode ? escapeText(raw.promoCode, 30) : undefined,
+          promoDiscount: Number(raw.promoDiscount) || 0,
+          items: safeItems(raw.items),
+        });
+      } else if (type === "order-shipped") {
+        emailConfig = buildOrderShippedEmail({
+          email,
+          name: escapeText(raw.name, 120),
+          orderId: escapeText(raw.orderId, 100),
+          trackingNumber: escapeText(raw.trackingNumber, 200),
+          courierPartner: escapeText(raw.courierPartner, 100),
+          items: safeItems(raw.items),
+        });
+      } else {
+        return NextResponse.json({ error: "Invalid email type" }, { status: 400 });
+      }
     }
 
     const resend = new Resend(apiKey);
-    const { type, data } = await request.json();
-
-    let emailConfig: {
-      from: string;
-      to: string;
-      replyTo?: string;
-      subject: string;
-      html: string;
-    } | null = null;
-
-    switch (type) {
-      case "welcome":
-        emailConfig = buildWelcomeEmail(data);
-        break;
-      case "order-confirmation":
-        emailConfig = buildOrderConfirmationEmail(data);
-        break;
-      case "order-shipped":
-        emailConfig = buildOrderShippedEmail(data);
-        break;
-      default:
-        return NextResponse.json(
-          { error: "Invalid email type" },
-          { status: 400 }
-        );
-    }
-
-    if (!emailConfig) {
-      return NextResponse.json(
-        { error: "Failed to build email" },
-        { status: 500 }
-      );
-    }
-
-    await resend.emails.send(emailConfig);
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("Send email error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const { data, error } = await resend.emails.send(emailConfig);
+    if (error) throw new Error(error.message);
+    return NextResponse.json({ success: true, id: data?.id });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Email could not be sent";
+    console.error("Send email error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 

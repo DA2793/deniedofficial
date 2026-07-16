@@ -4,27 +4,33 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { supabase } from "@/lib/supabase/client";
 import { User, Session } from "@supabase/supabase-js";
 
+type AuthResult = Promise<{ error: string | null }>;
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, name?: string, phone?: string) => Promise<{ error: string | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signInWithOtp: (phone: string, name?: string) => Promise<{ error: string | null }>;
-  verifyOtp: (phone: string, token: string) => Promise<{ error: string | null }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string, name?: string, phone?: string) => AuthResult;
+  signIn: (email: string, password: string) => AuthResult;
+  signInWithOtp: (phone: string, name?: string) => AuthResult;
+  verifyOtp: (phone: string, token: string) => AuthResult;
+  signInWithGoogle: (next?: string) => AuthResult;
+  requestPasswordReset: (email: string) => AuthResult;
   signOut: () => Promise<void>;
 }
+
+const emptyResult = async () => ({ error: null });
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
-  signUp: async () => ({ error: null }),
-  signIn: async () => ({ error: null }),
-  signInWithOtp: async () => ({ error: null }),
-  verifyOtp: async () => ({ error: null }),
-  signInWithGoogle: async () => ({ error: null }),
+  signUp: emptyResult,
+  signIn: emptyResult,
+  signInWithOtp: emptyResult,
+  verifyOtp: emptyResult,
+  signInWithGoogle: emptyResult,
+  requestPasswordReset: emptyResult,
   signOut: async () => {},
 });
 
@@ -34,17 +40,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
       setLoading(false);
     });
 
@@ -52,27 +56,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, name?: string, phone?: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          full_name: name || "",
-          phone: phone || "",
-        },
+        data: { full_name: name || "", phone: phone || "" },
       },
     });
 
-    // Send welcome email on successful signup (fire and forget)
     if (!error) {
-      fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "welcome",
-          data: { name: name || "", email },
-        }),
-      }).catch(() => {});
+      const accessToken = data.session?.access_token
+        || (await supabase.auth.getSession()).data.session?.access_token;
+      if (accessToken) {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ type: "welcome" }),
+        }).catch(() => {});
+      }
     }
 
     return { error: error?.message ?? null };
@@ -83,18 +87,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null };
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
-
   const signInWithOtp = async (phone: string, name?: string) => {
     const { error } = await supabase.auth.signInWithOtp({
       phone,
-      options: {
-        data: {
-          full_name: name || "",
-        },
-      },
+      options: { data: { full_name: name || "" } },
     });
     return { error: error?.message ?? null };
   };
@@ -104,18 +100,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null };
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (next?: string) => {
+    const callback = new URL("/account", window.location.origin);
+    if (next?.startsWith("/") && !next.startsWith("//") && next !== "/account") {
+      callback.searchParams.set("next", next);
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/account`,
-      },
+      options: { redirectTo: callback.toString() },
     });
     return { error: error?.message ?? null };
   };
 
+  const requestPasswordReset = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error: error?.message ?? null };
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signInWithOtp, verifyOtp, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{
+      user,
+      session,
+      loading,
+      signUp,
+      signIn,
+      signInWithOtp,
+      verifyOtp,
+      signInWithGoogle,
+      requestPasswordReset,
+      signOut,
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,341 +1,265 @@
 "use client";
 
-import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ScrollReveal from "@/components/ScrollReveal";
-import MagneticButton from "@/components/MagneticButton";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase/client";
+
+type AuthMode = "signin" | "signup" | "phone" | "forgot";
+
+interface OrderSummary {
+  id: string;
+  created_at: string;
+  status: string;
+  total: number;
+}
+
+function getRedirectTarget() {
+  if (typeof window === "undefined") return "/account";
+  const next = new URLSearchParams(window.location.search).get("next");
+  return next?.startsWith("/") && !next.startsWith("//") ? next : "/account";
+}
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
 
 export default function AccountPage() {
-  const { user, loading, signIn, signUp, signInWithOtp, verifyOtp, signInWithGoogle, signOut } = useAuth();
+  const { user, loading, signIn, signUp, signInWithOtp, verifyOtp, signInWithGoogle, requestPasswordReset, signOut } = useAuth();
   const router = useRouter();
-  const [mode, setMode] = useState<"signin" | "signup" | "phone">("signup");
+  const [mode, setMode] = useState<AuthMode>("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [orders, setOrders] = useState<OrderSummary[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+  const [ordersError, setOrdersError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
-    setSubmitting(true);
-
-    if (mode === "phone") {
-      if (!otpSent) {
-        // Send OTP
-        const phoneNum = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
-        const { error } = await signInWithOtp(phoneNum, name);
-        if (error) {
-          setError(error);
-        } else {
-          setOtpSent(true);
-          setSuccess("OTP sent to " + phoneNum);
-        }
-      } else {
-        // Verify OTP
-        const phoneNum = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
-        const { error } = await verifyOtp(phoneNum, otp);
-        if (error) {
-          setError(error);
-        } else {
-          router.push("/");
-        }
-      }
-    } else if (mode === "signup") {
-      const { error } = await signUp(email, password, name, phone);
-      if (error) {
-        setError(error);
-      } else {
-        setSuccess("Account created. Check your email to confirm.");
-        setEmail("");
-        setPassword("");
-        setName("");
-        setPhone("");
-      }
-    } else {
-      const { error } = await signIn(email, password);
-      if (error) {
-        setError(error);
-      } else {
-        router.push("/");
-      }
+  useEffect(() => {
+    if (loading) return;
+    if (!user) {
+      setOrders([]);
+      setOrdersLoading(false);
+      return;
     }
 
-    setSubmitting(false);
+    const next = getRedirectTarget();
+    if (next !== "/account") {
+      router.replace(next);
+      return;
+    }
+
+    let cancelled = false;
+    setOrdersLoading(true);
+    setOrdersError(null);
+    supabase
+      .from("orders")
+      .select("id, created_at, status, total")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .then(({ data, error: orderError }) => {
+        if (cancelled) return;
+        if (orderError) {
+          setOrdersError("We couldn't load your orders. Please try again.");
+          setOrders([]);
+        } else {
+          setOrders((data as OrderSummary[] | null) ?? []);
+        }
+        setOrdersLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [loading, router, user]);
+
+  const resetMessages = () => {
+    setError(null);
+    setSuccess(null);
+  };
+
+  const changeMode = (nextMode: AuthMode) => {
+    setMode(nextMode);
+    setOtpSent(false);
+    setOtp("");
+    resetMessages();
+  };
+
+  const completeAuth = (message?: string) => {
+    if (message) setSuccess(message);
+    const next = getRedirectTarget();
+    if (next !== "/account") router.replace(next);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    resetMessages();
+    setSubmitting(true);
+
+    try {
+      if (mode === "forgot") {
+        const result = await requestPasswordReset(email);
+        if (result.error) setError(result.error);
+        else setSuccess("If an account exists for that email, a password reset link has been sent.");
+        return;
+      }
+
+      if (mode === "phone") {
+        const phoneNumber = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
+        if (!otpSent) {
+          const result = await signInWithOtp(phoneNumber, name);
+          if (result.error) setError(result.error);
+          else {
+            setOtpSent(true);
+            setSuccess(`OTP sent to ${phoneNumber}`);
+          }
+        } else {
+          const result = await verifyOtp(phoneNumber, otp);
+          if (result.error) setError(result.error);
+          else completeAuth();
+        }
+        return;
+      }
+
+      if (mode === "signup") {
+        const result = await signUp(email, password, name, phone);
+        if (result.error) setError(result.error);
+        else completeAuth("Account created successfully.");
+        return;
+      }
+
+      const result = await signIn(email, password);
+      if (result.error) setError(result.error);
+      else completeAuth();
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    resetMessages();
+    const result = await signInWithGoogle(getRedirectTarget());
+    if (result.error) setError(result.error);
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-6 h-6 border border-gold border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center"><div className="w-6 h-6 border border-gold border-t-transparent rounded-full animate-spin" /></div>;
   }
 
-  // Signed in state
   if (user) {
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email;
-
     return (
       <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
-        <div className="max-w-[600px] mx-auto text-center">
-          <ScrollReveal>
-            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-              Welcome Back
-            </p>
-            <h1 className="font-display text-3xl md:text-4xl uppercase mb-6">
-              {displayName}
-            </h1>
-            <p className="text-gray-500 text-xs mb-2">{user.email}</p>
-            <p className="text-gray-600 text-[10px] mb-10">Member since {new Date(user.created_at).toLocaleDateString()}</p>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">Welcome Back</p>
+            <h1 className="font-display text-3xl md:text-4xl uppercase mb-4">{displayName}</h1>
+            <p className="text-gray-500 text-xs mb-2">{user.email || user.phone}</p>
+            <p className="text-gray-600 text-[10px] mb-8">Member since {new Date(user.created_at).toLocaleDateString("en-IN")}</p>
+            <button onClick={() => void signOut()} className="border border-white/10 text-white text-[11px] uppercase tracking-brutal px-10 py-4 rounded-full hover:border-gold hover:text-gold transition-all">Sign Out</button>
+          </div>
 
-            <MagneticButton strength={0.15} className="inline-block">
-              <button
-                onClick={signOut}
-                className="border border-white/10 text-white text-[11px] uppercase tracking-brutal px-10 py-4 rounded-full hover:border-gold hover:text-gold transition-all duration-300"
-              >
-                Sign Out
-              </button>
-            </MagneticButton>
-          </ScrollReveal>
+          <div className="border-t border-white/10 pt-10">
+            <div className="flex items-end justify-between gap-4 mb-6">
+              <div>
+                <p className="text-[10px] uppercase tracking-brutal text-gold mb-2">Your Purchases</p>
+                <h2 className="font-display text-3xl uppercase">Order History</h2>
+              </div>
+            </div>
+
+            {ordersLoading ? (
+              <div className="py-16 flex justify-center"><div className="w-5 h-5 border border-gold border-t-transparent rounded-full animate-spin" /></div>
+            ) : ordersError ? (
+              <div className="border border-red-400/20 bg-red-400/5 rounded-2xl p-6 text-center"><p className="text-red-300 text-sm">{ordersError}</p></div>
+            ) : orders.length === 0 ? (
+              <div className="border border-white/10 rounded-2xl p-8 text-center">
+                <p className="text-gray-400 text-sm mb-5">You haven&apos;t placed any orders yet.</p>
+                <Link href="/collection" className="text-gold text-[11px] uppercase tracking-brutal hover:text-white">Explore the collection</Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {orders.map((order) => (
+                  <article key={order.id} className="border border-white/10 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                    <div>
+                      <p className="text-white text-sm font-medium">Order #{order.id.slice(0, 8).toUpperCase()}</p>
+                      <p className="text-gray-500 text-xs mt-1">{new Date(order.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                      <span className="text-[10px] uppercase tracking-wider text-gold border border-gold/30 rounded-full px-3 py-1.5">{order.status}</span>
+                      <span className="text-sm text-white min-w-20 sm:text-right">{formatCurrency(order.total)}</span>
+                      <Link href={`/invoice/${order.id}`} className="text-[10px] uppercase tracking-brutal text-gray-400 hover:text-gold">Invoice →</Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     );
   }
 
-  // Sign in / Sign up form
+  const title = mode === "signin" ? "Sign In" : mode === "signup" ? "Create Account" : mode === "forgot" ? "Reset Password" : "Phone Sign In";
   return (
     <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
       <div className="max-w-[420px] mx-auto">
-        <ScrollReveal>
-          <div className="text-center mb-12">
-            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-              {mode === "signin" ? "Welcome Back" : "Join the Selected"}
-            </p>
-            <h1 className="font-display text-5xl md:text-6xl uppercase mb-4">
-              {mode === "signin" ? "Sign In" : "Create Account"}
-            </h1>
-            <p className="text-gray-500 text-sm">
-              {mode === "signin"
-                ? "Sign in to track orders and access your wishlist."
-                : "Create an account for early access to drops and order tracking."}
-            </p>
-          </div>
-        </ScrollReveal>
+        <div className="text-center mb-10">
+          <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">{mode === "signup" ? "Join the Selected" : "Welcome Back"}</p>
+          <h1 className="font-display text-5xl md:text-6xl uppercase mb-4">{title}</h1>
+          <p className="text-gray-500 text-sm">{mode === "forgot" ? "Enter your email and we'll send you a secure reset link." : "Access order tracking and your account."}</p>
+        </div>
 
-        <ScrollReveal delay={0.1}>
-          {/* Auth method tabs — only show for sign-in */}
-          {mode !== "signup" && (
-            <div className="flex justify-center gap-2 mb-10">
-              <button
-                onClick={() => { setMode("signin"); setError(null); setSuccess(null); setOtpSent(false); }}
-                className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "signin" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
-              >
-                Email
-              </button>
-              <button
-                onClick={() => { setMode("phone"); setError(null); setSuccess(null); setOtpSent(false); }}
-                className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full transition-all ${mode === "phone" ? "bg-white text-black" : "border border-white/10 text-gray-400 hover:text-white"}`}
-              >
-                Phone OTP
-              </button>
-            </div>
+        {mode !== "signup" && mode !== "forgot" && (
+          <div className="flex justify-center gap-2 mb-8">
+            <button type="button" onClick={() => changeMode("signin")} className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full ${mode === "signin" ? "bg-white text-black" : "border border-white/10 text-gray-400"}`}>Email</button>
+            <button type="button" onClick={() => changeMode("phone")} className={`text-[10px] uppercase tracking-brutal px-5 py-2.5 rounded-full ${mode === "phone" ? "bg-white text-black" : "border border-white/10 text-gray-400"}`}>Phone OTP</button>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {mode === "phone" ? (
+            otpSent ? (
+              <label className="block"><span className="field-label">Enter OTP</span><input type="text" inputMode="numeric" value={otp} onChange={(event) => setOtp(event.target.value)} required maxLength={6} className="auth-input text-center tracking-[8px] text-lg" placeholder="------" /></label>
+            ) : (
+              <><label className="block"><span className="field-label">Full Name</span><input type="text" value={name} onChange={(event) => setName(event.target.value)} required className="auth-input" placeholder="Your full name" /></label><label className="block"><span className="field-label">Phone Number</span><input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required className="auth-input" placeholder="+91 XXXXX XXXXX" /></label></>
+            )
+          ) : (
+            <>
+              {mode === "signup" && <><label className="block"><span className="field-label">Full Name</span><input type="text" value={name} onChange={(event) => setName(event.target.value)} required className="auth-input" placeholder="Your full name" /></label><label className="block"><span className="field-label">Phone Number</span><input type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required className="auth-input" placeholder="+91 XXXXX XXXXX" /></label></>}
+              <label className="block"><span className="field-label">Email</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required className="auth-input" placeholder="your@email.com" /></label>
+              {mode !== "forgot" && <label className="block"><span className="field-label">Password</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} className="auth-input" placeholder={mode === "signup" ? "Min 6 characters" : "••••••••"} /></label>}
+            </>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {mode === "phone" ? (
-              <>
-                {!otpSent ? (
-                  <>
-                    <div>
-                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                        placeholder="Your full name"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        required
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                        placeholder="+91 XXXXX XXXXX"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                      Enter OTP
-                    </label>
-                    <input
-                      type="text"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      required
-                      maxLength={6}
-                      className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors text-center tracking-[8px] text-lg"
-                      placeholder="------"
-                    />
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                {mode === "signup" && (
-                  <>
-                    <div>
-                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                        placeholder="Your full name"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        required
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                        placeholder="+91 XXXXX XXXXX"
-                      />
-                    </div>
-                  </>
-                )}
-                <div>
-                  <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                    Email
-                  </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                placeholder="your@email.com"
-              />
-            </div>
+          {mode === "signin" && <div className="text-right"><button type="button" onClick={() => changeMode("forgot")} className="text-xs text-gray-500 hover:text-gold">Forgot password?</button></div>}
+          {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+          {success && <p className="text-green-400 text-xs text-center">{success}</p>}
+          <button type="submit" disabled={submitting} className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 rounded-full hover:bg-gold disabled:opacity-50">{submitting ? "..." : mode === "phone" ? (otpSent ? "Verify OTP" : "Send OTP") : mode === "signin" ? "Sign In" : mode === "signup" ? "Create Account" : "Send Reset Link"}</button>
+        </form>
 
-            <div>
-              <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                placeholder={mode === "signup" ? "Min 6 characters" : "••••••••"}
-              />
-            </div>
-              </>
-            )}
+        {mode === "phone" && otpSent && <button type="button" onClick={() => { setOtpSent(false); setOtp(""); resetMessages(); }} className="mt-4 w-full text-gray-500 text-xs hover:text-gold">Didn&apos;t receive it? Send again</button>}
 
-            {error && (
-              <p className="text-red-400 text-xs text-center">{error}</p>
-            )}
+        {mode !== "forgot" && <div className="mt-8"><div className="flex items-center gap-4 mb-6"><div className="flex-1 h-px bg-white/10" /><span className="text-gray-600 text-[10px] uppercase tracking-brutal">Or</span><div className="flex-1 h-px bg-white/10" /></div><button type="button" onClick={() => void handleGoogle()} className="w-full border border-white/10 rounded-full py-4 text-white text-[11px] uppercase tracking-brutal hover:border-gold hover:text-gold">Continue with Google</button></div>}
 
-            {success && (
-              <p className="text-green-400 text-xs text-center">{success}</p>
-            )}
-
-            <MagneticButton strength={0.15} className="w-full pt-2">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 rounded-full hover:bg-gold transition-colors duration-300 disabled:opacity-50"
-              >
-                {submitting
-                  ? "..."
-                  : mode === "phone"
-                  ? otpSent ? "Verify OTP" : "Send OTP"
-                  : mode === "signin"
-                  ? "Sign In"
-                  : "Create Account"}
-              </button>
-            </MagneticButton>
-          </form>
-
-          {mode === "phone" && otpSent && (
-            <div className="mt-4 text-center">
-              <button
-                onClick={() => { setOtpSent(false); setOtp(""); setError(null); setSuccess(null); }}
-                className="text-gray-500 text-xs hover:text-gold transition-colors"
-              >
-                Didn&apos;t receive? Send again
-              </button>
-            </div>
-          )}
-
-          {/* Google Sign In — divider + button */}
-          <div className="mt-8">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="flex-1 h-[0.5px] bg-white/10"></div>
-              <span className="text-gray-600 text-[10px] uppercase tracking-brutal">Or</span>
-              <div className="flex-1 h-[0.5px] bg-white/10"></div>
-            </div>
-            <button
-              onClick={() => signInWithGoogle()}
-              className="w-full flex items-center justify-center gap-3 border border-white/10 rounded-full py-4 text-white text-[11px] uppercase tracking-brutal hover:border-gold hover:text-gold transition-all duration-300"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              Continue with Google
-            </button>
-          </div>
-
-          <div className="mt-10 text-center">
-            {mode === "signup" ? (
-              <button
-                onClick={() => { setMode("signin"); setError(null); setSuccess(null); }}
-                className="text-gray-500 text-xs hover:text-gold transition-colors"
-              >
-                Already have an account? Sign in
-              </button>
-            ) : (
-              <button
-                onClick={() => { setMode("signup"); setError(null); setSuccess(null); setOtpSent(false); }}
-                className="text-gray-500 text-xs hover:text-gold transition-colors"
-              >
-                Don&apos;t have an account? Create one
-              </button>
-            )}
-          </div>
-        </ScrollReveal>
+        <div className="mt-10 text-center">
+          {mode === "signup" ? <button onClick={() => changeMode("signin")} className="text-gray-500 text-xs hover:text-gold">Already have an account? Sign in</button> : mode === "forgot" ? <button onClick={() => changeMode("signin")} className="text-gray-500 text-xs hover:text-gold">Back to sign in</button> : <button onClick={() => changeMode("signup")} className="text-gray-500 text-xs hover:text-gold">Don&apos;t have an account? Create one</button>}
+        </div>
       </div>
+      <style jsx>{`
+        .field-label { display: block; margin-bottom: 0.5rem; color: rgb(107 114 128); font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; }
+        .auth-input { width: 100%; border: 1px solid rgba(255,255,255,.1); border-radius: 9999px; background: rgba(255,255,255,.03); padding: 1rem 1.5rem; color: white; font-size: .875rem; outline: none; }
+        .auth-input:focus { border-color: var(--gold, #c5a46d); }
+      `}</style>
     </section>
   );
 }

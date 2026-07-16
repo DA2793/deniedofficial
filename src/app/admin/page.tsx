@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase/client";
 
-const ADMIN_EMAILS = ["da.2793@yahoo.com", "geetikatyagi75@gmail.com", "lokendras69@gmail.com"];
+const ADMIN_EMAILS = ["da.2793@yahoo.com", "geetikatyagi75@gmail.com"];
 
 interface Order {
   id: string;
@@ -25,55 +25,101 @@ interface Order {
   order_id: string;
   promo_code: string | null;
   promo_discount: number;
+  courier_partner: string | null;
+  tracking_number: string | null;
+  tracking_url: string | null;
+  shipped_at: string | null;
+  shipment_email_sent_at: string | null;
   items: { productId: number; name: string; price: number; quantity: number; color: string; size: string }[];
 }
+
+type ShipmentForm = { courierPartner: string; trackingNumber: string; trackingUrl: string };
+const EMPTY_SHIPMENT: ShipmentForm = { courierPartner: "", trackingNumber: "", trackingUrl: "" };
 
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-
   const [activeTab, setActiveTab] = useState<"orders" | "customers">("orders");
   const [orders, setOrders] = useState<Order[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
+  const [shipment, setShipment] = useState<ShipmentForm>(EMPTY_SHIPMENT);
+  const [dataError, setDataError] = useState("");
+  const [shipmentError, setShipmentError] = useState("");
 
-  // Auth check
+  async function loadOrders() {
+    setDataError("");
+    const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+    if (error) {
+      setDataError("Orders could not be loaded. Confirm the admin RLS policies have been applied.");
+    } else {
+      const nextOrders = (data ?? []) as Order[];
+      setOrders(nextOrders);
+      setSelectedOrder((current) => current ? nextOrders.find((order) => order.id === current.id) ?? null : null);
+    }
+    setLoadingData(false);
+  }
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.push("/account");
-    }
-    if (!authLoading && user && !ADMIN_EMAILS.includes(user.email || "")) {
-      router.push("/");
-    }
+    if (!authLoading && !user) router.push("/account");
+    if (!authLoading && user && !ADMIN_EMAILS.includes(user.email || "")) router.push("/");
   }, [user, authLoading, router]);
 
-  // Load orders
   useEffect(() => {
-    if (user && ADMIN_EMAILS.includes(user.email || "")) {
-      loadOrders();
-    }
+    if (user && ADMIN_EMAILS.includes(user.email || "")) void loadOrders();
   }, [user]);
 
-  const loadOrders = async () => {
-    const { data } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (data) setOrders(data as Order[]);
-    setLoadingData(false);
+  const selectOrder = (order: Order) => {
+    if (selectedOrder?.id === order.id) {
+      setSelectedOrder(null);
+      return;
+    }
+    setSelectedOrder(order);
+    setShipment({
+      courierPartner: order.courier_partner ?? "",
+      trackingNumber: order.tracking_number ?? "",
+      trackingUrl: order.tracking_url ?? "",
+    });
+    setShipmentError("");
   };
 
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
-    setUpdatingStatus(true);
-    await supabase
-      .from("orders")
-      .update({ status: newStatus })
-      .eq("id", orderId);
-    await loadOrders();
-    setUpdatingStatus(false);
-    if (selectedOrder?.id === orderId) {
-      setSelectedOrder({ ...selectedOrder, status: newStatus });
+    setUpdatingOrderId(orderId);
+    setShipmentError("");
+    const { error } = await supabase.from("orders").update({ status: newStatus }).eq("id", orderId);
+    if (error) setShipmentError("Status update failed. Check your admin session and RLS policies.");
+    else await loadOrders();
+    setUpdatingOrderId(null);
+  };
+
+  const submitShipment = async (event: React.FormEvent<HTMLFormElement>, order: Order) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setUpdatingOrderId(order.id);
+    setShipmentError("");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error("Your admin session expired. Sign in again.");
+      const response = await fetch(`/api/admin/orders/${encodeURIComponent(order.id)}/ship`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify(shipment),
+      });
+      const result = await response.json() as { error?: string; order?: Order; shipmentSaved?: boolean };
+      if (result.order) {
+        setOrders((current) => current.map((item) => item.id === order.id ? result.order! : item));
+        setSelectedOrder(result.order);
+      }
+      if (!response.ok) {
+        if (result.shipmentSaved) await loadOrders();
+        throw new Error(result.error || "Shipment could not be processed.");
+      }
+      await loadOrders();
+    } catch (error) {
+      setShipmentError(error instanceof Error ? error.message : "Shipment could not be processed.");
+    } finally {
+      setUpdatingOrderId(null);
     }
   };
 
@@ -153,6 +199,11 @@ export default function AdminPage() {
               <div className="text-center py-12">
                 <div className="w-6 h-6 border border-gold border-t-transparent rounded-full animate-spin mx-auto" />
               </div>
+            ) : dataError ? (
+              <div className="border border-red-500/20 rounded-xl p-8 text-center bg-red-500/[0.04]">
+                <p className="text-red-300 text-sm">{dataError}</p>
+                <button onClick={() => void loadOrders()} className="mt-4 px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full border border-white/10 text-gray-300">Retry</button>
+              </div>
             ) : orders.length === 0 ? (
               <div className="border border-white/[0.06] rounded-xl p-12 text-center bg-white/[0.02]">
                 <p className="text-gray-500">No orders yet.</p>
@@ -165,7 +216,7 @@ export default function AdminPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="border border-white/[0.06] rounded-xl p-6 bg-white/[0.02] cursor-pointer hover:border-gold/20 transition-colors"
-                    onClick={() => setSelectedOrder(selectedOrder?.id === order.id ? null : order)}
+                    onClick={() => selectOrder(order)}
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
@@ -229,34 +280,94 @@ export default function AdminPage() {
                           </div>
                         </div>
 
-                        {/* Status Update */}
-                        <div className="mt-6 flex flex-wrap gap-2">
-                          <a
-                            href={`/invoice/${order.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full bg-gold/20 text-gold hover:bg-gold/30 transition-all"
-                          >
-                            View Invoice
-                          </a>
-                          {["placed", "confirmed", "printing", "shipped", "delivered", "cancelled"].map((status) => (
-                            <button
-                              key={status}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                updateOrderStatus(order.id, status);
-                              }}
-                              disabled={updatingStatus || order.status === status}
-                              className={`px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full transition-all ${
-                                order.status === status
-                                  ? "bg-gold text-black"
-                                  : "border border-white/10 text-gray-400 hover:border-gold hover:text-gold"
-                              } disabled:opacity-50`}
+                        {/* Fulfillment */}
+                        <div className="mt-6 pt-6 border-t border-white/[0.06]" onClick={(event) => event.stopPropagation()}>
+                          <div className="flex flex-wrap items-center gap-2 mb-5">
+                            <a
+                              href={`/invoice/${order.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full bg-gold/20 text-gold hover:bg-gold/30 transition-all"
                             >
-                              {status}
-                            </button>
-                          ))}
+                              View Invoice
+                            </a>
+                            {["placed", "confirmed", "printing", "delivered", "cancelled"].map((status) => (
+                              <button
+                                key={status}
+                                type="button"
+                                onClick={() => void updateOrderStatus(order.id, status)}
+                                disabled={updatingOrderId === order.id || order.status === status}
+                                className={`px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full transition-all ${
+                                  order.status === status
+                                    ? "bg-gold text-black"
+                                    : "border border-white/10 text-gray-400 hover:border-gold hover:text-gold"
+                                } disabled:opacity-50`}
+                              >
+                                {status}
+                              </button>
+                            ))}
+                          </div>
+
+                          {order.status === "shipped" && order.tracking_number && (
+                            <div className="mb-5 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.04] p-4 text-sm">
+                              <p className="text-cyan-300 font-medium">{order.courier_partner} · {order.tracking_number}</p>
+                              <p className="text-gray-500 text-xs mt-1">
+                                Shipped {order.shipped_at ? new Date(order.shipped_at).toLocaleString("en-IN") : ""}
+                                {order.shipment_email_sent_at ? " · Customer notified" : " · Email pending"}
+                              </p>
+                              {order.tracking_url && <a href={order.tracking_url} target="_blank" rel="noopener noreferrer" className="inline-block text-gold text-xs mt-2 hover:underline">Open tracking page</a>}
+                            </div>
+                          )}
+
+                          {!order.shipment_email_sent_at && !["delivered", "cancelled"].includes(order.status) && (
+                            <form onSubmit={(event) => void submitShipment(event, order)} className="rounded-xl border border-white/[0.08] bg-black/20 p-4">
+                              <h4 className="text-white text-xs uppercase tracking-brutal mb-4">Ship & Notify Customer</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <label className="block">
+                                  <span className="block text-[9px] uppercase tracking-brutal text-gray-500 mb-2">Courier Partner *</span>
+                                  <input
+                                    required
+                                    maxLength={100}
+                                    value={shipment.courierPartner}
+                                    onChange={(event) => setShipment((current) => ({ ...current, courierPartner: event.target.value }))}
+                                    placeholder="e.g. Delhivery"
+                                    className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2.5 text-sm text-white outline-none focus:border-gold"
+                                  />
+                                </label>
+                                <label className="block">
+                                  <span className="block text-[9px] uppercase tracking-brutal text-gray-500 mb-2">Tracking Number *</span>
+                                  <input
+                                    required
+                                    maxLength={200}
+                                    value={shipment.trackingNumber}
+                                    onChange={(event) => setShipment((current) => ({ ...current, trackingNumber: event.target.value }))}
+                                    placeholder="Shipment reference"
+                                    className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2.5 text-sm text-white outline-none focus:border-gold"
+                                  />
+                                </label>
+                                <label className="block">
+                                  <span className="block text-[9px] uppercase tracking-brutal text-gray-500 mb-2">Tracking URL (optional)</span>
+                                  <input
+                                    type="url"
+                                    maxLength={2048}
+                                    value={shipment.trackingUrl}
+                                    onChange={(event) => setShipment((current) => ({ ...current, trackingUrl: event.target.value }))}
+                                    placeholder="https://..."
+                                    className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2.5 text-sm text-white outline-none focus:border-gold"
+                                  />
+                                </label>
+                              </div>
+                              {shipmentError && <p role="alert" className="text-red-300 text-xs mt-3">{shipmentError}</p>}
+                              <button
+                                type="submit"
+                                disabled={updatingOrderId === order.id}
+                                className="mt-4 px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full bg-gold text-black font-semibold disabled:opacity-50"
+                              >
+                                {updatingOrderId === order.id ? "Processing..." : order.status === "shipped" ? "Retry Shipment Email" : "Mark Shipped & Send Email"}
+                              </button>
+                            </form>
+                          )}
+                          {shipmentError && (order.shipment_email_sent_at || ["delivered", "cancelled"].includes(order.status)) && <p role="alert" className="text-red-300 text-xs mt-3">{shipmentError}</p>}
                         </div>
                       </motion.div>
                     )}

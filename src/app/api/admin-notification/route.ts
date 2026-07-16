@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { isInternalRequest } from "@/lib/internal-auth";
 
 export const dynamic = "force-dynamic";
+
+function escapeHtml(value: unknown, maxLength = 500) {
+  return String(value ?? "").slice(0, maxLength).replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
+  })[character]!);
+}
 
 const ADMIN_EMAILS = [
   "da.2793@yahoo.com",
@@ -10,6 +17,9 @@ const ADMIN_EMAILS = [
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isInternalRequest(request)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.error("RESEND_API_KEY not configured");
@@ -20,7 +30,32 @@ export async function POST(request: NextRequest) {
     }
 
     const resend = new Resend(apiKey);
-    const { order } = await request.json();
+    const { order: rawOrder } = await request.json();
+    if (!rawOrder || !Array.isArray(rawOrder.items)) {
+      return NextResponse.json({ error: "Invalid order" }, { status: 400 });
+    }
+    const order = {
+      ...rawOrder,
+      shipping_name: escapeHtml(rawOrder.shipping_name, 120),
+      shipping_email: escapeHtml(rawOrder.shipping_email, 254),
+      shipping_phone: escapeHtml(rawOrder.shipping_phone, 30),
+      shipping_address: escapeHtml(rawOrder.shipping_address, 500),
+      shipping_city: escapeHtml(rawOrder.shipping_city, 100),
+      shipping_state: escapeHtml(rawOrder.shipping_state, 100),
+      shipping_pincode: escapeHtml(rawOrder.shipping_pincode, 6),
+      payment_id: escapeHtml(rawOrder.payment_id, 100),
+      promo_code: rawOrder.promo_code ? escapeHtml(rawOrder.promo_code, 30) : null,
+      total: Number(rawOrder.total) || 0,
+      shipping: Number(rawOrder.shipping) || 0,
+      promo_discount: Number(rawOrder.promo_discount) || 0,
+      items: rawOrder.items.slice(0, 25).map((item: any) => ({
+        name: escapeHtml(item.name, 150),
+        color: escapeHtml(item.color, 80),
+        size: escapeHtml(item.size, 30),
+        quantity: Math.max(1, Math.min(10, Number(item.quantity) || 1)),
+        price: Math.max(0, Number(item.price) || 0),
+      })),
+    };
 
     const itemsList = order.items
       .map(
@@ -67,14 +102,15 @@ export async function POST(request: NextRequest) {
   </p>
 </div>`;
 
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "DENIED. Orders <notification@deniedofficial.com>",
       to: ADMIN_EMAILS,
       subject: `New Order — ₹${order.total?.toLocaleString("en-IN")} from ${order.shipping_name}`,
       html: emailHtml,
     });
+    if (error) throw new Error(error.message);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, id: data?.id });
   } catch (error: any) {
     console.error("Admin notification error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

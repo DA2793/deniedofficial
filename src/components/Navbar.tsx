@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
 const categories = ["T-Shirts", "Caps"];
-const filters = ["New In", "Best Sellers", "All Collection"];
+const filters = ["New In", "Signature"];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,15 +38,15 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between h-20">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between h-20 gap-3">
           {/* Logo */}
-          <Link href="/" className="relative z-10">
+          <Link href="/" className="relative z-10 shrink-0" aria-label="DENIED. home">
             <Image
               src="/assets/Brand Logo.png"
               alt="DENIED."
               width={180}
               height={50}
-              className="h-12 w-auto"
+              className="h-8 sm:h-10 md:h-12 w-auto"
               priority
             />
           </Link>
@@ -117,10 +117,10 @@ export default function Navbar() {
           </div>
 
           {/* Right icons */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-1 sm:gap-3 md:gap-5 shrink-0">
             {/* Account */}
             <div
-              className="relative"
+              className="relative hidden sm:block"
               onMouseEnter={() => setAccountHover(true)}
               onMouseLeave={() => setAccountHover(false)}
             >
@@ -151,7 +151,7 @@ export default function Navbar() {
               onMouseEnter={() => setWishlistHover(true)}
               onMouseLeave={() => setWishlistHover(false)}
             >
-              <Link href="/wishlist" className="relative text-gray-400 hover:text-gold transition-colors p-1" aria-label="Wishlist">
+              <Link href="/wishlist" className="relative w-10 h-10 inline-flex items-center justify-center text-gray-400 hover:text-gold transition-colors touch-manipulation" aria-label="Wishlist">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                 </svg>
@@ -182,7 +182,7 @@ export default function Navbar() {
               onMouseEnter={() => setCartHover(true)}
               onMouseLeave={() => setCartHover(false)}
             >
-              <Link href="/cart" className="relative text-gray-400 hover:text-gold transition-colors p-1" aria-label="Cart">
+              <Link href="/cart" className="relative w-10 h-10 inline-flex items-center justify-center text-gray-400 hover:text-gold transition-colors touch-manipulation" aria-label="Cart">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
@@ -211,21 +211,24 @@ export default function Navbar() {
 
             {/* Menu Toggle (mobile) */}
             <button
+              type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden relative z-10 w-8 h-8 flex flex-col justify-center gap-[6px]"
-              aria-label="Toggle menu"
+              className="md:hidden relative z-10 w-10 h-10 flex flex-col items-center justify-center gap-[6px] touch-manipulation"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
             >
               <motion.span
                 animate={menuOpen ? { rotate: 45, y: 7.5 } : { rotate: 0, y: 0 }}
-                className="w-full h-[1.5px] bg-white block origin-center"
+                className="w-6 h-[1.5px] bg-white block origin-center"
               />
               <motion.span
                 animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                className="w-full h-[1.5px] bg-white block"
+                className="w-6 h-[1.5px] bg-white block"
               />
               <motion.span
                 animate={menuOpen ? { rotate: -45, y: -7.5 } : { rotate: 0, y: 0 }}
-                className="w-full h-[1.5px] bg-white block origin-center"
+                className="w-6 h-[1.5px] bg-white block origin-center"
               />
             </button>
           </div>
@@ -236,16 +239,18 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            id="mobile-navigation"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-12"
+            className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8 sm:gap-12 px-4 pt-20 overflow-y-auto"
           >
             {[
               { label: "Collection", href: "/collection" },
               { label: "About", href: "/about" },
               { label: "Contact", href: "/contact" },
+              { label: "Account", href: "/account" },
             ].map((link, i) => (
               <motion.div
                 key={link.label}
@@ -257,7 +262,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-4xl font-display uppercase tracking-wide text-white hover:text-gold transition-colors"
+                  className="text-3xl sm:text-4xl font-display uppercase tracking-wide text-white hover:text-gold transition-colors"
                 >
                   {link.label}
                 </Link>

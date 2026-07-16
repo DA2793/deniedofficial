@@ -1,104 +1,34 @@
 "use client";
 
 import ScrollReveal from "@/components/ScrollReveal";
-import MagneticButton from "@/components/MagneticButton";
+
+const actions = [
+  { label: "Email Concierge", detail: "contact@deniedofficial.com", href: "mailto:contact@deniedofficial.com?subject=DENIED.%20Enquiry" },
+  { label: "Message on Instagram", detail: "@denied._official", href: "https://www.instagram.com/denied._official/", external: true },
+];
 
 export default function ContactPage() {
   return (
     <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
-      <div className="max-w-[1400px] mx-auto">
-        {/* Header */}
+      <div className="max-w-[1100px] mx-auto">
         <ScrollReveal>
-          <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-            Get in Touch
-          </p>
-          <h1 className="font-display text-6xl md:text-8xl uppercase mb-20">
-            Contact
-          </h1>
+          <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">Private Client Care</p>
+          <h1 className="font-display text-6xl md:text-8xl uppercase mb-6">Contact</h1>
+          <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xl mb-16">Product questions, order support, collaborations, or anything else—reach DENIED. directly through one of our official channels.</p>
         </ScrollReveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-          {/* Left — Info */}
-          <div className="space-y-12">
-            <ScrollReveal delay={0.1}>
-              <div>
-                <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
-                  Email
-                </p>
-                <a
-                  href="mailto:hello@deniedofficial.com"
-                  className="text-lg text-white hover:text-gold transition-colors"
-                >
-                  hello@deniedofficial.com
-                </a>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {actions.map((action, index) => (
+            <ScrollReveal key={action.label} delay={0.1 + index * 0.1}>
+              <a href={action.href} target={action.external ? "_blank" : undefined} rel={action.external ? "noopener noreferrer" : undefined} className="group min-h-56 border border-white/10 bg-white/[0.02] rounded-2xl p-8 flex flex-col justify-between hover:border-gold/40 transition-colors">
+                <span className="text-[10px] uppercase tracking-brutal text-gray-500">Official Channel 0{index + 1}</span>
+                <span>
+                  <span className="block font-display text-2xl uppercase text-white group-hover:text-gold transition-colors mb-3">{action.label}</span>
+                  <span className="text-sm text-gray-400 break-all">{action.detail}</span>
+                </span>
+                <span className="self-start rounded-full border border-white/10 px-5 py-2.5 text-[10px] uppercase tracking-brutal text-white group-hover:border-gold group-hover:text-gold transition-colors">Open Channel →</span>
+              </a>
             </ScrollReveal>
-
-            <ScrollReveal delay={0.2}>
-              <div>
-                <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
-                  Instagram
-                </p>
-                <a
-                  href="https://www.instagram.com/denied._official/"
-                  target="_blank"
-                  rel="noopener"
-                  className="text-lg text-white hover:text-gold transition-colors"
-                >
-                  @denied._official
-                </a>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          {/* Right — Form */}
-          <ScrollReveal delay={0.2}>
-            <form className="space-y-6">
-              <div>
-                <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-3">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-3">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  required
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="text-[10px] uppercase tracking-brutal text-gray-500 block mb-3">
-                  Message
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 text-white text-sm outline-none focus:border-gold transition-colors resize-none"
-                />
-              </div>
-
-              <div className="pt-4">
-                <MagneticButton strength={0.15}>
-                  <button
-                    type="submit"
-                    className="bg-white text-black text-[11px] uppercase tracking-brutal px-10 py-4 rounded-full hover:bg-gold transition-colors duration-300"
-                  >
-                    Send Message
-                  </button>
-                </MagneticButton>
-              </div>
-            </form>
-          </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>

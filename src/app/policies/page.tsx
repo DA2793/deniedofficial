@@ -88,16 +88,12 @@ export default function PoliciesPage() {
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white">₹999 & Above</span>
-                <span className="text-sm text-gold">Free Shipping</span>
-              </div>
-              <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Express Shipping</span>
-                <span className="text-sm text-gray-400">₹99 (additional)</span>
+                <span className="text-sm text-gold">Free Standard Shipping</span>
               </div>
             </div>
             <ul className="space-y-2 text-gray-500 text-xs">
-              <li>• Free shipping applies automatically at checkout.</li>
-              <li>• Express shipping is available for select pincodes and prepaid orders only.</li>
+              <li>• Free standard shipping applies automatically at checkout.</li>
+              <li>• We currently offer standard shipping only.</li>
             </ul>
           </div>
         </ScrollReveal>
@@ -120,24 +116,16 @@ export default function PoliciesPage() {
           <div className="mb-16">
             <h2 className="font-display text-3xl uppercase mb-8">Payment Policy</h2>
             
-            <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Accepted Payment Methods</h3>
+            <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Prepaid Payments via Razorpay</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-              {["Credit Cards", "Debit Cards", "UPI (GPay, PhonePe, Paytm)", "Wallets", "Cash on Delivery"].map((method) => (
+              {["Credit Cards", "Debit Cards", "UPI", "Other Razorpay Options"].map((method) => (
                 <div key={method} className="border border-white/[0.06] px-4 py-3 text-xs text-gray-300 rounded-full">
                   {method}
                 </div>
               ))}
             </div>
             <p className="text-gray-500 text-xs mb-8">
-              All payments are processed securely through Razorpay. We do not store card details or banking credentials.
-            </p>
-
-            <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Cash on Delivery (COD)</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              COD is available only on select options with a flat handling fee of ₹99. Available on eligible serviceable pincodes.
-            </p>
-            <p className="text-gray-500 text-xs">
-              DENIED. reserves the right to disable COD for specific users, locations, or orders at its discretion.
+              Orders must be prepaid online through Razorpay. Available payment options are shown by Razorpay at checkout. All orders require successful online payment, and we do not store card details or banking credentials.
             </p>
           </div>
         </ScrollReveal>
@@ -186,7 +174,7 @@ export default function PoliciesPage() {
 
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">To Request Cancellation</h3>
             <ul className="space-y-2 text-gray-400 text-sm mb-8">
-              <li>• Contact us immediately at <a href="mailto:hello@deniedofficial.com" className="text-white hover:text-gold transition-colors">hello@deniedofficial.com</a></li>
+              <li>• Contact us immediately at <a href="mailto:contact@deniedofficial.com" className="text-white hover:text-gold transition-colors">contact@deniedofficial.com</a></li>
               <li>• Include your Order ID and reason for cancellation</li>
               <li>• Cancellation requests are processed within 24 hours</li>
             </ul>
@@ -234,10 +222,10 @@ export default function PoliciesPage() {
           <div className="mb-16">
             <h2 className="font-display text-3xl uppercase mb-8">Order Tracking</h2>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Once your order is dispatched, you will receive a shipping confirmation with a live tracking link via email.
+              When carrier details are available after dispatch, we will send the shipping or tracking information associated with your order by email.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
-              If you do not receive tracking details within 48 hours of your order entering the &quot;Shipped&quot; stage, please contact our support team.
+              Tracking availability and update frequency depend on the logistics provider. For dispatch questions, contact <a href="mailto:contact@deniedofficial.com" className="text-white hover:text-gold transition-colors">contact@deniedofficial.com</a> with your Order ID.
             </p>
           </div>
         </ScrollReveal>
@@ -279,7 +267,7 @@ export default function PoliciesPage() {
           <div className="mb-16">
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Pricing</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              All prices displayed on the website are inclusive of all charges unless stated otherwise. Shipping fees or COD charges, where applicable, will be clearly displayed during checkout.
+              All prices displayed on the website are inclusive of all charges unless stated otherwise. Standard shipping fees, where applicable, are clearly displayed during checkout.
             </p>
           </div>
         </ScrollReveal>

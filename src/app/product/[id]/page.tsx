@@ -40,18 +40,19 @@ function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClo
     });
   }, []);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (scale <= 1) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
     setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging) return;
     setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
   };
 
-  const handleMouseUp = () => setDragging(false);
+  const handlePointerUp = () => setDragging(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -88,18 +89,19 @@ function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClo
       </div>
 
       {/* Hint */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 text-[10px] uppercase tracking-brutal z-10">
-        Scroll to zoom · Drag to pan · Esc to close
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center text-gray-500 text-[10px] uppercase tracking-brutal z-10">
+        Use controls to zoom · Drag to pan · Esc to close
       </div>
 
       {/* Image */}
       <div
         className="w-full h-full flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing"
         onWheel={handleWheel}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        style={{ touchAction: scale > 1 ? "none" : "manipulation" }}
       >
         <div
           className="relative w-[80vmin] h-[80vmin] transition-transform duration-150 ease-out"
@@ -168,7 +170,19 @@ export default function ProductPage() {
             {/* Main Image + Vertical Nav */}
             <div className="flex gap-4">
               {/* Image */}
-              <div className="relative flex-1 aspect-[3/4] overflow-hidden rounded-lg border border-white/[0.06] cursor-zoom-in" onClick={() => setZoomOpen(true)}>
+              <div
+                className="relative flex-1 aspect-[3/4] overflow-hidden rounded-lg border border-white/[0.06] cursor-zoom-in"
+                onClick={() => setZoomOpen(true)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setZoomOpen(true);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open zoomed view of ${product.name}`}
+              >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImage}
@@ -208,10 +222,12 @@ export default function ProductPage() {
                 <div className="flex flex-col items-center justify-center gap-4">
                   {/* Up arrow */}
                   <motion.button
+                    type="button"
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setActiveImage((prev) => (prev === 0 ? currentImages.length - 1 : prev - 1))}
-                    className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
+                    className="w-11 h-11 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300 touch-manipulation"
+                    aria-label="Previous product image"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M18 15l-6-6-6 6" />
@@ -221,25 +237,34 @@ export default function ProductPage() {
                   {/* Progress dots */}
                   <div className="flex flex-col items-center gap-1.5">
                     {currentImages.map((_, i) => (
-                      <motion.div
+                      <button
+                        type="button"
                         key={i}
-                        animate={{
-                          height: activeImage === i ? 20 : 6,
-                          backgroundColor: activeImage === i ? "#c9a96e" : "rgba(255,255,255,0.15)",
-                        }}
-                        transition={{ duration: 0.3 }}
-                        className="w-[2px] rounded-full cursor-pointer"
                         onClick={() => setActiveImage(i)}
-                      />
+                        className="w-11 h-6 flex items-center justify-center touch-manipulation"
+                        aria-label={`Show product image ${i + 1}`}
+                        aria-current={activeImage === i ? "true" : undefined}
+                      >
+                        <motion.span
+                          animate={{
+                            height: activeImage === i ? 20 : 6,
+                            backgroundColor: activeImage === i ? "#c9a96e" : "rgba(255,255,255,0.15)",
+                          }}
+                          transition={{ duration: 0.3 }}
+                          className="block w-[2px] rounded-full"
+                        />
+                      </button>
                     ))}
                   </div>
 
                   {/* Down arrow */}
                   <motion.button
+                    type="button"
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setActiveImage((prev) => (prev === currentImages.length - 1 ? 0 : prev + 1))}
-                    className="w-10 h-10 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300"
+                    className="w-11 h-11 border border-white/10 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-gold transition-all duration-300 touch-manipulation"
+                    aria-label="Next product image"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M6 9l6 6 6-6" />
@@ -254,9 +279,11 @@ export default function ProductPage() {
               <div className="flex gap-2 mt-4">
                 {currentImages.map((img, i) => (
                   <button
+                    type="button"
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`relative w-20 h-24 overflow-hidden rounded-md border transition-all duration-300 ${
+                    aria-label={`Show ${product.name} image ${i + 1}`}
+                    className={`relative w-20 h-24 overflow-hidden rounded-md border transition-all duration-300 touch-manipulation ${
                       activeImage === i
                         ? "border-gold opacity-100"
                         : "border-white/[0.06] opacity-50 hover:opacity-100"
@@ -320,12 +347,13 @@ export default function ProductPage() {
               <p className="text-[10px] uppercase tracking-brutal text-gray-400 mb-4">
                 Colour {selectedColor && <span className="text-white ml-2">— {selectedColor}</span>}
               </p>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 {product.details.colors.map((color) => (
                   <button
+                    type="button"
                     key={color}
                     onClick={() => { setSelectedColor(color); setActiveImage(0); }}
-                    className={`px-5 py-2.5 text-xs uppercase tracking-wide border transition-all duration-300 ${
+                    className={`min-h-11 px-5 py-2.5 rounded-full text-xs uppercase tracking-wide border transition-all duration-300 touch-manipulation ${
                       selectedColor === color
                         ? "border-gold text-white bg-gold/10"
                         : "border-white/10 text-gray-400 hover:border-white/30"

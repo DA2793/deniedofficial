@@ -1,127 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { getSupabaseAdmin } from "@/lib/supabase/server";
+import Razorpay from "razorpay";
+import { getRequestUser } from "@/lib/auth/server";
+import { finalizePaidOrder, loadPendingOrder } from "@/lib/orders/finalize";
+
+function safeSignatureMatch(expected: string, supplied: unknown) {
+  if (typeof supplied !== "string" || expected.length !== supplied.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(supplied));
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      orderDetails,
-    } = await req.json();
+    const user = await getRequestUser(req);
+    if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
 
-    // Verify signature
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const body = await req.json();
+    const orderId = String(body.razorpay_order_id || "");
+    const paymentId = String(body.razorpay_payment_id || "");
+    const signature = body.razorpay_signature;
+    if (!orderId || !paymentId || !signature) {
+      return NextResponse.json({ error: "Incomplete payment response" }, { status: 400 });
+    }
+
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keyId || !keySecret) throw new Error("Payment service not configured");
+
     const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
-      .update(body)
+      .createHmac("sha256", keySecret)
+      .update(`${orderId}|${paymentId}`)
       .digest("hex");
-
-    const isValid = expectedSignature === razorpay_signature;
-
-    if (!isValid) {
+    if (!safeSignatureMatch(expectedSignature, signature)) {
       return NextResponse.json({ verified: false, error: "Payment verification failed" }, { status: 400 });
     }
 
-    // Save order to Supabase
-    const { error: orderError } = await getSupabaseAdmin().from("orders").insert({
-      user_id: orderDetails.userId,
-      payment_id: razorpay_payment_id,
-      order_id: razorpay_order_id,
-      status: "placed",
-      items: orderDetails.items,
-      total: orderDetails.total,
-      shipping: orderDetails.shipping,
-      promo_code: orderDetails.promoCode || null,
-      promo_discount: orderDetails.promoDiscount || 0,
-      shipping_name: orderDetails.shippingName,
-      shipping_email: orderDetails.shippingEmail,
-      shipping_phone: orderDetails.shippingPhone,
-      shipping_address: orderDetails.shippingAddress,
-      shipping_city: orderDetails.shippingCity,
-      shipping_state: orderDetails.shippingState,
-      shipping_pincode: orderDetails.shippingPincode,
+    const pending = await loadPendingOrder(orderId);
+    if (!pending || pending.user_id !== user.id) {
+      return NextResponse.json({ error: "Order ownership mismatch" }, { status: 403 });
+    }
+
+    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
+    const [razorpayOrder, payment] = await Promise.all([
+      razorpay.orders.fetch(orderId),
+      razorpay.payments.fetch(paymentId),
+    ]);
+
+    const paymentEntity = payment as any;
+    const orderEntity = razorpayOrder as any;
+    const expectedAmount = pending.total * 100;
+    const orderUserId = String(orderEntity.notes?.user_id || "");
+    const validRemotePayment =
+      String(paymentEntity.order_id || "") === orderId &&
+      Number(paymentEntity.amount) === expectedAmount &&
+      String(paymentEntity.currency || "").toUpperCase() === "INR" &&
+      paymentEntity.status === "captured" &&
+      Number(orderEntity.amount) === expectedAmount &&
+      String(orderEntity.currency || "").toUpperCase() === "INR" &&
+      orderUserId === user.id;
+
+    if (!validRemotePayment) {
+      return NextResponse.json({ verified: false, error: "Payment details could not be verified" }, { status: 400 });
+    }
+
+    const result = await finalizePaidOrder({
+      razorpayOrderId: orderId,
+      paymentId,
+      amountPaise: Number(paymentEntity.amount),
+      currency: String(paymentEntity.currency),
+      origin: req.nextUrl.origin,
+      expectedUserId: user.id,
     });
 
-    if (orderError) {
-      console.error("Order save error:", orderError);
-    }
-
-    // Save/update user address for next time
-    const { error: addressError } = await getSupabaseAdmin().from("user_addresses").upsert({
-      user_id: orderDetails.userId,
-      name: orderDetails.shippingName,
-      phone: orderDetails.shippingPhone,
-      address: orderDetails.shippingAddress,
-      city: orderDetails.shippingCity,
-      state: orderDetails.shippingState,
-      pincode: orderDetails.shippingPincode,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "user_id" });
-
-    if (addressError) {
-      console.error("Address save error:", addressError);
-    }
-
-    // Send order confirmation to customer (fire and forget)
-    const baseUrl = req.nextUrl.origin;
-    const emailPayload = {
-      orderId: razorpay_order_id,
-      paymentId: razorpay_payment_id,
-      name: orderDetails.shippingName,
-      email: orderDetails.shippingEmail,
-      phone: orderDetails.shippingPhone,
-      items: orderDetails.items,
-      total: orderDetails.total,
-      shipping: orderDetails.shipping,
-      promoCode: orderDetails.promoCode || null,
-      promoDiscount: orderDetails.promoDiscount || 0,
-      shippingAddress: orderDetails.shippingAddress,
-      shippingCity: orderDetails.shippingCity,
-      shippingState: orderDetails.shippingState,
-      shippingPincode: orderDetails.shippingPincode,
-    };
-
-    try {
-      await fetch(`${baseUrl}/api/send-email`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "order-confirmation", data: emailPayload }),
-      });
-    } catch (emailError) {
-      console.error("Customer email error:", emailError);
-    }
-
-    // Send admin notification (fire and forget)
-    try {
-      await fetch(`${baseUrl}/api/admin-notification`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          order: {
-            payment_id: razorpay_payment_id,
-            items: orderDetails.items,
-            total: orderDetails.total,
-            shipping: orderDetails.shipping,
-            promo_code: orderDetails.promoCode || null,
-            promo_discount: orderDetails.promoDiscount || 0,
-            shipping_name: orderDetails.shippingName,
-            shipping_email: orderDetails.shippingEmail,
-            shipping_phone: orderDetails.shippingPhone,
-            shipping_address: orderDetails.shippingAddress,
-            shipping_city: orderDetails.shippingCity,
-            shipping_state: orderDetails.shippingState,
-            shipping_pincode: orderDetails.shippingPincode,
-          },
-        }),
-      });
-    } catch (adminError) {
-      console.error("Admin notification error:", adminError);
-    }
-
-    return NextResponse.json({ verified: true, paymentId: razorpay_payment_id });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({
+      verified: true,
+      paymentId,
+      orderId: result.order.id,
+      alreadyProcessed: result.alreadyProcessed,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Payment verification failed";
+    console.error("Verify payment error:", message);
+    return NextResponse.json({ verified: false, error: message }, { status: 500 });
   }
 }

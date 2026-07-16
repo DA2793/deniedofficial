@@ -9,6 +9,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import MagneticButton from "@/components/MagneticButton";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
+import { PROMO_CODES } from "@/lib/checkout";
 
 declare global {
   interface Window {
@@ -30,6 +31,12 @@ export default function CheckoutPage() {
     state: "",
     pincode: "",
   });
+
+  const [processing, setProcessing] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoError, setPromoError] = useState<string | null>(null);
 
   // Pre-fill saved address
   useEffect(() => {
@@ -56,8 +63,6 @@ export default function CheckoutPage() {
     }
   }, [user]);
 
-  const [processing, setProcessing] = useState(false);
-
   // Require auth
   if (!user && !loading) {
     return (
@@ -75,7 +80,7 @@ export default function CheckoutPage() {
             </p>
             <MagneticButton strength={0.15}>
               <Link
-                href="/account"
+                href="/account?next=/checkout"
                 className="inline-block text-[11px] uppercase tracking-brutal bg-white text-black px-10 py-4 rounded-full hover:bg-gold transition-colors duration-300"
               >
                 Sign In / Create Account
@@ -88,17 +93,6 @@ export default function CheckoutPage() {
   }
 
   const shipping = totalPrice >= 999 ? 0 : 49;
-  const [promoCode, setPromoCode] = useState("");
-  const [promoApplied, setPromoApplied] = useState(false);
-  const [promoDiscount, setPromoDiscount] = useState(0);
-  const [promoError, setPromoError] = useState<string | null>(null);
-
-  // Promo codes — add more as needed
-  const PROMO_CODES: Record<string, { type: "percent" | "flat"; value: number }> = {
-    "FIRST10": { type: "percent", value: 10 },
-    "DENIED20": { type: "percent", value: 20 },
-    "FLAT100": { type: "flat", value: 100 },
-  };
 
   const applyPromo = () => {
     const code = promoCode.trim().toUpperCase();
@@ -137,105 +131,77 @@ export default function CheckoutPage() {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (items.length === 0) return;
-
+    if (items.length === 0 || !user) return;
     setProcessing(true);
 
-    // Load Razorpay script
-    const loaded = await loadRazorpayScript();
-    if (!loaded) {
-      alert("Failed to load payment gateway. Please try again.");
-      setProcessing(false);
-      return;
-    }
+    try {
+      const [{ data: sessionData }, loaded] = await Promise.all([
+        supabase.auth.getSession(),
+        loadRazorpayScript(),
+      ]);
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) throw new Error("Your session expired. Please sign in again.");
+      if (!loaded) throw new Error("Failed to load the payment gateway. Please try again.");
 
-    // Create order on server
-    const res = await fetch("/api/create-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: finalTotal,
-        receipt: `denied_${Date.now()}`,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert("Failed to create order. Please try again.");
-      setProcessing(false);
-      return;
-    }
-
-    // Open Razorpay modal
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: data.amount,
-      currency: data.currency,
-      name: "DENIED.",
-      description: "Premium Apparel",
-      order_id: data.orderId,
-      prefill: {
-        name: form.name,
-        email: form.email,
-        contact: form.phone,
-      },
-      theme: {
-        color: "#c9a96e",
-      },
-      handler: async function (response: any) {
-        // Verify payment and save order
-        const verifyRes = await fetch("/api/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            orderDetails: {
-              userId: user?.id,
-              items: items.map((item) => ({
-                productId: item.product.id,
-                name: item.product.name,
-                price: item.product.price,
-                quantity: item.quantity,
-                color: item.selectedColor,
-                size: item.selectedSize,
-              })),
-              total: finalTotal,
-              shipping,
-              promoCode: promoApplied ? promoCode : null,
-              promoDiscount,
-              shippingName: form.name,
-              shippingEmail: form.email,
-              shippingPhone: form.phone,
-              shippingAddress: form.address,
-              shippingCity: form.city,
-              shippingState: form.state,
-              shippingPincode: form.pincode,
-            },
-          }),
-        });
-
-        const verifyData = await verifyRes.json();
-
-        if (verifyData.verified) {
-          clearCart();
-          router.push("/order-success?id=" + response.razorpay_payment_id);
-        } else {
-          alert("Payment verification failed. Contact support.");
-        }
-      },
-      modal: {
-        ondismiss: function () {
-          setProcessing(false);
+      const cartItems = items.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+        color: item.selectedColor,
+        size: item.selectedSize,
+      }));
+      const createResponse = await fetch("/api/create-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
-      },
-    };
+        body: JSON.stringify({
+          items: cartItems,
+          promoCode: promoApplied ? promoCode.trim().toUpperCase() : null,
+          shipping: form,
+        }),
+      });
+      const orderData = await createResponse.json();
+      if (!createResponse.ok) throw new Error(orderData.error || "Unable to prepare your order.");
 
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+      const razorpay = new window.Razorpay({
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "DENIED.",
+        description: "Premium Apparel",
+        order_id: orderData.orderId,
+        prefill: { name: form.name, email: form.email, contact: form.phone },
+        theme: { color: "#c9a96e" },
+        handler: async (response: any) => {
+          try {
+            const verifyResponse = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify(response),
+            });
+            const verifyData = await verifyResponse.json();
+            if (!verifyResponse.ok || !verifyData.verified) {
+              throw new Error(verifyData.error || "Payment verification failed.");
+            }
+            clearCart();
+            router.push(`/order-success?id=${encodeURIComponent(response.razorpay_payment_id)}`);
+          } catch (error) {
+            setProcessing(false);
+            alert(`${error instanceof Error ? error.message : "Payment verification failed."} Your payment reference has been retained. Please contact contact@deniedofficial.com if needed.`);
+          }
+        },
+        modal: { ondismiss: () => setProcessing(false) },
+      });
+      razorpay.on("payment.failed", () => setProcessing(false));
+      razorpay.open();
+    } catch (error) {
+      setProcessing(false);
+      alert(error instanceof Error ? error.message : "Unable to start checkout. Please try again.");
+    }
   };
 
   if (items.length === 0) {

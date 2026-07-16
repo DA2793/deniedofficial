@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
 import InstagramFloater from "@/components/InstagramFloater";
 import BackToTop from "@/components/BackToTop";
-import StoreEntrance from "@/components/StoreEntrance";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
@@ -30,17 +29,57 @@ const bebas = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "DENIED. — Not for Everyone",
-  description: "Not for Everyone. Luxury for the Selected. Premium apparel and accessories.",
+  metadataBase: new URL("https://deniedofficial.com"),
+  title: {
+    default: "DENIED. — Not for Everyone",
+    template: "%s | DENIED.",
+  },
+  description:
+    "DENIED. creates premium, made-to-order apparel and accessories in limited drops for those who refuse to blend in.",
+  applicationName: "DENIED.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.png",
     apple: "/favicon.png",
   },
+  manifest: "/manifest.webmanifest",
   openGraph: {
     title: "DENIED. — Not for Everyone",
-    description: "Luxury for Selected. Premium apparel and accessories.",
-    url: "https://deniedofficial.com",
+    description:
+      "Premium, made-to-order apparel and accessories. Limited drops, intentional design, and no compromises.",
+    url: "/",
+    siteName: "DENIED.",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/favicon.png",
+        width: 3292,
+        height: 1052,
+        alt: "DENIED. — Not for Everyone",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DENIED. — Not for Everyone",
+    description:
+      "Premium, made-to-order apparel and accessories. Limited drops, intentional design, and no compromises.",
+    images: ["/favicon.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -55,7 +94,6 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <StoreEntrance />
               <GrainOverlay />
               <Navbar />
               <main>{children}</main>
