@@ -6,6 +6,12 @@ export interface SizeChartRow {
 
 export type ProductTier = "The Foundation" | "The Numbered" | "The Chapter";
 
+export const TIER_DESCRIPTIONS: Record<ProductTier, string> = {
+  "The Foundation": "Always in stock. The core styles DENIED. never lets go of.",
+  "The Numbered": "Capped drops. Once a design sells out, it's gone for good.",
+  "The Chapter": "Seasonal collections, born and retired with the occasion.",
+};
+
 export interface Product {
   id: number;
   name: string;

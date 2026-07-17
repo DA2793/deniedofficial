@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { getProductById, products } from "@/data/products";
+import { getProductById, products, TIER_DESCRIPTIONS } from "@/data/products";
 import Image from "next/image";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -122,6 +122,7 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>(product?.details.colors[0] || "");
   const [zoomOpen, setZoomOpen] = useState(false);
+  const [stockRemaining, setStockRemaining] = useState<number | null>(null);
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const wishlisted = product ? isInWishlist(product.id) : false;
@@ -130,6 +131,22 @@ export default function ProductPage() {
   const currentImages = selectedColor && product?.colorImages[selectedColor]
     ? product.colorImages[selectedColor]
     : product?.images || [];
+
+  useEffect(() => {
+    if (!product?.tier) return; // Untracked (Foundation/Caps) — unlimited, skip fetch.
+    let cancelled = false;
+    fetch(`/api/stock?ids=${product.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        const entry = data?.stock?.find((s: { productId: number }) => s.productId === product.id);
+        if (entry) setStockRemaining(entry.remaining);
+      })
+      .catch(() => { /* Non-critical — page still works without live stock. */ });
+    return () => { cancelled = true; };
+  }, [product?.id, product?.tier]);
+
+  const soldOut = stockRemaining !== null && stockRemaining <= 0;
 
   if (!product) {
     return (
@@ -315,9 +332,18 @@ export default function ProductPage() {
               {product.category}
               {product.tier && <span className="text-gold"> · {product.tier}</span>}
             </p>
+            {product.tier && TIER_DESCRIPTIONS[product.tier] && (
+              <p className="text-xs text-gray-500 mb-1 max-w-md">
+                {TIER_DESCRIPTIONS[product.tier]}
+              </p>
+            )}
             {product.unitCap && (
-              <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
-                Limited to {product.unitCap} pieces
+              <p className={`text-[10px] uppercase tracking-brutal mb-3 ${soldOut ? "text-red-400" : "text-gray-500"}`}>
+                {soldOut
+                  ? "Sold Out"
+                  : stockRemaining !== null
+                    ? `Only ${stockRemaining} of ${product.unitCap} left`
+                    : `Limited to ${product.unitCap} pieces`}
               </p>
             )}
 
@@ -400,16 +426,24 @@ export default function ProductPage() {
             <div className="space-y-3 mb-8">
               <MagneticButton strength={0.1} className="w-full">
                 <button
+                  disabled={soldOut}
                   onClick={() => {
+                    if (soldOut) return;
                     if (!selectedSize) { alert("Please select a size"); return; }
                     addToCart(product, selectedColor, selectedSize);
                   }}
-                  className="w-full bg-white text-black text-[11px] uppercase tracking-brutal py-4 hover:bg-gold transition-colors duration-300 flex items-center justify-center gap-3 rounded-full"
+                  className={`w-full text-[11px] uppercase tracking-brutal py-4 transition-colors duration-300 flex items-center justify-center gap-3 rounded-full ${
+                    soldOut
+                      ? "bg-white/10 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-black hover:bg-gold"
+                  }`}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                  Add to Bag
+                  {!soldOut && (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                  )}
+                  {soldOut ? "Sold Out" : "Add to Bag"}
                 </button>
               </MagneticButton>
 

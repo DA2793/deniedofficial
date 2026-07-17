@@ -3,7 +3,7 @@
 import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { products } from "@/data/products";
+import { products, TIER_DESCRIPTIONS, type ProductTier } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -13,7 +13,7 @@ const categoryFilters = [
   { slug: "Caps", name: "Caps" },
 ];
 
-const tierFilters = [
+const tierFilters: { slug: ProductTier; name: string }[] = [
   { slug: "The Foundation", name: "The Foundation" },
   { slug: "The Numbered", name: "The Numbered" },
 ];
@@ -21,7 +21,7 @@ const tierFilters = [
 function CollectionContent() {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [activeTier, setActiveTier] = useState<string | null>(null);
+  const [activeTier, setActiveTier] = useState<ProductTier | null>(null);
   const [showNewOnly, setShowNewOnly] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "price-low" | "price-high">("default");
@@ -31,7 +31,7 @@ function CollectionContent() {
     const tier = searchParams.get("tier");
     const filter = searchParams.get("filter");
     if (cat) setActiveCategory(cat);
-    if (tier) {
+    if (tier === "The Foundation" || tier === "The Numbered" || tier === "The Chapter") {
       setActiveCategory("T-Shirts");
       setActiveTier(tier);
     }
@@ -154,6 +154,13 @@ function CollectionContent() {
                 The Chapter — Coming Soon
               </span>
             </div>
+          )}
+
+          {/* Tier explanation — one-liner for whichever tier is active */}
+          {activeCategory === "T-Shirts" && activeTier && (
+            <p className="pl-4 text-[11px] text-gray-500 max-w-md">
+              {TIER_DESCRIPTIONS[activeTier]}
+            </p>
           )}
         </div>
 

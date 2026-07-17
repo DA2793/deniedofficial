@@ -6,8 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { TIER_DESCRIPTIONS, type ProductTier } from "@/data/products";
 
-const tiers = ["The Foundation", "The Numbered"];
+const tiers: ProductTier[] = ["The Foundation", "The Numbered"];
 const filters = ["New In", "Signature"];
 
 export default function Navbar() {
@@ -92,6 +93,7 @@ export default function Navbar() {
                       <Link
                         key={tier}
                         href={`/collection?category=T-Shirts&tier=${encodeURIComponent(tier)}`}
+                        title={TIER_DESCRIPTIONS[tier]}
                         className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                       >
                         {tier}

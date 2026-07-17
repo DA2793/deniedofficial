@@ -1,5 +1,6 @@
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { getInternalApiToken } from "@/lib/internal-auth";
+import { reserveStockForItems } from "@/lib/inventory";
 
 interface PendingOrder {
   id: string;
@@ -116,6 +117,21 @@ export async function finalizePaidOrder(input: FinalizeInput) {
     processed_at: new Date().toISOString(),
     order_record_id: order.id,
   }).eq("id", pending.id);
+
+  // Reserve stock now that payment is confirmed and the order is durably saved.
+  // This is the authoritative, race-safe check — checkStockAvailable at
+  // create-order time was only a fail-fast screen before payment. If a design
+  // sold out between screening and payment (two concurrent buyers on the last
+  // unit), the order still stands since the customer already paid; this is
+  // logged for manual reconciliation rather than silently overselling.
+  const failedReservations = await reserveStockForItems(
+    pending.items.map((item) => ({ productId: item.productId, quantity: item.quantity }))
+  );
+  if (failedReservations.length > 0) {
+    console.error(
+      `Order ${order.id} oversold stock for product(s): ${failedReservations.join(", ")}`
+    );
+  }
 
   const internalToken = getInternalApiToken();
   const invoiceUrl = `${input.origin}/invoice/${order.id}`;

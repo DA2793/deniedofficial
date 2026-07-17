@@ -3,6 +3,8 @@ import Razorpay from "razorpay";
 import { getRequestUser } from "@/lib/auth/server";
 import { calculateOrder, CheckoutItemInput } from "@/lib/checkout";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
+import { checkStockAvailable } from "@/lib/inventory";
+import { getProductById } from "@/data/products";
 
 interface CreateOrderBody {
   items?: CheckoutItemInput[];
@@ -37,6 +39,17 @@ export async function POST(req: NextRequest) {
 
     if (!/^\S+@\S+\.\S+$/.test(shipping.email) || !/^\d{6}$/.test(shipping.pincode)) {
       return NextResponse.json({ error: "Invalid email or pincode" }, { status: 400 });
+    }
+
+    const stockCheck = await checkStockAvailable(
+      pricing.items.map((item) => ({ productId: item.productId, quantity: item.quantity }))
+    );
+    if (!stockCheck.ok) {
+      const product = getProductById(stockCheck.productId);
+      return NextResponse.json(
+        { error: `${product?.name || "This item"} is sold out` },
+        { status: 400 }
+      );
     }
 
     const admin = getSupabaseAdmin();
@@ -90,7 +103,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to create order";
-    const status = /Invalid|valid|cart|product|quantity|colour|size|pincode|email/i.test(message) ? 400 : 500;
+    const status = /Invalid|valid|cart|product|quantity|colour|size|pincode|email|sold out/i.test(message) ? 400 : 500;
     console.error("Create order error:", message);
     return NextResponse.json({ error: message }, { status });
   }
