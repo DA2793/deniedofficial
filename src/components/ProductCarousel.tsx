@@ -323,10 +323,25 @@ function MobileCarousel() {
   const [paused, setPaused] = useState(false);
   const [tabHidden, setTabHidden] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [offScreen, setOffScreen] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const resumeTimeout = useRef<number>();
+
+  // Only autoplay while the carousel is actually in the viewport — this also
+  // prevents any chance of the page jumping to this section while scrolling
+  // through the rest of the homepage.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOffScreen(!entry.isIntersecting),
+      { threshold: 0.4 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   // Respect reduced-motion preference — no autoplay, manual swipe still works.
   useEffect(() => {
@@ -372,18 +387,21 @@ function MobileCarousel() {
     return () => observer.disconnect();
   }, []);
 
-  const isPlaying = !paused && !tabHidden && !reducedMotion;
+  const isPlaying = !paused && !tabHidden && !reducedMotion && !offScreen;
 
-  // Autoplay: scroll to the next card on a timer.
+  // Autoplay: scroll to the next card on a timer. Scrolls the carousel's own
+  // scrollLeft directly (never scrollIntoView) so the page's vertical scroll
+  // position is never touched.
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
+      const container = containerRef.current;
       const next = (activeIndex + 1) % products.length;
-      cardRefs.current[next]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      const card = cardRefs.current[next];
+      if (!container || !card) return;
+      const targetLeft =
+        card.offsetLeft - (container.clientWidth - card.clientWidth) / 2;
+      container.scrollTo({ left: targetLeft, behavior: "smooth" });
     }, MOBILE_AUTOPLAY_MS);
     return () => clearInterval(interval);
   }, [isPlaying, activeIndex]);
