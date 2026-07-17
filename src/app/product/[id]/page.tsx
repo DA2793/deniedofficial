@@ -310,10 +310,16 @@ export default function ProductPage() {
               </span>
             )}
 
-            {/* Category */}
+            {/* Category / Tier */}
             <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
               {product.category}
+              {product.tier && <span className="text-gold"> · {product.tier}</span>}
             </p>
+            {product.unitCap && (
+              <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
+                Limited to {product.unitCap} pieces
+              </p>
+            )}
 
             {/* Name */}
             <h1 className="font-display text-4xl md:text-5xl uppercase mb-6">

@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
-const categories = ["T-Shirts", "Women", "Caps"];
+const categories = ["T-Shirts", "Caps"];
+const tiers = ["The Foundation", "The Numbered"];
 const filters = ["New In", "Signature"];
 
 export default function Navbar() {
@@ -85,6 +86,22 @@ export default function Navbar() {
                         {item}
                       </Link>
                     ))}
+                    <div className="border-t border-white/[0.06] my-2" />
+                    {tiers.map((tier) => (
+                      <Link
+                        key={tier}
+                        href={`/collection?tier=${encodeURIComponent(tier)}`}
+                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                      >
+                        {tier}
+                      </Link>
+                    ))}
+                    <span
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-700 cursor-not-allowed"
+                      aria-disabled="true"
+                    >
+                      The Chapter — Coming Soon
+                    </span>
                     <div className="border-t border-white/[0.06] my-2" />
                     {filters.slice(0, 2).map((item) => (
                       <Link

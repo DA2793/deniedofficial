@@ -10,21 +10,31 @@ import ScrollReveal from "@/components/ScrollReveal";
 const categoryFilters = [
   { slug: "all", name: "All" },
   { slug: "T-Shirts", name: "T-Shirts" },
-  { slug: "Women", name: "Women" },
   { slug: "Caps", name: "Caps" },
+];
+
+const tierFilters = [
+  { slug: "The Foundation", name: "The Foundation" },
+  { slug: "The Numbered", name: "The Numbered" },
 ];
 
 function CollectionContent() {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeTier, setActiveTier] = useState<string | null>(null);
   const [showNewOnly, setShowNewOnly] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "price-low" | "price-high">("default");
 
   useEffect(() => {
     const cat = searchParams.get("category");
+    const tier = searchParams.get("tier");
     const filter = searchParams.get("filter");
     if (cat) setActiveCategory(cat);
+    if (tier) {
+      setActiveCategory("T-Shirts");
+      setActiveTier(tier);
+    }
     if (filter === "new") setShowNewOnly(true);
     if (filter === "signature") setShowSignature(true);
   }, [searchParams]);
@@ -34,6 +44,10 @@ function CollectionContent() {
       activeCategory === "all"
         ? products
         : products.filter((p) => p.category === activeCategory);
+
+    if (activeTier) {
+      filtered = filtered.filter((p) => p.tier === activeTier);
+    }
 
     if (showNewOnly) {
       filtered = filtered.filter((p) => p.badge === "New");
@@ -50,7 +64,7 @@ function CollectionContent() {
     }
 
     return filtered;
-  }, [activeCategory, showNewOnly, showSignature, sortBy]);
+  }, [activeCategory, activeTier, showNewOnly, showSignature, sortBy]);
 
   return (
     <>
@@ -68,6 +82,7 @@ function CollectionContent() {
               key={cat.slug}
               onClick={() => {
                 setActiveCategory(cat.slug);
+                setActiveTier(null);
                 setShowNewOnly(false);
                 setShowSignature(false);
               }}
@@ -81,6 +96,29 @@ function CollectionContent() {
             </button>
           ))}
 
+          {/* Tier sub-filters — only relevant within T-Shirts */}
+          {activeCategory === "T-Shirts" && (
+            <>
+              <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
+              {tierFilters.map((tier) => (
+                <button
+                  key={tier.slug}
+                  onClick={() => setActiveTier(activeTier === tier.slug ? null : tier.slug)}
+                  className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
+                    activeTier === tier.slug
+                      ? "bg-gold text-black"
+                      : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {tier.name}
+                </button>
+              ))}
+              <span className="px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full border border-white/[0.04] text-gray-700 cursor-not-allowed">
+                The Chapter — Coming Soon
+              </span>
+            </>
+          )}
+
           {/* Divider */}
           <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
 
@@ -90,6 +128,7 @@ function CollectionContent() {
               setShowNewOnly(!showNewOnly);
               setShowSignature(false);
               setActiveCategory("all");
+              setActiveTier(null);
             }}
             className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
               showNewOnly
@@ -105,6 +144,7 @@ function CollectionContent() {
               setShowSignature(!showSignature);
               setShowNewOnly(false);
               setActiveCategory("all");
+              setActiveTier(null);
             }}
             className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
               showSignature
@@ -136,7 +176,7 @@ function CollectionContent() {
       {/* Products Grid */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={activeCategory + String(showNewOnly) + String(showSignature) + sortBy}
+          key={activeCategory + String(activeTier) + String(showNewOnly) + String(showSignature) + sortBy}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

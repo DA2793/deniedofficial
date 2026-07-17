@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const liveCategories = [
   { name: "T-Shirts", href: "/collection?category=T-Shirts" },
-  { name: "Women", href: "/collection?category=Women" },
   { name: "Caps", href: "/collection?category=Caps" },
 ];
 

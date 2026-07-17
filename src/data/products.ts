@@ -4,10 +4,14 @@ export interface SizeChartRow {
   length: number;
 }
 
+export type ProductTier = "The Foundation" | "The Numbered" | "The Chapter";
+
 export interface Product {
   id: number;
   name: string;
   category: string;
+  tier: ProductTier | null;
+  unitCap: number | null;
   price: number;
   originalPrice: number | null;
   badge: string | null;
@@ -30,25 +34,27 @@ export const products: Product[] = [
     id: 1,
     name: "Signature Oversized Tee",
     category: "T-Shirts",
+    tier: "The Foundation",
+    unitCap: null,
     price: 1199,
     originalPrice: null,
     badge: "Signature",
-    image: "/Products/Oversized/Signature/Black/1.png",
+    image: "/Products/TShirts/TheFoundation/SignatureOversized/Black/1.png",
     images: [
-      "/Products/Oversized/Signature/Black/1.png",
-      "/Products/Oversized/Signature/Black/2.png",
-      "/Products/Oversized/Signature/Black/3.png",
+      "/Products/TShirts/TheFoundation/SignatureOversized/Black/1.png",
+      "/Products/TShirts/TheFoundation/SignatureOversized/Black/2.png",
+      "/Products/TShirts/TheFoundation/SignatureOversized/Black/3.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Oversized/Signature/Black/1.png",
-        "/Products/Oversized/Signature/Black/2.png",
-        "/Products/Oversized/Signature/Black/3.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/Black/1.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/Black/2.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/Black/3.png",
       ],
       "Navy Blue": [
-        "/Products/Oversized/Signature/NavyBlue/1.png",
-        "/Products/Oversized/Signature/NavyBlue/2.png",
-        "/Products/Oversized/Signature/NavyBlue/3.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/NavyBlue/1.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/NavyBlue/2.png",
+        "/Products/TShirts/TheFoundation/SignatureOversized/NavyBlue/3.png",
       ],
     },
     sizeChart: [
@@ -72,20 +78,22 @@ export const products: Product[] = [
     id: 2,
     name: "Few Survive Acid Washed Tee",
     category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
     price: 1399,
     originalPrice: null,
     badge: "New",
-    image: "/Products/AcidWashed/FewSurvive/1.png",
+    image: "/Products/TShirts/TheNumbered/AcidWashed/1.png",
     images: [
-      "/Products/AcidWashed/FewSurvive/1.png",
-      "/Products/AcidWashed/FewSurvive/2.png",
-      "/Products/AcidWashed/FewSurvive/3.png",
+      "/Products/TShirts/TheNumbered/AcidWashed/1.png",
+      "/Products/TShirts/TheNumbered/AcidWashed/2.png",
+      "/Products/TShirts/TheNumbered/AcidWashed/3.png",
     ],
     colorImages: {
       "Acid Wash": [
-        "/Products/AcidWashed/FewSurvive/1.png",
-        "/Products/AcidWashed/FewSurvive/2.png",
-        "/Products/AcidWashed/FewSurvive/3.png",
+        "/Products/TShirts/TheNumbered/AcidWashed/1.png",
+        "/Products/TShirts/TheNumbered/AcidWashed/2.png",
+        "/Products/TShirts/TheNumbered/AcidWashed/3.png",
       ],
     },
     sizeChart: [
@@ -109,34 +117,36 @@ export const products: Product[] = [
     id: 3,
     name: "Drive or Ride Supima Tee",
     category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
     price: 1499,
     originalPrice: null,
     badge: null,
-    image: "/Products/Supima/DriveOrRide/Black/black-1.png",
+    image: "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-1.png",
     images: [
-      "/Products/Supima/DriveOrRide/Black/black-1.png",
-      "/Products/Supima/DriveOrRide/Black/black-2.png",
-      "/Products/Supima/DriveOrRide/Black/black-3.png",
-      "/Products/Supima/DriveOrRide/Black/black-4.png",
+      "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-1.png",
+      "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-2.png",
+      "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-3.png",
+      "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-4.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Supima/DriveOrRide/Black/black-1.png",
-        "/Products/Supima/DriveOrRide/Black/black-2.png",
-        "/Products/Supima/DriveOrRide/Black/black-3.png",
-        "/Products/Supima/DriveOrRide/Black/black-4.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-1.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-2.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-3.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-4.png",
       ],
       "Navy Blue": [
-        "/Products/Supima/DriveOrRide/NavyBlue/blue-1.png",
-        "/Products/Supima/DriveOrRide/NavyBlue/blue-2.png",
-        "/Products/Supima/DriveOrRide/NavyBlue/blue-3.png",
-        "/Products/Supima/DriveOrRide/NavyBlue/blue-4.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/NavyBlue/blue-1.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/NavyBlue/blue-2.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/NavyBlue/blue-3.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/NavyBlue/blue-4.png",
       ],
       "White": [
-        "/Products/Supima/DriveOrRide/White/white-1.png",
-        "/Products/Supima/DriveOrRide/White/white-2.png",
-        "/Products/Supima/DriveOrRide/White/white-3.png",
-        "/Products/Supima/DriveOrRide/White/white-4.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/White/white-1.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/White/white-2.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/White/white-3.png",
+        "/Products/TShirts/TheNumbered/DriveOrRideSupima/White/white-4.png",
       ],
     },
     sizeChart: [
@@ -160,38 +170,40 @@ export const products: Product[] = [
     id: 4,
     name: "Polo Tee",
     category: "T-Shirts",
+    tier: "The Foundation",
+    unitCap: null,
     price: 1199,
     originalPrice: null,
     badge: null,
-    image: "/Products/Polo/Black/polo-1.png",
+    image: "/Products/TShirts/TheFoundation/Polo/Black/polo-1.png",
     images: [
-      "/Products/Polo/Black/polo-1.png",
-      "/Products/Polo/Black/polo-2.png",
+      "/Products/TShirts/TheFoundation/Polo/Black/polo-1.png",
+      "/Products/TShirts/TheFoundation/Polo/Black/polo-2.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Polo/Black/polo-1.png",
-        "/Products/Polo/Black/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/Black/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/Black/polo-2.png",
       ],
       "Coffee Brown": [
-        "/Products/Polo/CoffeeBrown/polo-1.png",
-        "/Products/Polo/CoffeeBrown/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/CoffeeBrown/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/CoffeeBrown/polo-2.png",
       ],
       "Navy Blue": [
-        "/Products/Polo/NavyBlue/polo-1.png",
-        "/Products/Polo/NavyBlue/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/NavyBlue/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/NavyBlue/polo-2.png",
       ],
       "Brick Red": [
-        "/Products/Polo/BrickRed/polo-1.png",
-        "/Products/Polo/BrickRed/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/BrickRed/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/BrickRed/polo-2.png",
       ],
       "Maroon": [
-        "/Products/Polo/Maroon/polo-1.png",
-        "/Products/Polo/Maroon/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/Maroon/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/Maroon/polo-2.png",
       ],
       "Royal Blue": [
-        "/Products/Polo/RoyalBlue/polo-1.png",
-        "/Products/Polo/RoyalBlue/polo-2.png",
+        "/Products/TShirts/TheFoundation/Polo/RoyalBlue/polo-1.png",
+        "/Products/TShirts/TheFoundation/Polo/RoyalBlue/polo-2.png",
       ],
     },
     sizeChart: [
@@ -215,18 +227,20 @@ export const products: Product[] = [
     id: 5,
     name: "Ottoman Baseball Cap",
     category: "Caps",
+    tier: null,
+    unitCap: null,
     price: 799,
     originalPrice: null,
     badge: null,
-    image: "/Products/Cap/Ottoman/1.png",
+    image: "/Products/Caps/Ottoman/1.png",
     images: [
-      "/Products/Cap/Ottoman/1.png",
-      "/Products/Cap/Ottoman/2.png",
+      "/Products/Caps/Ottoman/1.png",
+      "/Products/Caps/Ottoman/2.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Cap/Ottoman/1.png",
-        "/Products/Cap/Ottoman/2.png",
+        "/Products/Caps/Ottoman/1.png",
+        "/Products/Caps/Ottoman/2.png",
       ],
     },
     sizeChart: null,
@@ -243,22 +257,24 @@ export const products: Product[] = [
     id: 6,
     name: "Snapback Cap",
     category: "Caps",
+    tier: null,
+    unitCap: null,
     price: 799,
     originalPrice: null,
     badge: "New",
-    image: "/Products/Cap/Snapback/Black/1.png",
+    image: "/Products/Caps/Snapback/Black/1.png",
     images: [
-      "/Products/Cap/Snapback/Black/1.png",
-      "/Products/Cap/Snapback/Black/2.png",
+      "/Products/Caps/Snapback/Black/1.png",
+      "/Products/Caps/Snapback/Black/2.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Cap/Snapback/Black/1.png",
-        "/Products/Cap/Snapback/Black/2.png",
+        "/Products/Caps/Snapback/Black/1.png",
+        "/Products/Caps/Snapback/Black/2.png",
       ],
       "Red": [
-        "/Products/Cap/Snapback/Red/1.png",
-        "/Products/Cap/Snapback/Red/2.png",
+        "/Products/Caps/Snapback/Red/1.png",
+        "/Products/Caps/Snapback/Red/2.png",
       ],
     },
     sizeChart: null,
@@ -275,26 +291,28 @@ export const products: Product[] = [
     id: 7,
     name: "Unique Oversized Tee",
     category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
     price: 1399,
     originalPrice: null,
     badge: "New",
-    image: "/Products/Oversized/Unique/Black/1.png",
+    image: "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
     images: [
-      "/Products/Oversized/Unique/Black/1.png",
-      "/Products/Oversized/Unique/Black/2.png",
+      "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
+      "/Products/TShirts/TheNumbered/UniqueOversized/Black/2.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Oversized/Unique/Black/1.png",
-        "/Products/Oversized/Unique/Black/2.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/Black/2.png",
       ],
       "Maroon": [
-        "/Products/Oversized/Unique/Maroon/1.png",
-        "/Products/Oversized/Unique/Maroon/2.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/Maroon/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/Maroon/2.png",
       ],
       "Navy Blue": [
-        "/Products/Oversized/Unique/NavyBlue/1.png",
-        "/Products/Oversized/Unique/NavyBlue/2.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/NavyBlue/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/NavyBlue/2.png",
       ],
     },
     sizeChart: [
@@ -317,39 +335,41 @@ export const products: Product[] = [
   {
     id: 8,
     name: "SHE IS Classic Tee",
-    category: "Women",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
     price: 1199,
     originalPrice: null,
     badge: "New",
-    image: "/Products/Women/Classic/SheIs/Black/1.png",
+    image: "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
     images: [
-      "/Products/Women/Classic/SheIs/Black/1.png",
-      "/Products/Women/Classic/SheIs/Black/2.png",
+      "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
+      "/Products/TShirts/TheNumbered/SheIsClassic/Black/2.png",
     ],
     colorImages: {
       "Black": [
-        "/Products/Women/Classic/SheIs/Black/1.png",
-        "/Products/Women/Classic/SheIs/Black/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Black/2.png",
       ],
       "Bottle Green": [
-        "/Products/Women/Classic/SheIs/BottleGreen/1.png",
-        "/Products/Women/Classic/SheIs/BottleGreen/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/BottleGreen/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/BottleGreen/2.png",
       ],
       "Coffee Brown": [
-        "/Products/Women/Classic/SheIs/CoffeeBrown/1.png",
-        "/Products/Women/Classic/SheIs/CoffeeBrown/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/CoffeeBrown/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/CoffeeBrown/2.png",
       ],
       "Maroon": [
-        "/Products/Women/Classic/SheIs/Maroon/1.png",
-        "/Products/Women/Classic/SheIs/Maroon/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Maroon/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Maroon/2.png",
       ],
       "Navy Blue": [
-        "/Products/Women/Classic/SheIs/NavyBlue/1.png",
-        "/Products/Women/Classic/SheIs/NavyBlue/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/NavyBlue/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/NavyBlue/2.png",
       ],
       "Red": [
-        "/Products/Women/Classic/SheIs/Red/1.png",
-        "/Products/Women/Classic/SheIs/Red/2.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Red/1.png",
+        "/Products/TShirts/TheNumbered/SheIsClassic/Red/2.png",
       ],
     },
     sizeChart: [
