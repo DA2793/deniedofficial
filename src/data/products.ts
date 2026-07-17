@@ -389,6 +389,52 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
+  {
+    id: 9,
+    name: "I'm This Old Oversized Tee",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
+    price: 1399,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/1.png",
+    images: [
+      "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/1.png",
+      "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/2.png",
+    ],
+    colorImages: {
+      "Off White": [
+        "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/1.png",
+        "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/2.png",
+      ],
+      "Red": [
+        "/Products/TShirts/TheNumbered/ImThisOld/Red/1.png",
+        "/Products/TShirts/TheNumbered/ImThisOld/Red/2.png",
+      ],
+      "White": [
+        "/Products/TShirts/TheNumbered/ImThisOld/White/1.png",
+        "/Products/TShirts/TheNumbered/ImThisOld/White/2.png",
+      ],
+    },
+    sizeChart: [
+      { size: "XS", chest: 39, length: 26 },
+      { size: "S", chest: 41, length: 27 },
+      { size: "M", chest: 43, length: 28 },
+      { size: "L", chest: 45, length: 29 },
+      { size: "XL", chest: 47, length: 30 },
+      { size: "XXL", chest: 49, length: 31 },
+      { size: "XXXL", chest: 51, length: 32 },
+    ],
+    description: "The DENIED. I'm This Old Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
+    details: {
+      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
+      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
+      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      colors: ["Off White", "Red", "White"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
+    },
+  },
 ];
 
 // Helper functions
