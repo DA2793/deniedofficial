@@ -12,12 +12,15 @@ export const TIER_DESCRIPTIONS: Record<ProductTier, string> = {
   "The Chapter": "Seasonal collections, born and retired with the occasion.",
 };
 
+export type ProductGender = "Men" | "Women" | "Unisex";
+
 export interface Product {
   id: number;
   name: string;
   category: string;
   tier: ProductTier | null;
   unitCap: number | null;
+  gender: ProductGender;
   price: number;
   originalPrice: number | null;
   badge: string | null;
@@ -42,6 +45,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Foundation",
     unitCap: null,
+    gender: "Unisex",
     price: 1199,
     originalPrice: null,
     badge: "Signature",
@@ -86,6 +90,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Unisex",
     price: 1399,
     originalPrice: null,
     badge: "New",
@@ -125,6 +130,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Unisex",
     price: 1499,
     originalPrice: null,
     badge: null,
@@ -178,6 +184,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Foundation",
     unitCap: null,
+    gender: "Unisex",
     price: 1199,
     originalPrice: null,
     badge: null,
@@ -235,6 +242,7 @@ export const products: Product[] = [
     category: "Caps",
     tier: null,
     unitCap: null,
+    gender: "Unisex",
     price: 799,
     originalPrice: null,
     badge: null,
@@ -265,6 +273,7 @@ export const products: Product[] = [
     category: "Caps",
     tier: null,
     unitCap: null,
+    gender: "Unisex",
     price: 799,
     originalPrice: null,
     badge: "New",
@@ -299,6 +308,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Unisex",
     price: 1399,
     originalPrice: null,
     badge: "New",
@@ -344,6 +354,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Women",
     price: 1199,
     originalPrice: null,
     badge: "New",
@@ -401,6 +412,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Unisex",
     price: 1399,
     originalPrice: null,
     badge: "New",
@@ -447,6 +459,7 @@ export const products: Product[] = [
     category: "T-Shirts",
     tier: "The Numbered",
     unitCap: 100,
+    gender: "Unisex",
     price: 1399,
     originalPrice: null,
     badge: "New",

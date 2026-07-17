@@ -3,7 +3,7 @@
 import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { products, TIER_DESCRIPTIONS, type ProductTier } from "@/data/products";
+import { products, TIER_DESCRIPTIONS, type ProductTier, type ProductGender } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -18,10 +18,17 @@ const tierFilters: { slug: ProductTier; name: string }[] = [
   { slug: "The Numbered", name: "The Numbered" },
 ];
 
+const genderFilters: { slug: ProductGender; name: string }[] = [
+  { slug: "Women", name: "Women" },
+  { slug: "Men", name: "Men" },
+  { slug: "Unisex", name: "Unisex" },
+];
+
 function CollectionContent() {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeTier, setActiveTier] = useState<ProductTier | null>(null);
+  const [activeGender, setActiveGender] = useState<ProductGender | null>(null);
   const [showNewOnly, setShowNewOnly] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "price-low" | "price-high">("default");
@@ -29,11 +36,16 @@ function CollectionContent() {
   useEffect(() => {
     const cat = searchParams.get("category");
     const tier = searchParams.get("tier");
+    const gender = searchParams.get("gender");
     const filter = searchParams.get("filter");
     if (cat) setActiveCategory(cat);
     if (tier === "The Foundation" || tier === "The Numbered" || tier === "The Chapter") {
       setActiveCategory("T-Shirts");
       setActiveTier(tier);
+    }
+    if (gender === "Women" || gender === "Men" || gender === "Unisex") {
+      setActiveCategory("T-Shirts");
+      setActiveGender(gender);
     }
     if (filter === "new") setShowNewOnly(true);
     if (filter === "signature") setShowSignature(true);
@@ -47,6 +59,10 @@ function CollectionContent() {
 
     if (activeTier) {
       filtered = filtered.filter((p) => p.tier === activeTier);
+    }
+
+    if (activeGender) {
+      filtered = filtered.filter((p) => p.gender === activeGender);
     }
 
     if (showNewOnly) {
@@ -64,7 +80,7 @@ function CollectionContent() {
     }
 
     return filtered;
-  }, [activeCategory, activeTier, showNewOnly, showSignature, sortBy]);
+  }, [activeCategory, activeTier, activeGender, showNewOnly, showSignature, sortBy]);
 
   return (
     <>
@@ -84,6 +100,7 @@ function CollectionContent() {
                 onClick={() => {
                   setActiveCategory(cat.slug);
                   setActiveTier(null);
+                  setActiveGender(null);
                   setShowNewOnly(false);
                   setShowSignature(false);
                 }}
@@ -107,6 +124,7 @@ function CollectionContent() {
                 setShowSignature(false);
                 setActiveCategory("all");
                 setActiveTier(null);
+                setActiveGender(null);
               }}
               className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
                 showNewOnly
@@ -123,6 +141,7 @@ function CollectionContent() {
                 setShowNewOnly(false);
                 setActiveCategory("all");
                 setActiveTier(null);
+                setActiveGender(null);
               }}
               className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
                 showSignature
@@ -162,6 +181,25 @@ function CollectionContent() {
               {TIER_DESCRIPTIONS[activeTier]}
             </p>
           )}
+
+          {/* Gender sub-filters — nested under T-Shirts, combinable with tier */}
+          {activeCategory === "T-Shirts" && (
+            <div className="flex flex-wrap gap-2 pl-4 border-l border-white/10">
+              {genderFilters.map((gender) => (
+                <button
+                  key={gender.slug}
+                  onClick={() => setActiveGender(activeGender === gender.slug ? null : gender.slug)}
+                  className={`px-4 py-2 text-[9px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
+                    activeGender === gender.slug
+                      ? "bg-gold text-black"
+                      : "border border-white/10 text-gray-500 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {gender.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Sort + Count */}
@@ -184,7 +222,7 @@ function CollectionContent() {
       {/* Products Grid */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={activeCategory + String(activeTier) + String(showNewOnly) + String(showSignature) + sortBy}
+          key={activeCategory + String(activeTier) + String(activeGender) + String(showNewOnly) + String(showSignature) + sortBy}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

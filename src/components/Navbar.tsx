@@ -6,9 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { TIER_DESCRIPTIONS, type ProductTier } from "@/data/products";
+import { TIER_DESCRIPTIONS, type ProductTier, type ProductGender } from "@/data/products";
 
 const tiers: ProductTier[] = ["The Foundation", "The Numbered"];
+const genders: ProductGender[] = ["Women", "Men", "Unisex"];
 const filters = ["New In", "Signature"];
 
 export default function Navbar() {
@@ -105,6 +106,15 @@ export default function Navbar() {
                     >
                       The Chapter — Coming Soon
                     </span>
+                    {genders.map((gender) => (
+                      <Link
+                        key={gender}
+                        href={`/collection?category=T-Shirts&gender=${encodeURIComponent(gender)}`}
+                        className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                      >
+                        {gender}
+                      </Link>
+                    ))}
                     <Link
                       href="/collection?category=Caps"
                       className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
