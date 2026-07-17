@@ -9,7 +9,6 @@ import ScrollReveal from "@/components/ScrollReveal";
 import MagneticButton from "@/components/MagneticButton";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
-import { PROMO_CODES } from "@/lib/checkout";
 
 declare global {
   interface Window {
@@ -37,6 +36,7 @@ export default function CheckoutPage() {
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [promoError, setPromoError] = useState<string | null>(null);
+  const [promoChecking, setPromoChecking] = useState(false);
 
   // Pre-fill saved address
   useEffect(() => {
@@ -94,19 +94,34 @@ export default function CheckoutPage() {
 
   const shipping = totalPrice >= 999 ? 0 : 49;
 
-  const applyPromo = () => {
+  const applyPromo = async () => {
     const code = promoCode.trim().toUpperCase();
-    const promo = PROMO_CODES[code];
-    if (!promo) {
-      setPromoError("Invalid promo code");
+    if (!code) return;
+    setPromoChecking(true);
+    setPromoError(null);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) throw new Error("Your session expired. Please sign in again.");
+
+      const response = await fetch("/api/validate-promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ code, subtotal: totalPrice }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.valid) {
+        throw new Error(data.error || "Invalid promo code");
+      }
+      setPromoDiscount(data.discount);
+      setPromoApplied(true);
+    } catch (error) {
+      setPromoError(error instanceof Error ? error.message : "Invalid promo code");
       setPromoApplied(false);
       setPromoDiscount(0);
-      return;
+    } finally {
+      setPromoChecking(false);
     }
-    const discount = promo.type === "percent" ? Math.round(totalPrice * promo.value / 100) : promo.value;
-    setPromoDiscount(discount);
-    setPromoApplied(true);
-    setPromoError(null);
   };
 
   const finalTotal = totalPrice - promoDiscount + shipping;
@@ -317,10 +332,10 @@ export default function CheckoutPage() {
                   />
                   <button
                     onClick={applyPromo}
-                    disabled={promoApplied || !promoCode.trim()}
+                    disabled={promoApplied || !promoCode.trim() || promoChecking}
                     className="text-[10px] uppercase tracking-brutal px-6 py-3 border border-white/10 rounded-full text-white hover:border-gold hover:text-gold transition-all disabled:opacity-50"
                   >
-                    {promoApplied ? "Applied ✓" : "Apply"}
+                    {promoApplied ? "Applied ✓" : promoChecking ? "Checking..." : "Apply"}
                   </button>
                 </div>
                 {promoError && <p className="text-red-400 text-xs">{promoError}</p>}

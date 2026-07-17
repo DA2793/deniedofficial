@@ -12,19 +12,13 @@ export interface CanonicalOrderItem extends CheckoutItemInput {
   price: number;
 }
 
-export const PROMO_CODES: Record<
-  string,
-  { type: "percent" | "flat"; value: number }
-> = {
-  FIRST10: { type: "percent", value: 10 },
-  DENIED20: { type: "percent", value: 20 },
-  FLAT100: { type: "flat", value: 100 },
-};
-
-export function calculateOrder(
-  inputItems: CheckoutItemInput[],
-  rawPromoCode?: string | null
-) {
+/**
+ * Validates cart items and computes subtotal/shipping. Promo code validation
+ * is handled separately (see src/lib/promo.ts) since it requires an async
+ * Supabase lookup and the caller's order history — this function stays
+ * synchronous and DB-free so it can be reused anywhere cart math is needed.
+ */
+export function calculateOrder(inputItems: CheckoutItemInput[]) {
   if (!Array.isArray(inputItems) || inputItems.length === 0 || inputItems.length > 25) {
     throw new Error("Invalid cart");
   }
@@ -57,27 +51,6 @@ export function calculateOrder(
     0
   );
   const shipping = subtotal >= 999 ? 0 : 49;
-  const promoCode = rawPromoCode?.trim().toUpperCase() || null;
-  const promo = promoCode ? PROMO_CODES[promoCode] : null;
 
-  if (promoCode && !promo) {
-    throw new Error("Invalid promo code");
-  }
-
-  const calculatedDiscount = promo
-    ? promo.type === "percent"
-      ? Math.round((subtotal * promo.value) / 100)
-      : promo.value
-    : 0;
-  const promoDiscount = Math.min(calculatedDiscount, subtotal);
-  const total = subtotal - promoDiscount + shipping;
-
-  return {
-    items,
-    subtotal,
-    shipping,
-    promoCode,
-    promoDiscount,
-    total,
-  };
+  return { items, subtotal, shipping };
 }

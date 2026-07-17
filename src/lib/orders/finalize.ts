@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { getInternalApiToken } from "@/lib/internal-auth";
 import { reserveStockForItems } from "@/lib/inventory";
+import { recordPromoUsage } from "@/lib/promo";
 
 interface PendingOrder {
   id: string;
@@ -131,6 +132,10 @@ export async function finalizePaidOrder(input: FinalizeInput) {
     console.error(
       `Order ${order.id} oversold stock for product(s): ${failedReservations.join(", ")}`
     );
+  }
+
+  if (pending.promo_code) {
+    await recordPromoUsage(pending.promo_code);
   }
 
   const internalToken = getInternalApiToken();
