@@ -15,12 +15,18 @@ import { products } from "@/data/products";
 import type { Product } from "@/data/products";
 
 const ROTATE_DEG_PER_SEC = 9; // continuous drift speed — full loop ≈ 40s
-const RADIUS_X = 540;
-const RADIUS_Z = 260;
 const FLOAT_HEIGHT = 16;
 const PERSPECTIVE = 1800;
 const TOTAL = products.length;
 const ANGLE_PER_CARD = 360 / TOTAL;
+
+// Radius scales with catalog size so per-card angular spacing stays visually
+// consistent as products are added or removed. 540/260 were tuned for an
+// 8-product catalog — without this scaling, adding more products shrinks the
+// angle between cards while the ring stays the same size, causing overlap.
+const REFERENCE_TOTAL = 8;
+const RADIUS_X = 540 * (TOTAL / REFERENCE_TOTAL);
+const RADIUS_Z = 260 * (TOTAL / REFERENCE_TOTAL);
 
 function normalizeAngle(deg: number) {
   let a = deg % 360;
