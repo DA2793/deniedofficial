@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -315,45 +315,150 @@ function CarouselCard({
   );
 }
 
+const MOBILE_AUTOPLAY_MS = 3200;
+const MOBILE_RESUME_DELAY_MS = 2500;
+
 function MobileCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const resumeTimeout = useRef<number>();
+
+  // Respect reduced-motion preference — no autoplay, manual swipe still works.
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(motionQuery.matches);
+    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    motionQuery.addEventListener("change", onChange);
+    return () => motionQuery.removeEventListener("change", onChange);
+  }, []);
+
+  // Pause autoplay when the tab isn't visible.
+  useEffect(() => {
+    const onVisibility = () => setTabHidden(document.visibilityState !== "visible");
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // Track which card is centered in view, so it can get the "depth" treatment
+  // (full scale/opacity) while the peeking neighbour stays slightly receded.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let bestIndex: number | null = null;
+        let bestRatio = 0;
+        entries.forEach((entry) => {
+          const index = Number((entry.target as HTMLElement).dataset.index);
+          if (entry.intersectionRatio > bestRatio) {
+            bestRatio = entry.intersectionRatio;
+            bestIndex = index;
+          }
+        });
+        if (bestIndex !== null && bestRatio > 0.5) {
+          setActiveIndex(bestIndex);
+        }
+      },
+      { root: container, threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1] }
+    );
+
+    cardRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const isPlaying = !paused && !tabHidden && !reducedMotion;
+
+  // Autoplay: scroll to the next card on a timer.
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      const next = (activeIndex + 1) % products.length;
+      cardRefs.current[next]?.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }, MOBILE_AUTOPLAY_MS);
+    return () => clearInterval(interval);
+  }, [isPlaying, activeIndex]);
+
+  const handleTouchStart = () => {
+    setPaused(true);
+    if (resumeTimeout.current) window.clearTimeout(resumeTimeout.current);
+  };
+
+  const handleTouchEnd = () => {
+    if (resumeTimeout.current) window.clearTimeout(resumeTimeout.current);
+    resumeTimeout.current = window.setTimeout(() => setPaused(false), MOBILE_RESUME_DELAY_MS);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimeout.current) window.clearTimeout(resumeTimeout.current);
+    };
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 -mx-6 px-6 scrollbar-hide"
       role="list"
       aria-label="Products, swipe to browse"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {products.map((product) => (
-        <Link
-          key={product.id}
-          href={`/product/${product.id}`}
-          role="listitem"
-          className="snap-center shrink-0 w-[82vw] max-w-[340px]"
-        >
-          <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="82vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-8">
-              <p className="text-white text-xl font-medium tracking-tight mb-1">
-                {product.name}
-              </p>
-              <p className="text-gold text-sm tracking-wider">
-                ₹{product.price.toLocaleString("en-IN")}
-              </p>
-            </div>
-            {product.badge && (
-              <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
-                {product.badge}
+      {products.map((product, index) => {
+        const isActive = index === activeIndex;
+        return (
+          <Link
+            key={product.id}
+            ref={(el) => {
+              cardRefs.current[index] = el;
+            }}
+            data-index={index}
+            href={`/product/${product.id}`}
+            role="listitem"
+            aria-current={isActive ? "true" : undefined}
+            className={`snap-center shrink-0 w-[82vw] max-w-[340px] transition-all duration-500 ${
+              isActive ? "scale-100 opacity-100" : "scale-[0.92] opacity-60"
+            }`}
+          >
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl">
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                sizes="82vw"
+                className="object-cover"
+                priority={isActive}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <p className="text-white text-xl font-medium tracking-tight mb-1">
+                  {product.name}
+                </p>
+                <p className="text-gold text-sm tracking-wider">
+                  ₹{product.price.toLocaleString("en-IN")}
+                </p>
               </div>
-            )}
-          </div>
-        </Link>
-      ))}
+              {product.badge && (
+                <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
+                  {product.badge}
+                </div>
+              )}
+              {isActive && (
+                <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
+              )}
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 }
