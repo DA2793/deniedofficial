@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
-const categories = ["T-Shirts", "Caps"];
 const tiers = ["The Foundation", "The Numbered"];
 const filters = ["New In", "Signature"];
 
@@ -77,31 +76,39 @@ export default function Navbar() {
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     className="absolute top-full left-0 mt-3 w-[200px] glass-subtle rounded-xl py-3 overflow-hidden"
                   >
-                    {["All Collection", ...categories].map((item) => (
-                      <Link
-                        key={item}
-                        href={item === "All Collection" ? "/collection" : `/collection?category=${encodeURIComponent(item)}`}
-                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
-                      >
-                        {item}
-                      </Link>
-                    ))}
-                    <div className="border-t border-white/[0.06] my-2" />
+                    <Link
+                      href="/collection"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      All Collection
+                    </Link>
+                    <Link
+                      href="/collection?category=T-Shirts"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      T-Shirts
+                    </Link>
                     {tiers.map((tier) => (
                       <Link
                         key={tier}
-                        href={`/collection?tier=${encodeURIComponent(tier)}`}
-                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                        href={`/collection?category=T-Shirts&tier=${encodeURIComponent(tier)}`}
+                        className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                       >
                         {tier}
                       </Link>
                     ))}
                     <span
-                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-700 cursor-not-allowed"
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-700 cursor-not-allowed"
                       aria-disabled="true"
                     >
                       The Chapter — Coming Soon
                     </span>
+                    <Link
+                      href="/collection?category=Caps"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      Caps
+                    </Link>
                     <div className="border-t border-white/[0.06] my-2" />
                     {filters.slice(0, 2).map((item) => (
                       <Link

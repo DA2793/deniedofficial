@@ -75,85 +75,86 @@ function CollectionContent() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 space-y-6 md:space-y-0"
       >
-        <div className="flex flex-wrap gap-2">
-          {/* Category filters */}
-          {categoryFilters.map((cat) => (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2">
+            {/* Category filters */}
+            {categoryFilters.map((cat) => (
+              <button
+                key={cat.slug}
+                onClick={() => {
+                  setActiveCategory(cat.slug);
+                  setActiveTier(null);
+                  setShowNewOnly(false);
+                  setShowSignature(false);
+                }}
+                className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
+                  activeCategory === cat.slug && !showNewOnly && !showSignature
+                    ? "bg-white text-black"
+                    : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+
+            {/* Divider */}
+            <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
+
+            {/* Special filters */}
             <button
-              key={cat.slug}
               onClick={() => {
-                setActiveCategory(cat.slug);
-                setActiveTier(null);
-                setShowNewOnly(false);
+                setShowNewOnly(!showNewOnly);
                 setShowSignature(false);
+                setActiveCategory("all");
+                setActiveTier(null);
               }}
               className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-                activeCategory === cat.slug && !showNewOnly && !showSignature
-                  ? "bg-white text-black"
+                showNewOnly
+                  ? "bg-gold text-black"
                   : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
               }`}
             >
-              {cat.name}
+              · New In
             </button>
-          ))}
 
-          {/* Tier sub-filters — only relevant within T-Shirts */}
+            <button
+              onClick={() => {
+                setShowSignature(!showSignature);
+                setShowNewOnly(false);
+                setActiveCategory("all");
+                setActiveTier(null);
+              }}
+              className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
+                showSignature
+                  ? "bg-gold text-black"
+                  : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
+              }`}
+            >
+              · Signature
+            </button>
+          </div>
+
+          {/* Tier sub-filters — nested under T-Shirts */}
           {activeCategory === "T-Shirts" && (
-            <>
-              <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
+            <div className="flex flex-wrap gap-2 pl-4 border-l border-white/10">
               {tierFilters.map((tier) => (
                 <button
                   key={tier.slug}
                   onClick={() => setActiveTier(activeTier === tier.slug ? null : tier.slug)}
-                  className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
+                  className={`px-4 py-2 text-[9px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
                     activeTier === tier.slug
                       ? "bg-gold text-black"
-                      : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
+                      : "border border-white/10 text-gray-500 hover:border-white/30 hover:text-white"
                   }`}
                 >
                   {tier.name}
                 </button>
               ))}
-              <span className="px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full border border-white/[0.04] text-gray-700 cursor-not-allowed">
+              <span className="px-4 py-2 text-[9px] uppercase tracking-brutal rounded-full border border-white/[0.04] text-gray-700 cursor-not-allowed">
                 The Chapter — Coming Soon
               </span>
-            </>
+            </div>
           )}
-
-          {/* Divider */}
-          <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
-
-          {/* Special filters */}
-          <button
-            onClick={() => {
-              setShowNewOnly(!showNewOnly);
-              setShowSignature(false);
-              setActiveCategory("all");
-              setActiveTier(null);
-            }}
-            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-              showNewOnly
-                ? "bg-gold text-black"
-                : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
-            }`}
-          >
-            · New In
-          </button>
-
-          <button
-            onClick={() => {
-              setShowSignature(!showSignature);
-              setShowNewOnly(false);
-              setActiveCategory("all");
-              setActiveTier(null);
-            }}
-            className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-              showSignature
-                ? "bg-gold text-black"
-                : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
-            }`}
-          >
-            · Signature
-          </button>
         </div>
 
         {/* Sort + Count */}
