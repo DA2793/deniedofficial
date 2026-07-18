@@ -13,6 +13,8 @@ const COLLECTION_LIVE = false;
 
 export default function NeelkanthChapterPage() {
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoDone, setVideoDone] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -22,43 +24,72 @@ export default function NeelkanthChapterPage() {
     return () => query.removeEventListener("change", onChange);
   }, []);
 
+  // The film already tells THE CHAPTER / HALAHALA / HELD — NOT SWALLOWED /
+  // closing quote + logo through its own burned-in titles, so the page's own
+  // hero text only appears once the film has finished (or immediately if
+  // reduced-motion/no-video, where OceanChurnBackdrop stands in instead).
+  const showFilm = !reducedMotion && !videoFailed;
+  const showHeroText = !showFilm || videoDone;
+
   return (
     <main className="bg-black text-white">
-      {/* ===== HERO — THE CHURNING ===== */}
+      {/* ===== HERO — THE FILM ===== */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
-        <OceanChurnBackdrop intensity={reducedMotion ? 0.4 : 1} />
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mx-auto max-w-3xl text-center"
-        >
-          <p className="mb-6 text-[10px] uppercase tracking-brutal text-neelkanth-light">
-            The Chapter / 001
-          </p>
-          <h1 className="font-display text-6xl uppercase leading-[0.95] text-white sm:text-7xl md:text-8xl">
-            Neelkanth.
-          </h1>
-          <div className="mx-auto my-8 h-px w-16 bg-neelkanth-light/60" />
-          <p className="mx-auto max-w-md font-serif text-lg italic text-gray-300 md:text-xl">
-            Everyone waited for the nectar.
-            <br />
-            No one wanted the poison.
-            <br />
-            One didn&apos;t walk away.
-          </p>
-          <p className="mt-8 text-[10px] uppercase tracking-brutal text-gray-500">
-            DENIED. — Sawan 2026
-          </p>
-        </motion.div>
+        {showFilm ? (
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            playsInline
+            poster="/chapter/neelkanth/neelkanth-poster.jpg"
+            onEnded={() => setVideoDone(true)}
+            onError={() => setVideoFailed(true)}
+            aria-hidden="true"
+          >
+            <source src="/chapter/neelkanth/neelkanth-hero.webm" type="video/webm" />
+            <source src="/chapter/neelkanth/neelkanth-hero.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <OceanChurnBackdrop intensity={0.4} />
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-black/20" aria-hidden="true" />
 
-        <motion.div
-          animate={{ opacity: [0.4, 0.9, 0.4], y: [0, 8, 0] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[9px] uppercase tracking-brutal text-gray-500"
-        >
-          Scroll
-        </motion.div>
+        {showHeroText && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 mx-auto max-w-3xl text-center"
+          >
+            <p className="mb-6 text-[10px] uppercase tracking-brutal text-neelkanth-light">
+              The Chapter / 001
+            </p>
+            <h1 className="font-display text-6xl uppercase leading-[0.95] text-white sm:text-7xl md:text-8xl">
+              Neelkanth.
+            </h1>
+            <div className="mx-auto my-8 h-px w-16 bg-neelkanth-light/60" />
+            <p className="mx-auto max-w-md font-serif text-lg italic text-gray-300 md:text-xl">
+              Everyone waited for the nectar.
+              <br />
+              No one wanted the poison.
+              <br />
+              One didn&apos;t walk away.
+            </p>
+            <p className="mt-8 text-[10px] uppercase tracking-brutal text-gray-500">
+              DENIED. — Sawan 2026
+            </p>
+          </motion.div>
+        )}
+
+        {showHeroText && (
+          <motion.div
+            animate={{ opacity: [0.4, 0.9, 0.4], y: [0, 8, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-[9px] uppercase tracking-brutal text-gray-500"
+          >
+            Scroll
+          </motion.div>
+        )}
       </section>
 
       {/* ===== 01 — THE POISON ===== */}
