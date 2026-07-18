@@ -11,17 +11,10 @@ import OceanChurnBackdrop from "@/components/OceanChurnBackdrop";
 // same masking pattern used for Inner Sanctum.
 const COLLECTION_LIVE = false;
 
-// The closing card (DENIED. logo + subtitle) starts around 26.7s in the
-// 29.7s film. Showing the overlay from here keeps it timed to appear right
-// alongside the logo, without it being baked into the video file itself —
-// so flipping COLLECTION_LIVE removes it everywhere with no re-render.
-const CLOSING_CARD_START = 26.5;
-
 export default function NeelkanthChapterPage() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoDone, setVideoDone] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
-  const [showClosingOverlay, setShowClosingOverlay] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -51,11 +44,6 @@ export default function NeelkanthChapterPage() {
             poster="/chapter/neelkanth/neelkanth-poster.jpg"
             onEnded={() => setVideoDone(true)}
             onError={() => setVideoFailed(true)}
-            onTimeUpdate={(e) => {
-              if (!COLLECTION_LIVE && e.currentTarget.currentTime >= CLOSING_CARD_START) {
-                setShowClosingOverlay(true);
-              }
-            }}
             aria-hidden="true"
           >
             <source src="/chapter/neelkanth/neelkanth-hero.webm" type="video/webm" />
@@ -65,30 +53,6 @@ export default function NeelkanthChapterPage() {
           <OceanChurnBackdrop intensity={0.4} />
         )}
         <div className="pointer-events-none absolute inset-0 bg-black/20" aria-hidden="true" />
-
-        {/* COMING SOON overlay — timed to the film's closing card, controlled
-            entirely by COLLECTION_LIVE, no video re-render needed to remove it */}
-        {showFilm && showClosingOverlay && !videoDone && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-x-0 z-10 flex justify-center"
-            style={{ top: "62%" }}
-          >
-            <div className="inline-flex items-center gap-3 rounded-full border border-neelkanth-light/30 bg-black/40 px-6 py-2.5 backdrop-blur-sm">
-              <motion.span
-                animate={{ opacity: [0.35, 1, 0.35] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                className="h-1.5 w-1.5 rounded-full bg-neelkanth-light"
-                aria-hidden="true"
-              />
-              <span className="text-[10px] uppercase tracking-brutal text-neelkanth-light">
-                Coming Soon
-              </span>
-            </div>
-          </motion.div>
-        )}
 
         {showHeroText && (
           <motion.div
