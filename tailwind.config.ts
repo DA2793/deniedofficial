@@ -18,6 +18,12 @@ const config: Config = {
           dark: "#a8884f",
           dim: "rgba(201, 169, 110, 0.15)",
         },
+        neelkanth: {
+          DEFAULT: "#1e3a5f",
+          deep: "#0d1b2e",
+          light: "#3a6ea5",
+          dim: "rgba(30, 58, 95, 0.25)",
+        },
         gray: {
           950: "#0f0f0f",
           900: "#1a1a1a",

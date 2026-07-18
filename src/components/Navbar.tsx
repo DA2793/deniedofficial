@@ -100,12 +100,12 @@ export default function Navbar() {
                         {tier}
                       </Link>
                     ))}
-                    <span
-                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-700 cursor-not-allowed"
-                      aria-disabled="true"
+                    <Link
+                      href="/chapter/neelkanth"
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-neelkanth-light hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
-                      The Chapter — Coming Soon
-                    </span>
+                      The Chapter — Neelkanth
+                    </Link>
                     {genders.map((gender) => (
                       <Link
                         key={gender}
