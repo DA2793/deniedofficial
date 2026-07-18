@@ -11,10 +11,17 @@ import OceanChurnBackdrop from "@/components/OceanChurnBackdrop";
 // same masking pattern used for Inner Sanctum.
 const COLLECTION_LIVE = false;
 
+// The closing card (DENIED. logo + subtitle) starts around 26.7s in the
+// 29.7s film. Showing the overlay from here keeps it timed to appear right
+// alongside the logo, without it being baked into the video file itself —
+// so flipping COLLECTION_LIVE removes it everywhere with no re-render.
+const CLOSING_CARD_START = 26.5;
+
 export default function NeelkanthChapterPage() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoDone, setVideoDone] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [showClosingOverlay, setShowClosingOverlay] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -44,6 +51,11 @@ export default function NeelkanthChapterPage() {
             poster="/chapter/neelkanth/neelkanth-poster.jpg"
             onEnded={() => setVideoDone(true)}
             onError={() => setVideoFailed(true)}
+            onTimeUpdate={(e) => {
+              if (!COLLECTION_LIVE && e.currentTarget.currentTime >= CLOSING_CARD_START) {
+                setShowClosingOverlay(true);
+              }
+            }}
             aria-hidden="true"
           >
             <source src="/chapter/neelkanth/neelkanth-hero.webm" type="video/webm" />
@@ -53,6 +65,30 @@ export default function NeelkanthChapterPage() {
           <OceanChurnBackdrop intensity={0.4} />
         )}
         <div className="pointer-events-none absolute inset-0 bg-black/20" aria-hidden="true" />
+
+        {/* COMING SOON overlay — timed to the film's closing card, controlled
+            entirely by COLLECTION_LIVE, no video re-render needed to remove it */}
+        {showFilm && showClosingOverlay && !videoDone && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-x-0 z-10 flex justify-center"
+            style={{ top: "62%" }}
+          >
+            <div className="inline-flex items-center gap-3 rounded-full border border-neelkanth-light/30 bg-black/40 px-6 py-2.5 backdrop-blur-sm">
+              <motion.span
+                animate={{ opacity: [0.35, 1, 0.35] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                className="h-1.5 w-1.5 rounded-full bg-neelkanth-light"
+                aria-hidden="true"
+              />
+              <span className="text-[10px] uppercase tracking-brutal text-neelkanth-light">
+                Coming Soon
+              </span>
+            </div>
+          </motion.div>
+        )}
 
         {showHeroText && (
           <motion.div
@@ -68,7 +104,7 @@ export default function NeelkanthChapterPage() {
               Neelkanth.
             </h1>
             <div className="mx-auto my-8 h-px w-16 bg-neelkanth-light/60" />
-            <p className="mx-auto max-w-md font-serif text-lg italic text-gray-300 md:text-xl">
+            <p className="mx-auto max-w-md font-serif text-xl italic text-gray-300 md:text-2xl">
               Everyone waited for the nectar.
               <br />
               No one wanted the poison.
@@ -99,7 +135,6 @@ export default function NeelkanthChapterPage() {
         lines={[
           "Before the nectar came the poison.",
           "The thing nobody wanted.",
-          "Failure. Rejection. Pressure. Pain.",
         ]}
         accent="Denied."
       />
@@ -125,7 +160,7 @@ export default function NeelkanthChapterPage() {
         <div className="relative mx-auto max-w-3xl text-center">
           <ScrollReveal>
             <p className="mb-4 text-[10px] uppercase tracking-brutal text-neelkanth-light">03 — The Blue</p>
-            <p className="font-serif text-2xl italic text-gray-300 md:text-3xl">
+            <p className="font-serif text-xl italic text-gray-300 md:text-2xl">
               The poison left a mark.
               <br />
               The mark became the name.
@@ -154,8 +189,7 @@ export default function NeelkanthChapterPage() {
       <StoryBeat
         index="05"
         title="The Stillness"
-        lines={["Not the god.", "What he represents.", "Stillness in chaos."]}
-        accent="Chaos, denied."
+        lines={["What he represents.", "Stillness in chaos."]}
         dark
       />
 
@@ -222,7 +256,7 @@ function StoryBeat({
   index: string;
   title: string;
   lines: string[];
-  accent: string;
+  accent?: string;
   dark?: boolean;
 }) {
   return (
@@ -241,9 +275,11 @@ function StoryBeat({
               </p>
             ))}
           </div>
-          <p className="mt-10 font-display text-3xl uppercase text-white md:text-4xl">
-            {accent}
-          </p>
+          {accent && (
+            <p className="mt-10 font-display text-3xl uppercase text-white md:text-4xl">
+              {accent}
+            </p>
+          )}
         </ScrollReveal>
       </div>
     </section>
