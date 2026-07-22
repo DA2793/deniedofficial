@@ -297,7 +297,7 @@ function CarouselCard({
 
   const previewImage = previewImages[previewIndex] ?? product.image;
   const previousImage = previousIndex === null ? null : previewImages[previousIndex];
-  const nextPreviewImage = isHovered && previewImages.length > 1
+  const nextPreviewImage = previewImages.length > 1
     ? previewImages[(previewIndex + 1) % previewImages.length]
     : null;
 

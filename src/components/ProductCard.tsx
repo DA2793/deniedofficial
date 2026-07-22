@@ -49,9 +49,10 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const previewImage = previewImages[previewIndex] ?? product.image;
   const previousImage = previousIndex === null ? null : previewImages[previousIndex];
-  const nextPreviewImage = isHovered && previewImages.length > 1
+  const nextPreviewImage = previewImages.length > 1
     ? previewImages[(previewIndex + 1) % previewImages.length]
     : null;
+  const imageSizes = "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw";
 
   return (
     <motion.article
@@ -71,7 +72,7 @@ export default function ProductCard({ product }: { product: Product }) {
               transition={{ duration: PREVIEW_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
               className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
             >
-              <Image src={previousImage} alt="" fill className="object-cover" aria-hidden="true" />
+              <Image src={previousImage} alt="" fill sizes={imageSizes} className="object-cover" aria-hidden="true" />
             </motion.div>
           )}
           <motion.div
@@ -81,13 +82,14 @@ export default function ProductCard({ product }: { product: Product }) {
             transition={{ duration: PREVIEW_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
             className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
           >
-            <Image src={previewImage} alt={`${product.name} preview ${previewIndex + 1}`} fill className="object-cover" />
+            <Image src={previewImage} alt={`${product.name} preview ${previewIndex + 1}`} fill sizes={imageSizes} className="object-cover" />
           </motion.div>
           {nextPreviewImage && nextPreviewImage !== previewImage && (
             <Image
               src={nextPreviewImage}
               alt=""
               fill
+              sizes={imageSizes}
               loading="eager"
               aria-hidden="true"
               className="object-cover opacity-0 pointer-events-none"
