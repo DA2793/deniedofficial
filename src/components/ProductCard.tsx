@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Product } from "@/data/products";
 import { useWishlist } from "@/context/WishlistContext";
 
+const FIRST_PREVIEW_DELAY_MS = 1950;
 const PREVIEW_INTERVAL_MS = 2800;
 const PREVIEW_FADE_MS = 850;
 
@@ -17,6 +18,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const [isHovered, setIsHovered] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState<number | null>(null);
+  const [hasRotated, setHasRotated] = useState(false);
 
   useEffect(() => {
     const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -26,15 +28,18 @@ export default function ProductCard({ product }: { product: Product }) {
         setPreviousIndex(previewIndex);
         setPreviewIndex(0);
       }
+      if (hasRotated) setHasRotated(false);
       return;
     }
 
+    const delay = hasRotated ? PREVIEW_INTERVAL_MS : FIRST_PREVIEW_DELAY_MS;
     const timeout = window.setTimeout(() => {
       setPreviousIndex(previewIndex);
       setPreviewIndex((previewIndex + 1) % previewImages.length);
-    }, PREVIEW_INTERVAL_MS);
+      setHasRotated(true);
+    }, delay);
     return () => window.clearTimeout(timeout);
-  }, [isHovered, previewIndex, previewImages.length]);
+  }, [hasRotated, isHovered, previewIndex, previewImages.length]);
 
   useEffect(() => {
     if (previousIndex === null) return;
@@ -44,6 +49,9 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const previewImage = previewImages[previewIndex] ?? product.image;
   const previousImage = previousIndex === null ? null : previewImages[previousIndex];
+  const nextPreviewImage = isHovered && previewImages.length > 1
+    ? previewImages[(previewIndex + 1) % previewImages.length]
+    : null;
 
   return (
     <motion.article
@@ -75,6 +83,16 @@ export default function ProductCard({ product }: { product: Product }) {
           >
             <Image src={previewImage} alt={`${product.name} preview ${previewIndex + 1}`} fill className="object-cover" />
           </motion.div>
+          {nextPreviewImage && nextPreviewImage !== previewImage && (
+            <Image
+              src={nextPreviewImage}
+              alt=""
+              fill
+              loading="eager"
+              aria-hidden="true"
+              className="object-cover opacity-0 pointer-events-none"
+            />
+          )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
           {product.badge && <div className="absolute top-4 left-4 glass-subtle px-3 py-1.5 z-10"><span className="text-[9px] uppercase tracking-brutal text-gold font-medium">{product.badge}</span></div>}
         </div>

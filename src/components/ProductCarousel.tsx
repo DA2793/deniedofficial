@@ -266,6 +266,7 @@ function CarouselCard({
   const [isHovered, setIsHovered] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState<number | null>(null);
+  const [hasRotated, setHasRotated] = useState(false);
 
   useEffect(() => {
     const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -275,15 +276,18 @@ function CarouselCard({
         setPreviousIndex(previewIndex);
         setPreviewIndex(0);
       }
+      if (hasRotated) setHasRotated(false);
       return;
     }
 
+    const delay = hasRotated ? 2800 : 1950;
     const timeout = window.setTimeout(() => {
       setPreviousIndex(previewIndex);
       setPreviewIndex((previewIndex + 1) % previewImages.length);
-    }, 2800);
+      setHasRotated(true);
+    }, delay);
     return () => window.clearTimeout(timeout);
-  }, [isHovered, previewIndex, previewImages.length]);
+  }, [hasRotated, isHovered, previewIndex, previewImages.length]);
 
   useEffect(() => {
     if (previousIndex === null) return;
@@ -293,6 +297,9 @@ function CarouselCard({
 
   const previewImage = previewImages[previewIndex] ?? product.image;
   const previousImage = previousIndex === null ? null : previewImages[previousIndex];
+  const nextPreviewImage = isHovered && previewImages.length > 1
+    ? previewImages[(previewIndex + 1) % previewImages.length]
+    : null;
 
   // Normalized depth (0 = directly behind, 1 = front-and-center) — every visual
   // property below is derived from this one value so they stay in sync.
@@ -341,6 +348,17 @@ function CarouselCard({
           priority={isActive}
         />
       </motion.div>
+      {nextPreviewImage && nextPreviewImage !== previewImage && (
+        <Image
+          src={nextPreviewImage}
+          alt=""
+          fill
+          sizes="(min-width: 768px) 420px, 340px"
+          loading="eager"
+          aria-hidden="true"
+          className="object-cover opacity-0 pointer-events-none"
+        />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-8">
