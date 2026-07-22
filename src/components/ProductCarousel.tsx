@@ -262,6 +262,25 @@ function CarouselCard({
   const x = useTransform(theta, (t) => Math.sin((t * Math.PI) / 180) * RADIUS_X);
   const z = useTransform(theta, (t) => (Math.cos((t * Math.PI) / 180) - 1) * RADIUS_Z);
   const y = useTransform(theta, (t) => Math.sin((t * Math.PI) / 90) * FLOAT_HEIGHT);
+  const previewImages = Array.from(new Set([product.image, ...product.images]));
+  const [isHovered, setIsHovered] = useState(false);
+  const [previewIndex, setPreviewIndex] = useState(0);
+
+  useEffect(() => {
+    const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!isHovered || !supportsHover || reducedMotion || previewImages.length < 2) {
+      setPreviewIndex(0);
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setPreviewIndex((current) => (current + 1) % previewImages.length);
+    }, 1100);
+    return () => window.clearInterval(interval);
+  }, [isHovered, previewImages.length]);
+
+  const previewImage = previewImages[previewIndex] ?? product.image;
 
   // Normalized depth (0 = directly behind, 1 = front-and-center) — every visual
   // property below is derived from this one value so they stay in sync.
@@ -276,14 +295,22 @@ function CarouselCard({
 
   const cardInner = (
     <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
-      <Image
-        src={product.image}
-        alt={product.name}
-        fill
-        sizes="(min-width: 768px) 420px, 340px"
-        className="object-cover transition-transform duration-700 group-hover:scale-110"
-        priority={isActive}
-      />
+      <motion.div
+        key={previewImage}
+        initial={previewIndex === 0 ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.35 }}
+        className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+      >
+        <Image
+          src={previewImage}
+          alt={`${product.name} preview ${previewIndex + 1}`}
+          fill
+          sizes="(min-width: 768px) 420px, 340px"
+          className="object-cover"
+          priority={isActive}
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
       <div className="absolute bottom-0 left-0 right-0 p-8">
@@ -311,6 +338,8 @@ function CarouselCard({
       className="absolute w-[340px] md:w-[420px] cursor-pointer"
       aria-hidden={!isActive}
       tabIndex={-1}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {isActive ? (
         <Link
