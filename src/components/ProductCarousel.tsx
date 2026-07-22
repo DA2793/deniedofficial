@@ -265,22 +265,34 @@ function CarouselCard({
   const previewImages = Array.from(new Set([product.image, ...product.images]));
   const [isHovered, setIsHovered] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!isHovered || !supportsHover || reducedMotion || previewImages.length < 2) {
-      setPreviewIndex(0);
+      if (previewIndex !== 0) {
+        setPreviousIndex(previewIndex);
+        setPreviewIndex(0);
+      }
       return;
     }
 
-    const interval = window.setInterval(() => {
-      setPreviewIndex((current) => (current + 1) % previewImages.length);
-    }, 1100);
-    return () => window.clearInterval(interval);
-  }, [isHovered, previewImages.length]);
+    const timeout = window.setTimeout(() => {
+      setPreviousIndex(previewIndex);
+      setPreviewIndex((previewIndex + 1) % previewImages.length);
+    }, 2800);
+    return () => window.clearTimeout(timeout);
+  }, [isHovered, previewIndex, previewImages.length]);
+
+  useEffect(() => {
+    if (previousIndex === null) return;
+    const timeout = window.setTimeout(() => setPreviousIndex(null), 850);
+    return () => window.clearTimeout(timeout);
+  }, [previousIndex]);
 
   const previewImage = previewImages[previewIndex] ?? product.image;
+  const previousImage = previousIndex === null ? null : previewImages[previousIndex];
 
   // Normalized depth (0 = directly behind, 1 = front-and-center) — every visual
   // property below is derived from this one value so they stay in sync.
@@ -295,11 +307,29 @@ function CarouselCard({
 
   const cardInner = (
     <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/90 group">
+      {previousImage && previousIndex !== previewIndex && (
+        <motion.div
+          key={`previous-${previousImage}`}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.85, ease: [0.4, 0, 0.2, 1] }}
+          className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+        >
+          <Image
+            src={previousImage}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 420px, 340px"
+            className="object-cover"
+            aria-hidden="true"
+          />
+        </motion.div>
+      )}
       <motion.div
         key={previewImage}
-        initial={previewIndex === 0 ? false : { opacity: 0 }}
+        initial={previousImage ? { opacity: 0 } : false}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.35 }}
+        transition={{ duration: 0.85, ease: [0.4, 0, 0.2, 1] }}
         className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
       >
         <Image

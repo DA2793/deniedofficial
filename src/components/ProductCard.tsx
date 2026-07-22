@@ -7,7 +7,8 @@ import Link from "next/link";
 import { Product } from "@/data/products";
 import { useWishlist } from "@/context/WishlistContext";
 
-const PREVIEW_INTERVAL_MS = 1100;
+const PREVIEW_INTERVAL_MS = 2800;
+const PREVIEW_FADE_MS = 850;
 
 export default function ProductCard({ product }: { product: Product }) {
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -15,22 +16,34 @@ export default function ProductCard({ product }: { product: Product }) {
   const previewImages = Array.from(new Set([product.image, ...product.images]));
   const [isHovered, setIsHovered] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!isHovered || !supportsHover || reducedMotion || previewImages.length < 2) {
-      setPreviewIndex(0);
+      if (previewIndex !== 0) {
+        setPreviousIndex(previewIndex);
+        setPreviewIndex(0);
+      }
       return;
     }
 
-    const interval = window.setInterval(() => {
-      setPreviewIndex((current) => (current + 1) % previewImages.length);
+    const timeout = window.setTimeout(() => {
+      setPreviousIndex(previewIndex);
+      setPreviewIndex((previewIndex + 1) % previewImages.length);
     }, PREVIEW_INTERVAL_MS);
-    return () => window.clearInterval(interval);
-  }, [isHovered, previewImages.length]);
+    return () => window.clearTimeout(timeout);
+  }, [isHovered, previewIndex, previewImages.length]);
+
+  useEffect(() => {
+    if (previousIndex === null) return;
+    const timeout = window.setTimeout(() => setPreviousIndex(null), PREVIEW_FADE_MS);
+    return () => window.clearTimeout(timeout);
+  }, [previousIndex]);
 
   const previewImage = previewImages[previewIndex] ?? product.image;
+  const previousImage = previousIndex === null ? null : previewImages[previousIndex];
 
   return (
     <motion.article
@@ -42,11 +55,22 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       <Link href={`/product/${product.id}`} className="block" aria-label={`View ${product.name}`}>
         <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm">
+          {previousImage && previousIndex !== previewIndex && (
+            <motion.div
+              key={`previous-${previousImage}`}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: PREVIEW_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
+              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+            >
+              <Image src={previousImage} alt="" fill className="object-cover" aria-hidden="true" />
+            </motion.div>
+          )}
           <motion.div
             key={previewImage}
-            initial={previewIndex === 0 ? false : { opacity: 0 }}
+            initial={previousImage ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: PREVIEW_FADE_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
             className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
           >
             <Image src={previewImage} alt={`${product.name} preview ${previewIndex + 1}`} fill className="object-cover" />
