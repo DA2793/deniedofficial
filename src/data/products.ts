@@ -32,6 +32,7 @@ export interface Product {
   details: {
     fabric: string;
     fit: string;
+    features?: string;
     care: string;
     colors: string[];
     sizes: string[];
@@ -77,9 +78,10 @@ export const products: Product[] = [
     ],
     description: "The DENIED. Signature Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
-      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
-      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Crafted from a 90% Cotton, 10% Polyester blend with a 260 GSM premium terry-knit construction. Soft, breathable, and durable with a structured drape and a luxurious hand feel.",
+      fit: "Unisex oversized fit with dropped shoulders, offering a relaxed silhouette designed for effortless everyday wear.",
+      features: "Premium terry-knit texture • Heavyweight 260 GSM fabric • Soft & breathable • Durable construction • Built for lasting comfort and shape retention.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Black", "Navy Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
@@ -117,9 +119,10 @@ export const products: Product[] = [
     ],
     description: "Unique acid wash effect — each piece has subtle variations for a one-of-a-kind look. Heavyweight yet breathable with a lived-in finish.",
     details: {
-      fabric: "100% Cotton, 240 GSM heavyweight with acid-washed finish",
-      fit: "Unisex oversized fit – relaxed shoulders, dropped sleeves for a streetwear-ready silhouette",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Crafted from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk, bio-washed, and finished with a unique acid wash treatment for a soft, lived-in feel and distinctive vintage character.",
+      fit: "Unisex oversized fit with dropped shoulders and a relaxed streetwear silhouette.",
+      features: "Every garment features a unique acid-wash finish, making no two pieces exactly alike. Durable double-stitched construction and a Lycra ribbed neck ensure lasting comfort and shape retention.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Acid Wash"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
@@ -171,9 +174,10 @@ export const products: Product[] = [
     ],
     description: "Supima cotton luxury. Soft, breathable, and designed for all-day comfort with a classic silhouette.",
     details: {
-      fabric: "100% Supima Cotton, 160 GSM – luxury feel, soft and breathable",
-      fit: "Unisex regular fit – classic, flattering silhouette",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Crafted from 100% Supima® Cotton with a 160 GSM lightweight construction. Naturally soft, breathable, and exceptionally durable, offering a smooth finish and luxurious comfort that lasts.",
+      fit: "Unisex regular fit designed for a clean, timeless silhouette that's comfortable for everyday wear.",
+      features: "Premium Supima® cotton • Lightweight & breathable • Ultra-soft feel • Excellent colour retention • Durable construction",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Black", "Navy Blue", "White"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
@@ -229,9 +233,10 @@ export const products: Product[] = [
     ],
     description: "Textured Airtex finish with embroidered print. Structured collar and cuff — polished style for any day, any plan.",
     details: {
-      fabric: "100% Cotton, 220 GSM Airtex – textured finish with embroidered print",
-      fit: "Regular fit with structured collar and cuff – polished style for any occasion",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Crafted from 100% Super Combed Cotton with a 220 GSM Airtex knit for a premium textured finish. Pre-shrunk and bio-washed to deliver superior softness, lasting comfort, and excellent shape retention.",
+      fit: "Regular fit with a structured collar and ribbed cuffs, offering a clean, polished silhouette that's perfect for both casual and smart-casual occasions.",
+      features: "220 GSM Airtex fabric • Pre-shrunk • Bio-washed • Structured collar & ribbed cuffs • Double-stitched construction • Breathable and durable for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Black", "Coffee Brown", "Navy Blue", "Brick Red", "Maroon", "Royal Blue"],
       sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
     },
@@ -341,9 +346,10 @@ export const products: Product[] = [
     ],
     description: "The DENIED. Unique Oversized Tee. A bold statement graphic on heavyweight terry-knit, cut for an effortless oversized silhouette.",
     details: {
-      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
-      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
+      fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
+      features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Black", "Maroon", "Navy Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
@@ -399,9 +405,9 @@ export const products: Product[] = [
     ],
     description: "The DENIED. SHE IS Classic Tee. Soft, breathable cotton cut in a flattering everyday silhouette for effortless comfort.",
     details: {
-      fabric: "Pre-shrunk 100% Cotton, 180 GSM – soft, breathable, and made to stay true to size",
-      fit: "Women's regular fit – tailored for a flattering everyday silhouette without compromising comfort",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Crafted from 100% Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for a soft feel, breathable comfort, and lasting shape retention.",
+      fit: "Women's regular fit designed to offer a flattering, comfortable silhouette for effortless everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Black", "Bottle Green", "Coffee Brown", "Maroon", "Navy Blue", "Red"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
@@ -446,9 +452,10 @@ export const products: Product[] = [
     ],
     description: "The DENIED. I'm This Old Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
-      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
-      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
+      fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
+      features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Off White", "Red", "White"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
     },
@@ -493,9 +500,10 @@ export const products: Product[] = [
     ],
     description: "The DENIED. The Game Begins Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
-      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
-      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
+      fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
+      features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Off White", "Red", "White"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
     },
@@ -535,12 +543,334 @@ export const products: Product[] = [
     ],
     description: "The DENIED. 3 Monkeys Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
-      fabric: "90/10 Cotton Polyester, 260 GSM Terry-knit",
-      fit: "Unisex oversized fit with drop shoulders – relaxed, roomy, and right on trend",
-      care: "Wash inside-out in cold water, dry on low heat. Flip inside out before ironing.",
+      fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
+      fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
+      features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Black", "Navy Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
+  },
+  {
+    id: 12,
+    name: "Moody Floaty Oversized Tee",
+    category: "T-Shirts",
+    tier: "The Foundation",
+    unitCap: null,
+    gender: "Women",
+    price: 1199,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
+    images: [
+      "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
+      "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/2.png"
+    ],
+    colorImages: {
+      "Baby Blue": [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/2.png"
+      ],
+      Flamingo: [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Flamingo/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Flamingo/2.png"
+      ],
+      Jade: [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Jade/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Jade/2.png"
+      ],
+      Lavender: [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Lavender/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/Lavender/2.png"
+      ],
+      "Light Baby Pink": [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/LightBabyPink/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/LightBabyPink/2.png"
+      ],
+      "Off White": [
+        "/Products/TShirts/TheFoundation/MoodyFloaty/OffWhite/1.png",
+        "/Products/TShirts/TheFoundation/MoodyFloaty/OffWhite/2.png"
+      ]
+    },
+    sizeChart: [
+      {
+        size: "XS",
+        chest: 39,
+        length: 26
+      },
+      {
+        size: "S",
+        chest: 41,
+        length: 27
+      },
+      {
+        size: "M",
+        chest: 43,
+        length: 28
+      },
+      {
+        size: "L",
+        chest: 45,
+        length: 29
+      },
+      {
+        size: "XL",
+        chest: 47,
+        length: 30
+      },
+      {
+        size: "XXL",
+        chest: 49,
+        length: 31
+      }
+    ],
+    description: "The DENIED. Moody Floaty Oversized Tee. Soft colour meets heavyweight structure in a relaxed silhouette made to move at her pace.",
+    details: {
+      fabric: "Crafted from a 90% Cotton, 10% Polyester blend with a 260 GSM premium terry-knit construction. Soft, breathable, and durable with a structured drape and a luxurious hand feel.",
+      fit: "Unisex oversized fit with dropped shoulders, offering a relaxed silhouette designed for effortless everyday wear.",
+      features: "Premium terry-knit texture • Heavyweight 260 GSM fabric • Soft & breathable • Durable construction • Built for lasting comfort and shape retention.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: [
+        "Baby Blue",
+        "Flamingo",
+        "Jade",
+        "Lavender",
+        "Light Baby Pink",
+        "Off White"
+      ],
+      sizes: [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    }
+  },
+  {
+    id: 13,
+    name: "To Do List Oversized Tee",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
+    gender: "Women",
+    price: 1499,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
+    images: [
+      "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
+      "/Products/TShirts/TheNumbered/ToDoList/Black/2.png"
+    ],
+    colorImages: {
+      Black: [
+        "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/Black/2.png"
+      ],
+      "Bottle Green": [
+        "/Products/TShirts/TheNumbered/ToDoList/BottleGreen/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/BottleGreen/2.png"
+      ],
+      "Coral Red": [
+        "/Products/TShirts/TheNumbered/ToDoList/CoralRed/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/CoralRed/2.png"
+      ],
+      Maroon: [
+        "/Products/TShirts/TheNumbered/ToDoList/Maroon/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/Maroon/2.png"
+      ],
+      "Navy Blue": [
+        "/Products/TShirts/TheNumbered/ToDoList/NavyBlue/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/NavyBlue/2.png"
+      ],
+      "Olive Green": [
+        "/Products/TShirts/TheNumbered/ToDoList/OliveGreen/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/OliveGreen/2.png"
+      ],
+      "Petrol Blue": [
+        "/Products/TShirts/TheNumbered/ToDoList/PetrolBlue/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/PetrolBlue/2.png"
+      ],
+      Purple: [
+        "/Products/TShirts/TheNumbered/ToDoList/Purple/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/Purple/2.png"
+      ],
+      Red: [
+        "/Products/TShirts/TheNumbered/ToDoList/Red/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/Red/2.png"
+      ],
+      "Royal Blue": [
+        "/Products/TShirts/TheNumbered/ToDoList/RoyalBlue/1.png",
+        "/Products/TShirts/TheNumbered/ToDoList/RoyalBlue/2.png"
+      ]
+    },
+    sizeChart: [
+      {
+        size: "XS",
+        chest: 39,
+        length: 26
+      },
+      {
+        size: "S",
+        chest: 41,
+        length: 27
+      },
+      {
+        size: "M",
+        chest: 43,
+        length: 28
+      },
+      {
+        size: "L",
+        chest: 45,
+        length: 29
+      },
+      {
+        size: "XL",
+        chest: 47,
+        length: 30
+      },
+      {
+        size: "XXL",
+        chest: 49,
+        length: 31
+      }
+    ],
+    description: "The DENIED. To Do List Oversized Tee. A bold statement graphic on heavyweight cotton, built for an effortless streetwear silhouette.",
+    details: {
+      fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
+      fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
+      features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
+      colors: [
+        "Black",
+        "Bottle Green",
+        "Coral Red",
+        "Maroon",
+        "Navy Blue",
+        "Olive Green",
+        "Petrol Blue",
+        "Purple",
+        "Red",
+        "Royal Blue"
+      ],
+      sizes: [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    }
+  },
+  {
+    id: 14,
+    name: "Infinite Classic Tee",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
+    gender: "Women",
+    price: 1199,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
+    images: [
+      "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
+      "/Products/TShirts/TheNumbered/InfiniteClassic/Black/2.png"
+    ],
+    colorImages: {
+      Black: [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Black/2.png"
+      ],
+      "Bottle Green": [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/BottleGreen/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/BottleGreen/2.png"
+      ],
+      "Coffee Brown": [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/CoffeeBrown/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/CoffeeBrown/2.png"
+      ],
+      Maroon: [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Maroon/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Maroon/2.png"
+      ],
+      "Navy Blue": [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/NavyBlue/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/NavyBlue/2.png"
+      ],
+      Purple: [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Purple/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Purple/2.png"
+      ],
+      Red: [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Red/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/Red/2.png"
+      ],
+      "Royal Blue": [
+        "/Products/TShirts/TheNumbered/InfiniteClassic/RoyalBlue/1.png",
+        "/Products/TShirts/TheNumbered/InfiniteClassic/RoyalBlue/2.png"
+      ]
+    },
+    sizeChart: [
+      {
+        size: "XS",
+        chest: 32,
+        length: 23
+      },
+      {
+        size: "S",
+        chest: 34,
+        length: 24
+      },
+      {
+        size: "M",
+        chest: 36,
+        length: 25
+      },
+      {
+        size: "L",
+        chest: 38,
+        length: 26
+      },
+      {
+        size: "XL",
+        chest: 40,
+        length: 27
+      },
+      {
+        size: "XXL",
+        chest: 42,
+        length: 28
+      }
+    ],
+    description: "The DENIED. Infinite Classic Tee. A confident statement on soft, breathable cotton, shaped for effortless everyday comfort.",
+    details: {
+      fabric: "Crafted from 100% Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for a soft feel, breathable comfort, and lasting shape retention.",
+      fit: "Women's regular fit designed to offer a flattering, comfortable silhouette for effortless everyday wear.",
+      features: "Soft & breathable fabric • Lightweight 180 GSM construction • Durable stitching • Designed for all-day comfort and long-lasting wear.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: [
+        "Black",
+        "Bottle Green",
+        "Coffee Brown",
+        "Maroon",
+        "Navy Blue",
+        "Purple",
+        "Red",
+        "Royal Blue"
+      ],
+      sizes: [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    }
   },
 ];
 

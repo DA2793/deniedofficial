@@ -528,6 +528,12 @@ export default function ProductPage() {
                   <span className="text-sm text-gray-400">Fit</span>
                   <span className="text-sm text-white text-right max-w-[60%]">{product.details.fit}</span>
                 </div>
+                {product.details.features && (
+                  <div className="flex justify-between py-3 border-b border-white/[0.04]">
+                    <span className="text-sm text-gray-400">Features</span>
+                    <span className="text-sm text-white text-right max-w-[60%]">{product.details.features}</span>
+                  </div>
+                )}
                 <div className="flex justify-between py-3 border-b border-white/[0.04]">
                   <span className="text-sm text-gray-400">Care</span>
                   <span className="text-sm text-white text-right max-w-[60%]">{product.details.care}</span>

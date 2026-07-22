@@ -71,5 +71,8 @@ values
   (7, 100, 0),  -- Unique Oversized Tee
   (8, 100, 0),  -- SHE IS Classic Tee
   (9, 100, 0),  -- I'm This Old Oversized Tee
-  (10, 100, 0)  -- The Game Begins Oversized Tee
+  (10, 100, 0), -- The Game Begins Oversized Tee
+  (11, 100, 0), -- 3 Monkeys Oversized Tee
+  (13, 100, 0), -- To Do List Oversized Tee
+  (14, 100, 0)  -- Infinite Classic Tee
 on conflict (product_id) do nothing;
