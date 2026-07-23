@@ -1,4 +1,5 @@
 import { getProductById } from "@/data/products";
+import { isVariantOutOfStock } from "@/lib/variantAvailability";
 
 export interface CheckoutItemInput {
   productId: number;
@@ -35,6 +36,9 @@ export function calculateOrder(inputItems: CheckoutItemInput[]) {
     }
     if (!product.details.sizes.includes(item.size)) {
       throw new Error(`Invalid size for ${product.name}`);
+    }
+    if (isVariantOutOfStock(product.id, item.color, item.size)) {
+      throw new Error(`${product.name} in ${item.color}, size ${item.size} is sold out`);
     }
 
     return {

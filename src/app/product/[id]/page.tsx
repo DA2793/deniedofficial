@@ -12,6 +12,7 @@ import MagneticButton from "@/components/MagneticButton";
 import SizeGuide from "@/components/SizeGuide";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { isVariantOutOfStock } from "@/lib/variantAvailability";
 
 // ===== IMAGE ZOOM MODAL =====
 function ImageZoomModal({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -147,6 +148,9 @@ export default function ProductPage() {
   }, [product?.id, product?.tier]);
 
   const soldOut = stockRemaining !== null && stockRemaining <= 0;
+  const selectedVariantOutOfStock = Boolean(
+    product && selectedSize && isVariantOutOfStock(product.id, selectedColor, selectedSize)
+  );
 
   if (!product) {
     return (
@@ -384,7 +388,13 @@ export default function ProductPage() {
                   <button
                     type="button"
                     key={color}
-                    onClick={() => { setSelectedColor(color); setActiveImage(0); }}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      setActiveImage(0);
+                      if (selectedSize && isVariantOutOfStock(product.id, color, selectedSize)) {
+                        setSelectedSize(null);
+                      }
+                    }}
                     className={`min-h-11 px-5 py-2.5 rounded-full text-xs uppercase tracking-wide border transition-all duration-300 touch-manipulation ${
                       selectedColor === color
                         ? "border-gold text-white bg-gold/10"
@@ -406,44 +416,65 @@ export default function ProductPage() {
                 <SizeGuide sizeChart={product.sizeChart} />
               </div>
               <div className="flex flex-wrap gap-2">
-                {product.details.sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-12 flex items-center justify-center text-xs uppercase border transition-all duration-300 ${
-                      selectedSize === size
-                        ? "border-gold text-white bg-gold/10"
-                        : "border-white/10 text-gray-400 hover:border-white/30"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {product.details.sizes.map((size) => {
+                  const variantOutOfStock = isVariantOutOfStock(product.id, selectedColor, size);
+                  return (
+                    <button
+                      type="button"
+                      key={size}
+                      disabled={variantOutOfStock}
+                      onClick={() => setSelectedSize(size)}
+                      aria-label={variantOutOfStock ? `${size} — out of stock` : `Select size ${size}`}
+                      title={variantOutOfStock ? `${size} is out of stock in ${selectedColor}` : undefined}
+                      className={`relative min-w-14 h-14 px-2 flex flex-col items-center justify-center text-xs uppercase border transition-all duration-300 ${
+                        variantOutOfStock
+                          ? "border-red-400/20 text-gray-600 cursor-not-allowed"
+                          : selectedSize === size
+                            ? "border-gold text-white bg-gold/10"
+                            : "border-white/10 text-gray-400 hover:border-white/30"
+                      }`}
+                    >
+                      <span className={variantOutOfStock ? "line-through" : undefined}>{size}</span>
+                      {variantOutOfStock && (
+                        <span className="text-[7px] leading-none text-red-400/70 mt-1 tracking-wider">Out</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
+              {product.details.sizes.some((size) => isVariantOutOfStock(product.id, selectedColor, size)) && (
+                <p className="text-[9px] uppercase tracking-wide text-gray-600 mt-3">
+                  Unavailable sizes are marked out of stock
+                </p>
+              )}
             </div>
 
             {/* CTA Buttons */}
             <div className="space-y-3 mb-8">
               <MagneticButton strength={0.1} className="w-full">
                 <button
-                  disabled={soldOut}
+                  disabled={soldOut || selectedVariantOutOfStock}
                   onClick={() => {
                     if (soldOut) return;
                     if (!selectedSize) { alert("Please select a size"); return; }
+                    if (isVariantOutOfStock(product.id, selectedColor, selectedSize)) {
+                      alert("This colour and size is currently out of stock");
+                      return;
+                    }
                     addToCart(product, selectedColor, selectedSize);
                   }}
                   className={`w-full text-[11px] uppercase tracking-brutal py-4 transition-colors duration-300 flex items-center justify-center gap-3 rounded-full ${
-                    soldOut
+                    soldOut || selectedVariantOutOfStock
                       ? "bg-white/10 text-gray-500 cursor-not-allowed"
                       : "bg-white text-black hover:bg-gold"
                   }`}
                 >
-                  {!soldOut && (
+                  {!soldOut && !selectedVariantOutOfStock && (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                   )}
-                  {soldOut ? "Sold Out" : "Add to Bag"}
+                  {soldOut || selectedVariantOutOfStock ? "Sold Out" : "Add to Bag"}
                 </button>
               </MagneticButton>
 

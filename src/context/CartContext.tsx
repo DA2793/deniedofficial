@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Product } from "@/data/products";
+import { isVariantOutOfStock } from "@/lib/variantAvailability";
 
 interface CartItem {
   product: Product;
@@ -40,12 +41,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Load cart from localStorage on mount
+  // Load valid cart items from localStorage on mount. This also removes
+  // variants that became unavailable after they were originally added.
   useEffect(() => {
     const saved = localStorage.getItem("denied-cart");
     if (saved) {
       try {
-        setItems(JSON.parse(saved));
+        const parsed = JSON.parse(saved) as CartItem[];
+        if (Array.isArray(parsed)) {
+          setItems(parsed.filter(
+            (item) => item?.product && !isVariantOutOfStock(
+              item.product.id,
+              item.selectedColor,
+              item.selectedSize
+            )
+          ));
+        }
       } catch {}
     }
   }, []);
@@ -56,6 +67,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   const addToCart = (product: Product, color: string, size: string) => {
+    if (isVariantOutOfStock(product.id, color, size)) return;
+
     setItems((prev) => {
       const existing = prev.find(
         (item) => item.product.id === product.id && item.selectedColor === color && item.selectedSize === size
@@ -81,7 +94,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (productId: number, color: string, size: string, qty: number) => {
-    if (qty <= 0) {
+    if (qty <= 0 || isVariantOutOfStock(productId, color, size)) {
       removeFromCart(productId, color, size);
       return;
     }
