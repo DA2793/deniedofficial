@@ -75,6 +75,7 @@ export const products: Product[] = [
       { size: "L", chest: 45, length: 29 },
       { size: "XL", chest: 47, length: 30 },
       { size: "XXL", chest: 49, length: 31 },
+      { size: "XXXL", chest: 51, length: 32 },
     ],
     description: "The DENIED. Signature Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
     details: {
@@ -83,7 +84,7 @@ export const products: Product[] = [
       features: "Premium terry-knit texture • Heavyweight 260 GSM fabric • Soft & breathable • Durable construction • Built for lasting comfort and shape retention.",
       care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Black", "Navy Blue"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
     },
   },
   {
@@ -222,6 +223,18 @@ export const products: Product[] = [
         "/Products/TShirts/TheFoundation/Polo/RoyalBlue/polo-1.png",
         "/Products/TShirts/TheFoundation/Polo/RoyalBlue/polo-2.png",
       ],
+      "Grey": [
+        "/Products/TShirts/TheFoundation/Polo/Grey/1.png",
+        "/Products/TShirts/TheFoundation/Polo/Grey/2.png",
+      ],
+      "Petrol Blue": [
+        "/Products/TShirts/TheFoundation/Polo/PetrolBlue/1.png",
+        "/Products/TShirts/TheFoundation/Polo/PetrolBlue/2.png",
+      ],
+      "White": [
+        "/Products/TShirts/TheFoundation/Polo/White/1.png",
+        "/Products/TShirts/TheFoundation/Polo/White/2.png",
+      ],
     },
     sizeChart: [
       { size: "S", chest: 38, length: 26 },
@@ -237,7 +250,7 @@ export const products: Product[] = [
       fit: "Regular fit with a structured collar and ribbed cuffs, offering a clean, polished silhouette that's perfect for both casual and smart-casual occasions.",
       features: "220 GSM Airtex fabric • Pre-shrunk • Bio-washed • Structured collar & ribbed cuffs • Double-stitched construction • Breathable and durable for everyday wear.",
       care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
-      colors: ["Black", "Coffee Brown", "Navy Blue", "Brick Red", "Maroon", "Royal Blue"],
+      colors: ["Black", "Coffee Brown", "Navy Blue", "Brick Red", "Maroon", "Royal Blue", "Grey", "Petrol Blue", "White"],
       sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
     },
   },
@@ -337,14 +350,14 @@ export const products: Product[] = [
       ],
     },
     sizeChart: [
-      { size: "XS", chest: 39, length: 26 },
-      { size: "S", chest: 41, length: 27 },
-      { size: "M", chest: 43, length: 28 },
-      { size: "L", chest: 45, length: 29 },
-      { size: "XL", chest: 47, length: 30 },
-      { size: "XXL", chest: 49, length: 31 },
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
     ],
-    description: "The DENIED. Unique Oversized Tee. A bold statement graphic on heavyweight terry-knit, cut for an effortless oversized silhouette.",
+    description: "The DENIED. Unique Oversized Tee. A bold statement graphic on heavyweight cotton, cut for an effortless oversized silhouette.",
     details: {
       fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
       fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
@@ -442,22 +455,21 @@ export const products: Product[] = [
       ],
     },
     sizeChart: [
-      { size: "XS", chest: 39, length: 26 },
-      { size: "S", chest: 41, length: 27 },
-      { size: "M", chest: 43, length: 28 },
-      { size: "L", chest: 45, length: 29 },
-      { size: "XL", chest: 47, length: 30 },
-      { size: "XXL", chest: 49, length: 31 },
-      { size: "XXXL", chest: 51, length: 32 },
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
     ],
-    description: "The DENIED. I'm This Old Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
+    description: "The DENIED. I'm This Old Oversized Tee. Heavyweight 100% cotton with a soft, breathable feel and an effortless oversized silhouette.",
     details: {
       fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
       fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
       features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Off White", "Red", "White"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
   {
@@ -490,22 +502,21 @@ export const products: Product[] = [
       ],
     },
     sizeChart: [
-      { size: "XS", chest: 39, length: 26 },
-      { size: "S", chest: 41, length: 27 },
-      { size: "M", chest: 43, length: 28 },
-      { size: "L", chest: 45, length: 29 },
-      { size: "XL", chest: 47, length: 30 },
-      { size: "XXL", chest: 49, length: 31 },
-      { size: "XXXL", chest: 51, length: 32 },
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
     ],
-    description: "The DENIED. The Game Begins Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
+    description: "The DENIED. The Game Begins Oversized Tee. Heavyweight 100% cotton with a soft, breathable feel and an effortless oversized silhouette.",
     details: {
       fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
       fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
       features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
       colors: ["Off White", "Red", "White"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
   {
@@ -534,14 +545,14 @@ export const products: Product[] = [
       ],
     },
     sizeChart: [
-      { size: "XS", chest: 39, length: 26 },
-      { size: "S", chest: 41, length: 27 },
-      { size: "M", chest: 43, length: 28 },
-      { size: "L", chest: 45, length: 29 },
-      { size: "XL", chest: 47, length: 30 },
-      { size: "XXL", chest: 49, length: 31 },
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
     ],
-    description: "The DENIED. 3 Monkeys Oversized Tee. Premium terry-knit texture with a hand-feel that speaks for itself.",
+    description: "The DENIED. 3 Monkeys Oversized Tee. Heavyweight 100% cotton with a soft, breathable feel and an effortless oversized silhouette.",
     details: {
       fabric: "Made from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for a softer feel, lasting comfort, and better shape retention.",
       fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
@@ -593,36 +604,13 @@ export const products: Product[] = [
       ]
     },
     sizeChart: [
-      {
-        size: "XS",
-        chest: 39,
-        length: 26
-      },
-      {
-        size: "S",
-        chest: 41,
-        length: 27
-      },
-      {
-        size: "M",
-        chest: 43,
-        length: 28
-      },
-      {
-        size: "L",
-        chest: 45,
-        length: 29
-      },
-      {
-        size: "XL",
-        chest: 47,
-        length: 30
-      },
-      {
-        size: "XXL",
-        chest: 49,
-        length: 31
-      }
+      { size: "XS", chest: 39, length: 26 },
+      { size: "S", chest: 41, length: 27 },
+      { size: "M", chest: 43, length: 28 },
+      { size: "L", chest: 45, length: 29 },
+      { size: "XL", chest: 47, length: 30 },
+      { size: "XXL", chest: 49, length: 31 },
+      { size: "XXXL", chest: 51, length: 32 },
     ],
     description: "The DENIED. Moody Floaty Oversized Tee. Soft colour meets heavyweight structure in a relaxed silhouette made to move at her pace.",
     details: {
@@ -638,14 +626,7 @@ export const products: Product[] = [
         "Light Baby Pink",
         "Off White"
       ],
-      sizes: [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ]
+      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
     }
   },
   {
@@ -706,36 +687,12 @@ export const products: Product[] = [
       ]
     },
     sizeChart: [
-      {
-        size: "XS",
-        chest: 39,
-        length: 26
-      },
-      {
-        size: "S",
-        chest: 41,
-        length: 27
-      },
-      {
-        size: "M",
-        chest: 43,
-        length: 28
-      },
-      {
-        size: "L",
-        chest: 45,
-        length: 29
-      },
-      {
-        size: "XL",
-        chest: 47,
-        length: 30
-      },
-      {
-        size: "XXL",
-        chest: 49,
-        length: 31
-      }
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
     ],
     description: "The DENIED. To Do List Oversized Tee. A bold statement graphic on heavyweight cotton, built for an effortless streetwear silhouette.",
     details: {
@@ -755,14 +712,7 @@ export const products: Product[] = [
         "Red",
         "Royal Blue"
       ],
-      sizes: [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ]
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"]
     }
   },
   {
