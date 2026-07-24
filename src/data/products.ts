@@ -276,11 +276,12 @@ export const products: Product[] = [
       ],
     },
     sizeChart: null,
-    description: "6-panel mid-profile cap with a classic athletic shape. Crafted from durable Ottoman fabric for a premium feel.",
+    description: "6-panel mid-profile construction with a classic baseball silhouette, designed for a clean, timeless look.",
     details: {
-      fabric: "Ottoman fabric – durable and premium",
-      fit: "Adjustable Velcro strap ensures a custom fit",
-      care: "Spot clean with damp cloth. Air dry only.",
+      fabric: "Crafted from premium Ottoman fabric, offering a textured finish that's durable, lightweight, and comfortable for everyday wear.",
+      fit: "6-panel mid-profile construction with a classic baseball silhouette, designed for a clean, timeless look.",
+      features: "Adjustable candy Velcro strap for a secure, customizable fit • Six embroidered eyelets for enhanced breathability • Curved visor for all-day comfort and sun protection.",
+      care: "Spot clean with a damp cloth. Hand wash only when needed. Air dry naturally. Do not machine wash, bleach, tumble dry, or iron.",
       colors: ["Black"],
       sizes: ["One Size"],
     },
@@ -311,11 +312,12 @@ export const products: Product[] = [
       ],
     },
     sizeChart: null,
-    description: "6-panel design with a flat visor for a sleek, urban look. Classic plastic snapback closure for the perfect fit.",
+    description: "6-panel construction with a flat visor, delivering a clean, structured silhouette inspired by classic streetwear.",
     details: {
-      fabric: "100% Cotton – comfortable and breathable",
-      fit: "Unisex fit with snapback closure, perfect for all head sizes",
-      care: "Spot clean with damp cloth. Air dry only.",
+      fabric: "Crafted from 100% Cotton for a soft, breathable feel and lasting everyday comfort.",
+      fit: "6-panel construction with a flat visor, delivering a clean, structured silhouette inspired by classic streetwear.",
+      features: "Adjustable plastic snapback closure for a secure, customizable fit • Six embroidered eyelets for enhanced breathability • Structured crown designed to retain its shape.",
+      care: "Spot clean with a damp cloth. Hand wash only when needed. Air dry naturally. Do not machine wash, bleach, tumble dry, or iron.",
       colors: ["Black", "Red"],
       sizes: ["One Size"],
     },
@@ -340,6 +342,10 @@ export const products: Product[] = [
         "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
         "/Products/TShirts/TheNumbered/UniqueOversized/Black/2.png",
       ],
+      "Bottle Green": [
+        "/Products/TShirts/TheNumbered/UniqueOversized/BottleGreen/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/BottleGreen/2.png",
+      ],
       "Maroon": [
         "/Products/TShirts/TheNumbered/UniqueOversized/Maroon/1.png",
         "/Products/TShirts/TheNumbered/UniqueOversized/Maroon/2.png",
@@ -347,6 +353,22 @@ export const products: Product[] = [
       "Navy Blue": [
         "/Products/TShirts/TheNumbered/UniqueOversized/NavyBlue/1.png",
         "/Products/TShirts/TheNumbered/UniqueOversized/NavyBlue/2.png",
+      ],
+      "Olive Green": [
+        "/Products/TShirts/TheNumbered/UniqueOversized/OliveGreen/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/OliveGreen/2.png",
+      ],
+      "Petrol Blue": [
+        "/Products/TShirts/TheNumbered/UniqueOversized/PetrolBlue/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/PetrolBlue/2.png",
+      ],
+      "Red": [
+        "/Products/TShirts/TheNumbered/UniqueOversized/Red/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/Red/2.png",
+      ],
+      "Royal Blue": [
+        "/Products/TShirts/TheNumbered/UniqueOversized/RoyalBlue/1.png",
+        "/Products/TShirts/TheNumbered/UniqueOversized/RoyalBlue/2.png",
       ],
     },
     sizeChart: [
@@ -363,7 +385,7 @@ export const products: Product[] = [
       fit: "Unisex oversized fit with dropped shoulders and an effortless streetwear silhouette.",
       features: "Lycra ribbed neck, durable double-stitched construction, and breathable fabric built for everyday wear.",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not bleach or iron directly on the print.",
-      colors: ["Black", "Maroon", "Navy Blue"],
+      colors: ["Black", "Bottle Green", "Maroon", "Navy Blue", "Olive Green", "Petrol Blue", "Red", "Royal Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
