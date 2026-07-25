@@ -493,6 +493,14 @@ export default function ProductPage() {
               </button>
             </div>
 
+            {/* Product Imagery Disclaimer */}
+            <div className="mb-8 rounded-xl border border-gold/15 bg-gold/[0.03] px-4 py-3">
+              <p className="text-[10px] leading-relaxed text-gray-400">
+                <span className="font-medium uppercase tracking-wide text-gold">Product imagery note.</span>{" "}
+                Product images are for visual reference. Actual colours may vary slightly due to lighting, screen settings, and the production process. Print size and placement may vary marginally between garments; however, the artwork itself will remain unchanged.
+              </p>
+            </div>
+
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 py-8 border-t border-b border-white/[0.06] mb-10">
               {/* Made to Order — T-shirt with print */}
