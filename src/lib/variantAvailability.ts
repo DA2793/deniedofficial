@@ -5,12 +5,15 @@ export interface UnavailableVariantRule {
 }
 
 const POLO_PRODUCT_IDS = [4] as const;
+const ACID_WASHED_PRODUCT_IDS = [2] as const;
 const NUMBERED_OVERSIZED_PRODUCT_IDS = [7, 9, 10, 11, 13] as const;
 
 // Keep this list synchronized with Business/out-of-stock.xlsx.
+// Workbook colour "Black" maps to the Acid Washed product's "Acid Wash" storefront label.
 export const UNAVAILABLE_VARIANTS: readonly UnavailableVariantRule[] = [
   { productIds: POLO_PRODUCT_IDS, color: "Coffee Brown", sizes: ["L"] },
   { productIds: POLO_PRODUCT_IDS, color: "Brick Red", sizes: ["M", "L", "XL"] },
+  { productIds: ACID_WASHED_PRODUCT_IDS, color: "Acid Wash", sizes: ["M"] },
   { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Royal Blue", sizes: ["L", "XXL"] },
   { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Olive Green", sizes: ["XS", "S", "L"] },
 ];
