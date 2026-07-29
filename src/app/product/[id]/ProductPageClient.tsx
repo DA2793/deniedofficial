@@ -381,7 +381,7 @@ export default function ProductPageClient({ productId }: { productId: number }) 
             {/* Color Selection */}
             <div className="mb-8">
               <p className="text-[10px] uppercase tracking-brutal text-gray-400 mb-4">
-                Colour {selectedColor && <span className="text-white ml-2">— {selectedColor}</span>}
+                {product.details.variantLabel ?? "Colour"} {selectedColor && <span className="text-white ml-2">— {selectedColor}</span>}
               </p>
               <div className="flex flex-wrap gap-3">
                 {product.details.colors.map((color) => (

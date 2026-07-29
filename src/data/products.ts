@@ -34,6 +34,8 @@ export interface Product {
     fit: string;
     features?: string;
     care: string;
+    /** Label for the variant selector; defaults to "Colour". */
+    variantLabel?: string;
     colors: string[];
     sizes: string[];
   };
@@ -844,6 +846,56 @@ export const products: Product[] = [
         "XXL"
       ]
     }
+  },
+  {
+    id: 15,
+    name: "Zodiac Ringer Tee",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
+    gender: "Unisex",
+    price: 1499,
+    originalPrice: null,
+    badge: "Zodiac Series",
+    image: "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
+    images: [
+      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
+      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/2.webp",
+      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/3.webp",
+    ],
+    colorImages: Object.fromEntries(
+      [
+        "Capricorn", "Aries", "Taurus", "Gemini", "Cancer", "Leo",
+        "Virgo", "Libra", "Scorpio", "Sagittarius", "Aquarius", "Pisces",
+      ].map((sign) => [
+        sign,
+        [1, 2, 3].map((n) => `/Products/TShirts/TheNumbered/ZodiacRinger/${sign}/${n}.webp`),
+      ])
+    ),
+    sizeChart: [
+      { size: "XS", chest: 36, length: 25 },
+      { size: "S", chest: 38, length: 26 },
+      { size: "M", chest: 40, length: 27 },
+      { size: "L", chest: 42, length: 28 },
+      { size: "XL", chest: 44, length: 29 },
+      { size: "XXL", chest: 46, length: 30 },
+    ],
+    description:
+      "The Stars have finally aligned. Your sign on the chest in celestial detail, its Chinese calligraphy across the back — printed in white on a black ringer tee with contrast trim. Choose your sign.",
+    details: {
+      fabric:
+        "Crafted from 100% Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for enhanced softness, breathable comfort, and lasting shape retention.",
+      fit: "Unisex regular fit designed for a relaxed, versatile silhouette that's easy to style for everyday wear.",
+      features:
+        "180 GSM Fabric • 100% Cotton • Pre-Shrunk • Bio-Washed • Contrast Rib Neck • Self-Turned Sleeves • Unisex Style",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      variantLabel: "Sign",
+      colors: [
+        "Capricorn", "Aries", "Taurus", "Gemini", "Cancer", "Leo",
+        "Virgo", "Libra", "Scorpio", "Sagittarius", "Aquarius", "Pisces",
+      ],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
   },
 ];
 
