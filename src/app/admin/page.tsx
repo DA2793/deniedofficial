@@ -45,6 +45,7 @@ export default function AdminPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
+  const [earlyCraftingOrderId, setEarlyCraftingOrderId] = useState<string | null>(null);
   const [shipment, setShipment] = useState<ShipmentForm>(EMPTY_SHIPMENT);
   const [dataError, setDataError] = useState("");
   const [shipmentError, setShipmentError] = useState("");
@@ -85,24 +86,30 @@ export default function AdminPage() {
     setShipmentError("");
   };
 
+  // Crafting and Quality Check go through server routes so the customer
+  // notification email is sent exactly once alongside the status change.
+  const NOTIFYING_STATUS_ROUTES: Record<string, string> = {
+    printing: "crafting",
+    quality_check: "quality-check",
+  };
+
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     setUpdatingOrderId(orderId);
     setShipmentError("");
-    if (newStatus === "quality_check") {
-      // Quality Check goes through the server so the customer notification
-      // email is sent exactly once alongside the status change.
+    const notifyRoute = NOTIFYING_STATUS_ROUTES[newStatus];
+    if (notifyRoute) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.access_token) throw new Error("Your admin session expired. Sign in again.");
-        const response = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/quality-check`, {
+        const response = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/${notifyRoute}`, {
           method: "POST",
           headers: { Authorization: `Bearer ${session.access_token}` },
         });
         const result = await response.json() as { error?: string };
-        if (!response.ok) throw new Error(result.error || "Quality check update failed.");
+        if (!response.ok) throw new Error(result.error || "Status update failed.");
         await loadOrders();
       } catch (error) {
-        setShipmentError(error instanceof Error ? error.message : "Quality check update failed.");
+        setShipmentError(error instanceof Error ? error.message : "Status update failed.");
       } finally {
         setUpdatingOrderId(null);
       }
@@ -151,6 +158,9 @@ export default function AdminPage() {
       </div>
     );
   }
+
+  const hoursSincePlaced = (order: Order) =>
+    (Date.now() - new Date(order.created_at).getTime()) / (1000 * 60 * 60);
 
   const statusColors: Record<string, string> = {
     placed: "bg-yellow-900/30 text-yellow-400",
@@ -319,15 +329,38 @@ export default function AdminPage() {
                               <button
                                 key={status}
                                 type="button"
-                                onClick={() => void updateOrderStatus(order.id, status)}
+                                onClick={() => {
+                                  // 24-hour buffer: crafting closes the customer's
+                                  // cancellation window, so hold it back for a day
+                                  // unless deliberately started early (two clicks).
+                                  if (
+                                    status === "printing" &&
+                                    hoursSincePlaced(order) < 24 &&
+                                    ["placed", "confirmed"].includes(order.status) &&
+                                    earlyCraftingOrderId !== order.id
+                                  ) {
+                                    setEarlyCraftingOrderId(order.id);
+                                    return;
+                                  }
+                                  setEarlyCraftingOrderId(null);
+                                  void updateOrderStatus(order.id, status);
+                                }}
                                 disabled={updatingOrderId === order.id || order.status === status}
                                 className={`px-4 py-2 text-[10px] uppercase tracking-brutal rounded-full transition-all ${
                                   order.status === status
                                     ? "bg-gold text-black"
-                                    : "border border-white/10 text-gray-400 hover:border-gold hover:text-gold"
+                                    : status === "printing" && earlyCraftingOrderId === order.id
+                                      ? "border border-amber-400/60 text-amber-300"
+                                      : "border border-white/10 text-gray-400 hover:border-gold hover:text-gold"
                                 } disabled:opacity-50`}
                               >
-                                {formatOrderStatus(status)}
+                                {status === "printing" &&
+                                hoursSincePlaced(order) < 24 &&
+                                ["placed", "confirmed"].includes(order.status)
+                                  ? earlyCraftingOrderId === order.id
+                                    ? "Start crafting early?"
+                                    : `Crafting · opens in ${Math.ceil(24 - hoursSincePlaced(order))}h`
+                                  : formatOrderStatus(status)}
                               </button>
                             ))}
                           </div>
