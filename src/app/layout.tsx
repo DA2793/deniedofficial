@@ -10,6 +10,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { ToastProvider } from "@/context/ToastContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -95,13 +96,15 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <GrainOverlay />
-              <Navbar />
-              <CartDrawer />
-              <main>{children}</main>
-              <Footer />
-              <InstagramFloater />
-              <BackToTop />
+              <ToastProvider>
+                <GrainOverlay />
+                <Navbar />
+                <CartDrawer />
+                <main>{children}</main>
+                <Footer />
+                <InstagramFloater />
+                <BackToTop />
+              </ToastProvider>
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>

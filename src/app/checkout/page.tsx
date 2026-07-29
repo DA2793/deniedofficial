@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -19,6 +20,7 @@ declare global {
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
   const { user, loading } = useAuth();
+  const { showToast } = useToast();
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -206,7 +208,7 @@ export default function CheckoutPage() {
             router.push(`/order-success?id=${encodeURIComponent(response.razorpay_payment_id)}`);
           } catch (error) {
             setProcessing(false);
-            alert(`${error instanceof Error ? error.message : "Payment verification failed."} Your payment reference has been retained. Please contact contact@deniedofficial.com if needed.`);
+            showToast(`${error instanceof Error ? error.message : "Payment verification failed."} Your payment reference has been retained. Please contact contact@deniedofficial.com if needed.`, "error");
           }
         },
         modal: { ondismiss: () => setProcessing(false) },
@@ -215,7 +217,7 @@ export default function CheckoutPage() {
       razorpay.open();
     } catch (error) {
       setProcessing(false);
-      alert(error instanceof Error ? error.message : "Unable to start checkout. Please try again.");
+      showToast(error instanceof Error ? error.message : "Unable to start checkout. Please try again.", "error");
     }
   };
 
