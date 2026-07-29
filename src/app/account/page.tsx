@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase/client";
+import { formatOrderStatus } from "@/lib/orderStatus";
 
 type AuthMode = "signin" | "signup" | "phone" | "forgot";
 
@@ -195,7 +196,7 @@ export default function AccountPage() {
                       <p className="text-gray-500 text-xs mt-1">{new Date(order.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-                      <span className="text-[10px] uppercase tracking-wider text-gold border border-gold/30 rounded-full px-3 py-1.5">{order.status}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-gold border border-gold/30 rounded-full px-3 py-1.5">{formatOrderStatus(order.status)}</span>
                       <span className="text-sm text-white min-w-20 sm:text-right">{formatCurrency(order.total)}</span>
                       <Link href={`/invoice/${order.id}`} className="text-[10px] uppercase tracking-brutal text-gray-400 hover:text-gold">Invoice →</Link>
                     </div>

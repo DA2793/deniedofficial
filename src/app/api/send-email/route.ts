@@ -72,6 +72,13 @@ export async function POST(request: NextRequest) {
           courierPartner: escapeText(raw.courierPartner, 100),
           items: safeItems(raw.items),
         });
+      } else if (type === "order-quality-check") {
+        emailConfig = buildOrderQualityCheckEmail({
+          email,
+          name: escapeText(raw.name, 120),
+          orderId: escapeText(raw.orderId, 100),
+          items: safeItems(raw.items),
+        });
       } else {
         return NextResponse.json({ error: "Invalid email type" }, { status: 400 });
       }
@@ -266,6 +273,62 @@ function buildOrderShippedEmail(data: {
 
   <div style="background: #111; border: 1px solid #1a1a1a; padding: 16px; margin-bottom: 24px; text-align: center;">
     <p style="color: #999; font-size: 13px; margin: 0;">Track your order using the tracking number above on your courier partner's website.</p>
+  </div>
+
+  <div style="text-align: center; margin: 24px 0;">
+    <a href="https://www.deniedofficial.com/account" style="display: inline-block; padding: 12px 28px; background: #ffffff; color: #0a0a0a; text-decoration: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; border-radius: 50px;">View My Orders</a>
+  </div>
+
+  <div style="width: 40px; height: 1px; background: rgba(255,255,255,0.1); margin: 32px auto;"></div>
+
+  <p style="font-size: 10px; color: #444444; text-align: center; letter-spacing: 1px;">
+    Need help? Reply to this email or reach us at <a href="mailto:contact@deniedofficial.com" style="color: #c9a96e; text-decoration: none;">contact@deniedofficial.com</a>
+  </p>
+</div>`,
+  };
+}
+
+// ── Quality Check Email ──
+function buildOrderQualityCheckEmail(data: {
+  email: string;
+  name: string;
+  orderId: string;
+  items: { name: string; quantity: number; price: number }[];
+}) {
+  const itemsList = data.items
+    .map((item) => `• ${item.name} × ${item.quantity}`)
+    .join("<br>");
+
+  return {
+    from: "DENIED. Orders <orders@deniedofficial.com>",
+    to: data.email,
+    replyTo: "contact@deniedofficial.com",
+    subject: `Your piece has arrived at our studio — #${data.orderId.slice(0, 8)}`,
+    html: `
+<div style="max-width: 500px; margin: 0 auto; padding: 40px 30px; background: #0a0a0a; font-family: 'Helvetica Neue', Arial, sans-serif;">
+  <div style="text-align: center; margin-bottom: 32px;">
+    <h1 style="font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 4px; margin: 0;">DENIED.</h1>
+    <p style="font-size: 11px; color: #c9a96e; letter-spacing: 2px; margin-top: 8px; text-transform: uppercase;">Not for Everyone</p>
+  </div>
+
+  <div style="width: 40px; height: 1px; background: #c9a96e; margin: 0 auto 32px;"></div>
+
+  <p style="font-size: 14px; color: #ffffff; text-align: center; margin-bottom: 8px;">Your Piece Is In Our Hands</p>
+  <p style="font-size: 13px; color: #999999; text-align: center; line-height: 1.6; margin-bottom: 32px;">
+    ${data.name}, your piece has been crafted and has arrived at our studio.
+  </p>
+
+  <div style="background: #111; border: 1px solid #1a1a1a; padding: 16px; margin-bottom: 16px;">
+    <p style="color: #c9a96e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px;">What happens now</p>
+    <p style="color: #ccc; font-size: 13px; line-height: 1.8; margin: 0;">
+      It is now undergoing hand inspection and quality check. Once it passes, it will be packed in our signature packaging and shipped to you. Tracking details will follow the moment it leaves.
+    </p>
+  </div>
+
+  <div style="background: #111; border: 1px solid #1a1a1a; padding: 16px; margin-bottom: 16px;">
+    <p style="color: #c9a96e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px;">Order Details</p>
+    <p style="color: #ccc; font-size: 13px; margin: 4px 0 12px;"><strong style="color: #fff;">Order ID:</strong> #${data.orderId.slice(0, 8)}</p>
+    <p style="color: #ccc; font-size: 13px; line-height: 1.8; margin: 0;">${itemsList}</p>
   </div>
 
   <div style="text-align: center; margin: 24px 0;">

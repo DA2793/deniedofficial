@@ -25,10 +25,13 @@ export default function PoliciesPage() {
             <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8 rounded-2xl">
               <h3 className="font-display text-xl uppercase mb-4 text-gold">Made to Order — Crafted for You</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                Every DENIED. piece is printed and crafted only after you place your order. We do not hold ready stock. Your order is created exclusively for you — making every piece truly one-of-one.
+                Every DENIED. piece is printed or embroidered only after you place your order. We do not hold ready stock. Your order is created exclusively for you — making every piece truly one-of-one.
+              </p>
+              <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                Unlike most brands, no DENIED. piece goes straight from a production facility to your door. Once crafted, every piece is transferred to our studio, hand-inspected, and packed to our standards in our signature packaging before it ships to you.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Once your order is placed, it goes through our curation process: printing, quality check, premium packaging, and dispatch. This is not fast fashion — it&apos;s intentional luxury.
+                This is not fast fashion — it&apos;s intentional luxury, and it takes a little longer for a reason.
               </p>
             </div>
           </div>
@@ -48,12 +51,12 @@ export default function PoliciesPage() {
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">Delivery Timelines</h3>
             <div className="space-y-4 mb-8">
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Printing & Curation</span>
+                <span className="text-sm text-white">Crafting — Printing / Embroidery</span>
                 <span className="text-sm text-gray-400">2–4 business days</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Premium Packaging & Dispatch</span>
-                <span className="text-sm text-gray-400">1–2 business days</span>
+                <span className="text-sm text-white">In-House Quality Check & Packaging</span>
+                <span className="text-sm text-gray-400">2–4 business days</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white">Delivery (Metro Cities)</span>
@@ -65,7 +68,7 @@ export default function PoliciesPage() {
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
                 <span className="text-sm text-white font-medium">Total Estimated Time</span>
-                <span className="text-sm text-gold">7–14 business days</span>
+                <span className="text-sm text-gold">10–16 business days</span>
               </div>
             </div>
 
@@ -138,13 +141,13 @@ export default function PoliciesPage() {
             <div className="border border-gold/20 bg-gold/[0.03] p-8 mb-8 rounded-2xl">
               <h3 className="font-display text-lg uppercase mb-4 text-gold">Important — Please Read</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                Since every DENIED. piece is printed and curated exclusively for you after your order is placed, cancellations are only possible before your order enters the <strong className="text-white">Printing</strong> stage.
+                Since every DENIED. piece is printed or embroidered exclusively for you after your order is placed, cancellations are only possible before your order enters the <strong className="text-white">Crafting</strong> stage.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                We give you time to think. Your order stays in &quot;Placed&quot; and &quot;Confirmed&quot; status before we begin printing — use this window to double-check your colour, size, and details.
+                We give you time to think. Your order stays in &quot;Placed&quot; and &quot;Confirmed&quot; status before crafting begins — use this window to double-check your colour, size, and details.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Once your order status changes to <strong className="text-white">&quot;Printing&quot;</strong>, your piece is being crafted — cancellation is no longer possible and no refund or exchange will be issued. Please select your colour and size carefully.
+                Once your order status changes to <strong className="text-white">&quot;Crafting&quot;</strong>, your piece is being made — cancellation is no longer possible and no refund or exchange will be issued. Please select your colour and size carefully.
               </p>
             </div>
 
@@ -159,11 +162,11 @@ export default function PoliciesPage() {
                 <span className="text-sm text-green-400">Cancellation allowed</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Printing</span>
+                <span className="text-sm text-white">Crafting — Printing / Embroidery</span>
                 <span className="text-sm text-red-400">No cancellation / No refund</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
-                <span className="text-sm text-white">Quality Check & Packaging</span>
+                <span className="text-sm text-white">In-House Quality Check & Packaging</span>
                 <span className="text-sm text-red-400">No cancellation / No refund</span>
               </div>
               <div className="flex justify-between py-3 border-b border-white/[0.06]">
@@ -181,7 +184,7 @@ export default function PoliciesPage() {
 
             <h3 className="text-[10px] uppercase tracking-brutal text-gold mb-6">No Returns or Exchanges</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
-              Due to the made-to-order nature of our products, we do not accept returns, exchanges, or replacements once the order has been delivered. All sales are final after the Printing stage begins.
+              Due to the made-to-order nature of our products, we do not accept returns, exchanges, or replacements once the order has been delivered. All sales are final after the Crafting stage begins.
             </p>
             <p className="text-gray-400 text-sm leading-relaxed">
               We encourage customers to review product details, images, size charts, and descriptions carefully before placing an order. Select your colour and size with care — once printed, your piece cannot be returned or exchanged.

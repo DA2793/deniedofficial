@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase/client";
+import { formatOrderStatus } from "@/lib/orderStatus";
 
 const ADMIN_EMAILS = ["da.2793@yahoo.com", "geetikatyagi75@gmail.com"];
 
@@ -87,6 +88,26 @@ export default function AdminPage() {
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     setUpdatingOrderId(orderId);
     setShipmentError("");
+    if (newStatus === "quality_check") {
+      // Quality Check goes through the server so the customer notification
+      // email is sent exactly once alongside the status change.
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error("Your admin session expired. Sign in again.");
+        const response = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/quality-check`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        const result = await response.json() as { error?: string };
+        if (!response.ok) throw new Error(result.error || "Quality check update failed.");
+        await loadOrders();
+      } catch (error) {
+        setShipmentError(error instanceof Error ? error.message : "Quality check update failed.");
+      } finally {
+        setUpdatingOrderId(null);
+      }
+      return;
+    }
     const { error } = await supabase.from("orders").update({ status: newStatus }).eq("id", orderId);
     if (error) setShipmentError("Status update failed. Check your admin session and RLS policies.");
     else await loadOrders();
@@ -135,6 +156,7 @@ export default function AdminPage() {
     placed: "bg-yellow-900/30 text-yellow-400",
     confirmed: "bg-blue-900/30 text-blue-400",
     printing: "bg-purple-900/30 text-purple-400",
+    quality_check: "bg-amber-900/30 text-amber-400",
     shipped: "bg-cyan-900/30 text-cyan-400",
     delivered: "bg-green-900/30 text-green-400",
     cancelled: "bg-red-900/30 text-red-400",
@@ -145,6 +167,7 @@ export default function AdminPage() {
     placed: orders.filter((o) => o.status === "placed").length,
     confirmed: orders.filter((o) => o.status === "confirmed").length,
     printing: orders.filter((o) => o.status === "printing").length,
+    qualityCheck: orders.filter((o) => o.status === "quality_check").length,
     shipped: orders.filter((o) => o.status === "shipped").length,
     delivered: orders.filter((o) => o.status === "delivered").length,
   };
@@ -164,12 +187,13 @@ export default function AdminPage() {
         </motion.div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-10">
           {[
             { label: "Total", value: orderStats.total, color: "text-white" },
             { label: "Placed", value: orderStats.placed, color: "text-yellow-400" },
             { label: "Confirmed", value: orderStats.confirmed, color: "text-blue-400" },
-            { label: "Printing", value: orderStats.printing, color: "text-purple-400" },
+            { label: "Crafting", value: orderStats.printing, color: "text-purple-400" },
+            { label: "Quality Check", value: orderStats.qualityCheck, color: "text-amber-400" },
             { label: "Shipped", value: orderStats.shipped, color: "text-cyan-400" },
             { label: "Delivered", value: orderStats.delivered, color: "text-green-400" },
           ].map((stat) => (
@@ -239,7 +263,7 @@ export default function AdminPage() {
                           ₹{order.total?.toLocaleString("en-IN")}
                         </p>
                         <span className={`px-3 py-1 rounded-full text-[9px] uppercase tracking-brutal font-medium ${statusColors[order.status] || statusColors.placed}`}>
-                          {order.status}
+                          {formatOrderStatus(order.status)}
                         </span>
                       </div>
                     </div>
@@ -291,7 +315,7 @@ export default function AdminPage() {
                             >
                               View Invoice
                             </a>
-                            {["placed", "confirmed", "printing", "delivered", "cancelled"].map((status) => (
+                            {["placed", "confirmed", "printing", "quality_check", "delivered", "cancelled"].map((status) => (
                               <button
                                 key={status}
                                 type="button"
@@ -303,7 +327,7 @@ export default function AdminPage() {
                                     : "border border-white/10 text-gray-400 hover:border-gold hover:text-gold"
                                 } disabled:opacity-50`}
                               >
-                                {status}
+                                {formatOrderStatus(status)}
                               </button>
                             ))}
                           </div>

@@ -18,7 +18,7 @@ const values = [
       </svg>
     ),
     title: "Made to Order",
-    description: "Every piece is printed exclusively for you. No ready stock. Your order exists because you chose it.",
+    description: "Every piece is printed or embroidered exclusively for you. No ready stock. Your order exists because you chose it.",
   },
   {
     icon: (
@@ -116,7 +116,7 @@ export default function AboutPage() {
 
             <ScrollReveal delay={0.2}>
               <p className="text-gray-300 text-base leading-relaxed">
-                We don&apos;t chase trends. We craft pieces that carry weight — from oversized silhouettes and acid-washed textures to signature prints that you won&apos;t find anywhere else. Each piece is made to order, printed exclusively for the person who claims it.
+                We don&apos;t chase trends. We craft pieces that carry weight — from oversized silhouettes and acid-washed textures to signature prints that you won&apos;t find anywhere else. Each piece is made to order, printed or embroidered exclusively for the person who claims it, then hand-inspected and packed in our studio before it ships.
               </p>
             </ScrollReveal>
 
