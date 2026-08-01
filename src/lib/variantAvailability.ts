@@ -6,16 +6,22 @@ export interface UnavailableVariantRule {
 
 const POLO_PRODUCT_IDS = [4] as const;
 const ACID_WASHED_PRODUCT_IDS = [2] as const;
+const MOODY_FLOATY_PRODUCT_IDS = [12] as const;
 const NUMBERED_OVERSIZED_PRODUCT_IDS = [7, 9, 10, 11, 13] as const;
 
 // Keep this list synchronized with Business/out-of-stock.xlsx.
-// Workbook colour "Black" maps to the Acid Washed product's "Acid Wash" storefront label.
+// Workbook label mappings: Acid Washed "Black" -> "Acid Wash"; Polo "XXXL" -> "3XL";
+// Light Baby Pink / Lavender exist only on Moody Floaty; White oversized exists
+// only on the Numbered oversized tees.
 export const UNAVAILABLE_VARIANTS: readonly UnavailableVariantRule[] = [
+  { productIds: POLO_PRODUCT_IDS, color: "Black", sizes: ["3XL"] },
   { productIds: POLO_PRODUCT_IDS, color: "Coffee Brown", sizes: ["L"] },
-  { productIds: POLO_PRODUCT_IDS, color: "Brick Red", sizes: ["M", "L", "XL"] },
-  { productIds: ACID_WASHED_PRODUCT_IDS, color: "Acid Wash", sizes: ["M"] },
-  { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Royal Blue", sizes: ["L", "XXL"] },
+  { productIds: ACID_WASHED_PRODUCT_IDS, color: "Acid Wash", sizes: ["S", "M"] },
+  { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Maroon", sizes: ["M"] },
   { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Olive Green", sizes: ["XS", "S", "L"] },
+  { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "White", sizes: ["M", "XL"] },
+  { productIds: MOODY_FLOATY_PRODUCT_IDS, color: "Light Baby Pink", sizes: ["M"] },
+  { productIds: MOODY_FLOATY_PRODUCT_IDS, color: "Lavender", sizes: ["M"] },
 ];
 
 export function isVariantOutOfStock(productId: number, color: string, size: string): boolean {
