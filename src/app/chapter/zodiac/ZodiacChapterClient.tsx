@@ -54,9 +54,12 @@ export default function ZodiacChapterClient() {
         </motion.div>
       </section>
 
-      {/* ===== INTRO BEAT ===== */}
-      <section className="relative overflow-hidden px-6 py-28 md:py-36">
-        <div className="relative mx-auto max-w-2xl text-center">
+      {/* ===== INTRO + TWELVE BEATS under one continuous sky ===== */}
+      <section className="relative overflow-hidden px-6 pb-28">
+        {/* Tall section: star count scales with height so density matches the hero */}
+        <ConstellationBackdrop starCount={360} seed={777001} className="opacity-80" />
+
+        <div className="relative mx-auto max-w-2xl py-28 text-center md:py-36">
           <ScrollReveal>
             <p className="font-serif text-xl italic leading-relaxed text-gray-300 md:text-2xl">
               Twelve signs. Twelve tempers.
@@ -68,11 +71,7 @@ export default function ZodiacChapterClient() {
             </p>
           </ScrollReveal>
         </div>
-      </section>
 
-      {/* ===== TWELVE BEATS ===== */}
-      <section className="relative overflow-hidden px-6 pb-28">
-        <ConstellationBackdrop className="opacity-60" />
         <div className="relative mx-auto flex max-w-5xl flex-col gap-24 md:gap-32">
           {SIGNS.map((sign, index) => (
             <ScrollReveal key={sign.name} delay={0.05}>
@@ -110,6 +109,7 @@ export default function ZodiacChapterClient() {
 
       {/* ===== CLOSING CTA ===== */}
       <section className="relative overflow-hidden px-6 py-32 md:py-44">
+        <ConstellationBackdrop starCount={80} seed={424242} className="opacity-60" shooting={false} />
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[140px]" />
         </div>
