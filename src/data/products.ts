@@ -857,11 +857,11 @@ export const products: Product[] = [
     price: 1499,
     originalPrice: null,
     badge: "Zodiac",
-    image: "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
+    image: "/Products/TShirts/TheChapter/Zodiac/Capricorn/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
-      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/2.webp",
-      "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/3.webp",
+      "/Products/TShirts/TheChapter/Zodiac/Capricorn/1.webp",
+      "/Products/TShirts/TheChapter/Zodiac/Capricorn/2.webp",
+      "/Products/TShirts/TheChapter/Zodiac/Capricorn/3.webp",
     ],
     colorImages: Object.fromEntries(
       [
@@ -869,7 +869,7 @@ export const products: Product[] = [
         "Virgo", "Libra", "Scorpio", "Sagittarius", "Aquarius", "Pisces",
       ].map((sign) => [
         sign,
-        [1, 2, 3].map((n) => `/Products/TShirts/TheNumbered/ZodiacRinger/${sign}/${n}.webp`),
+        [1, 2, 3].map((n) => `/Products/TShirts/TheChapter/Zodiac/${sign}/${n}.webp`),
       ])
     ),
     sizeChart: [
