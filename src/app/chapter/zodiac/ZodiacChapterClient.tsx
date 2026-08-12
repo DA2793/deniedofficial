@@ -42,16 +42,13 @@ export default function ZodiacChapterClient() {
           className="relative z-10 mx-auto max-w-3xl text-center"
         >
           <p className="mb-6 text-[10px] uppercase tracking-brutal text-gold">
-            The Chapter / 001
+            The Chapter
           </p>
           <h1 className="font-display text-6xl uppercase leading-[0.95] text-white sm:text-7xl md:text-8xl">
             Zodiac.
           </h1>
           <div className="mx-auto my-8 h-px w-16 bg-gold/60" />
           <p className="mx-auto max-w-md font-serif text-xl italic text-gray-300 md:text-2xl">
-            The stars have finally aligned.
-          </p>
-          <p className="mt-4 text-[10px] uppercase tracking-brutal text-gray-500">
             Your Sign. Your Energy. Your Statement.
           </p>
         </motion.div>

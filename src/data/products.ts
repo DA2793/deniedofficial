@@ -856,7 +856,7 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "Chapter 001",
+    badge: "Zodiac",
     image: "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
     images: [
       "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",

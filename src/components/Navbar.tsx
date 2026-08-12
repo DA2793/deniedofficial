@@ -104,7 +104,7 @@ export default function Navbar() {
                       href="/chapter/zodiac"
                       className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gold/80 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
-                      Chapter 001 — Zodiac
+                      Zodiac
                     </Link>
                     {genders.map((gender) => (
                       <Link

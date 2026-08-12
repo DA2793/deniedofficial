@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import ZodiacChapterClient from "./ZodiacChapterClient";
 
 export const metadata: Metadata = {
-  title: "Zodiac — The Chapter 001",
+  title: "Zodiac — The Chapter",
   description:
-    "The stars have finally aligned. Twelve signs, drawn in celestial detail with brush calligraphy across the back. Chapter 001 of DENIED.",
+    "Your Sign. Your Energy. Your Statement. Twelve signs, drawn in celestial detail with brush calligraphy across the back. A chapter of DENIED.",
   alternates: { canonical: "/chapter/zodiac" },
   openGraph: {
-    title: "Zodiac — The Chapter 001 | DENIED.",
+    title: "Zodiac — The Chapter | DENIED.",
     description:
-      "Your Sign. Your Energy. Your Statement. Twelve signs in celestial detail — Chapter 001 of DENIED.",
+      "Your Sign. Your Energy. Your Statement. Twelve signs in celestial detail — a chapter of DENIED.",
     url: "/chapter/zodiac",
     siteName: "DENIED.",
     type: "website",
