@@ -169,9 +169,6 @@ function CollectionContent() {
                   {tier.name}
                 </button>
               ))}
-              <span className="px-4 py-2 text-[9px] uppercase tracking-brutal rounded-full border border-white/[0.04] text-gray-700 cursor-not-allowed">
-                The Chapter — Coming Soon
-              </span>
             </div>
           )}
 
