@@ -123,8 +123,8 @@ export default function ZodiacChapterClient() {
             </h2>
             <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-gray-400">
               One tee. Twelve signs. Black ringer construction, white celestial
-              artwork, brush calligraphy across the back — printed or embroidered
-              only after you claim yours.
+              artwork, brush calligraphy across the back — printed only after
+              you claim yours.
             </p>
             <div className="mt-10">
               <Link
