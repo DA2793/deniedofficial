@@ -6,6 +6,7 @@ const baseUrl = "https://deniedofficial.com";
 const publicRoutes = [
   { path: "", changeFrequency: "weekly", priority: 1 },
   { path: "/collection", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/chapter/zodiac", changeFrequency: "monthly", priority: 0.8 },
   { path: "/about", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "/inner-sanctum", changeFrequency: "monthly", priority: 0.6 },

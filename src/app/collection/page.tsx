@@ -16,6 +16,7 @@ const categoryFilters = [
 const tierFilters: { slug: ProductTier; name: string }[] = [
   { slug: "The Foundation", name: "The Foundation" },
   { slug: "The Numbered", name: "The Numbered" },
+  { slug: "The Chapter", name: "The Chapter" },
 ];
 
 const genderFilters: { slug: ProductGender; name: string }[] = [

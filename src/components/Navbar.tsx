@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { TIER_DESCRIPTIONS, type ProductTier, type ProductGender } from "@/data/products";
 
-const tiers: ProductTier[] = ["The Foundation", "The Numbered"];
+const tiers: ProductTier[] = ["The Foundation", "The Numbered", "The Chapter"];
 const genders: ProductGender[] = ["Women", "Men", "Unisex"];
 const filters = ["New In", "Signature"];
 
@@ -100,6 +100,12 @@ export default function Navbar() {
                         {tier}
                       </Link>
                     ))}
+                    <Link
+                      href="/chapter/zodiac"
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gold/80 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      Chapter 001 — Zodiac
+                    </Link>
                     {genders.map((gender) => (
                       <Link
                         key={gender}

@@ -9,7 +9,7 @@ export type ProductTier = "The Foundation" | "The Numbered" | "The Chapter";
 export const TIER_DESCRIPTIONS: Record<ProductTier, string> = {
   "The Foundation": "Always in stock. The core styles DENIED. never lets go of.",
   "The Numbered": "Capped drops. Once a design sells out, it's gone for good.",
-  "The Chapter": "Seasonal collections, born and retired with the occasion.",
+  "The Chapter": "Complete themed worlds. Each chapter tells one story — explore it, claim your piece of it.",
 };
 
 export type ProductGender = "Men" | "Women" | "Unisex";
@@ -851,12 +851,12 @@ export const products: Product[] = [
     id: 15,
     name: "Zodiac Ringer Tee",
     category: "T-Shirts",
-    tier: "The Numbered",
+    tier: "The Chapter",
     unitCap: 100,
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "Zodiac Series",
+    badge: "Chapter 001",
     image: "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
     images: [
       "/Products/TShirts/TheNumbered/ZodiacRinger/Capricorn/1.webp",
