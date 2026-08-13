@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
-import OceanChurnBackdrop from "@/components/OceanChurnBackdrop";
+import AshDriftBackdrop from "@/components/AshDriftBackdrop";
 
 // Flip to true once the Neelkanth products are added. Until then the page
 // tells the story and gates the collection behind Coming Soon.
@@ -15,8 +14,7 @@ export default function NeelkanthChapterClient() {
     <main className="bg-black text-white">
       {/* ===== HERO ===== */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
-        <OceanChurnBackdrop intensity={0.45} />
-        <div className="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true" />
+        <AshDriftBackdrop />
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,6 +31,7 @@ export default function NeelkanthChapterClient() {
           <p className="mx-auto max-w-md font-serif text-xl italic text-gray-300 md:text-2xl">
             An ode to Mahadev.
           </p>
+          <p className="mt-6 text-lg text-neelkanth-light/80">ॐ नमः शिवाय</p>
         </motion.div>
         <motion.div
           animate={{ opacity: [0.4, 0.9, 0.4], y: [0, 8, 0] }}
@@ -50,58 +49,46 @@ export default function NeelkanthChapterClient() {
         lines={["The storm learned silence", "from Him."]}
       />
 
-      {/* ===== 02 — THE ARTWORK ===== */}
-      <section className="relative overflow-hidden px-6 py-24 md:py-32">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-neelkanth/25 blur-[150px]" />
-        </div>
-        <div className="relative mx-auto max-w-md">
-          <ScrollReveal>
-            <Image
-              src="/chapter/neelkanth/mahadev.webp"
-              alt="Mahadev — the flagship artwork of the Neelkanth chapter"
-              width={760}
-              height={1126}
-              className="h-auto w-full drop-shadow-[0_0_40px_rgba(30,58,95,0.45)]"
-            />
-            <p className="mt-8 text-center text-[10px] uppercase tracking-brutal text-gray-500">
-              Mahadev — the first piece
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ===== 03 — THE POISON ===== */}
+      {/* ===== 02 — THE THIRD EYE ===== */}
       <StoryBeat
-        index="03"
-        title="The Poison"
-        lines={[
-          "Everyone waited for the nectar.",
-          "One held the poison instead —",
-          "and it never left His throat.",
-        ]}
-        accent="Held. Not swallowed."
+        index="02"
+        title="The Third Eye"
+        lines={["It is not for seeing.", "It stays closed — out of mercy."]}
         dark
       />
 
-      {/* ===== 04 — THE KAAL ===== */}
+      {/* ===== 03 — THE KAAL ===== */}
       <StoryBeat
-        index="04"
+        index="03"
         title="The Kaal"
         lines={["Time takes everything.", "And fears its own keeper."]}
       />
 
-      {/* ===== 05 — THE THIRD EYE ===== */}
+      {/* ===== 04 — THE TANDAV ===== */}
       <StoryBeat
-        index="05"
-        title="The Third Eye"
-        lines={["Closed,", "out of mercy."]}
+        index="04"
+        title="The Tandav"
+        lines={["When He dances,", "worlds keep the beat."]}
+        accent="Creation. Destruction. Same step."
         dark
       />
 
+      {/* ===== 05 — THE ASH ===== */}
+      <StoryBeat
+        index="05"
+        title="The Ash"
+        lines={[
+          "Everything the world chases",
+          "ends as ash.",
+          "He wears it first.",
+        ]}
+        accent="Vairagya."
+      />
+
       {/* ===== THE COLLECTION (gated) ===== */}
-      <section className="relative px-6 py-32 md:py-40">
-        <div className="mx-auto max-w-2xl text-center">
+      <section className="relative overflow-hidden px-6 py-32 md:py-40">
+        <AshDriftBackdrop className="opacity-60" intensity={0.7} />
+        <div className="relative mx-auto max-w-2xl text-center">
           <ScrollReveal>
             <p className="mb-5 text-[10px] uppercase tracking-brutal text-neelkanth-light">
               The Collection

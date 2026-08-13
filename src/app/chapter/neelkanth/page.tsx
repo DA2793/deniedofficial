@@ -4,7 +4,7 @@ import NeelkanthChapterClient from "./NeelkanthChapterClient";
 export const metadata: Metadata = {
   title: "Neelkanth — The Chapter",
   description:
-    "An ode to Mahadev. The stillness, the poison held, the keeper of time. The Neelkanth chapter of DENIED. — coming soon.",
+    "An ode to Mahadev. The stillness, the third eye, the keeper of time, the tandav, the ash. The Neelkanth chapter of DENIED. — coming soon.",
   alternates: { canonical: "/chapter/neelkanth" },
   openGraph: {
     title: "Neelkanth — The Chapter | DENIED.",
