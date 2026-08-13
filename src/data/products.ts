@@ -897,52 +897,6 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
-  {
-    id: 16,
-    name: "Neelkanth Oversized Tee",
-    category: "T-Shirts",
-    tier: "The Chapter",
-    unitCap: 100,
-    gender: "Unisex",
-    price: 1499,
-    originalPrice: null,
-    badge: "Neelkanth",
-    image: "/Products/TShirts/TheChapter/Neelkanth/Black/1.webp",
-    images: [
-      "/Products/TShirts/TheChapter/Neelkanth/Black/1.webp",
-      "/Products/TShirts/TheChapter/Neelkanth/Black/2.webp",
-      "/Products/TShirts/TheChapter/Neelkanth/Black/3.webp",
-      "/Products/TShirts/TheChapter/Neelkanth/Black/4.webp",
-    ],
-    colorImages: {
-      Black: [
-        "/Products/TShirts/TheChapter/Neelkanth/Black/1.webp",
-        "/Products/TShirts/TheChapter/Neelkanth/Black/2.webp",
-        "/Products/TShirts/TheChapter/Neelkanth/Black/3.webp",
-        "/Products/TShirts/TheChapter/Neelkanth/Black/4.webp",
-      ],
-    },
-    sizeChart: [
-      { size: "XS", chest: 39, length: 27 },
-      { size: "S", chest: 41, length: 28 },
-      { size: "M", chest: 43, length: 29 },
-      { size: "L", chest: 45, length: 30 },
-      { size: "XL", chest: 47, length: 31 },
-      { size: "XXL", chest: 49, length: 32 },
-    ],
-    description:
-      "An ode to Mahadev. The meditating form in white tonal detail across the chest, the Kaal Har shloka down the back — printed in white on heavyweight black cotton. From the Neelkanth chapter.",
-    details: {
-      fabric:
-        "Crafted from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for superior softness, durability, and lasting shape retention.",
-      fit: "Unisex oversized fit with dropped shoulders, offering a relaxed streetwear silhouette.",
-      features:
-        "240 GSM Heavyweight • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction",
-      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
-      colors: ["Black"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    },
-  },
 ];
 
 // Helper functions
