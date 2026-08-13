@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import AshDriftBackdrop from "@/components/AshDriftBackdrop";
 
 // Flip to true once the Neelkanth products are added.
-const COLLECTION_LIVE = false;
+const COLLECTION_LIVE = true;
 
 export default function NeelkanthChapterClient() {
   return (
