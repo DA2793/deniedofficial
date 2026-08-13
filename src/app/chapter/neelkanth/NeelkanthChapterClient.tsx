@@ -16,7 +16,7 @@ export default function NeelkanthChapterClient() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mx-auto mt-24 max-w-3xl text-center"
+          className="relative z-10 mx-auto mt-56 max-w-3xl text-center"
         >
           <p className="mb-6 text-[10px] uppercase tracking-brutal text-gold">
             The Chapter

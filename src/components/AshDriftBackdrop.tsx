@@ -42,11 +42,11 @@ export default function AshDriftBackdrop({ className = "" }: AshDriftBackdropPro
 
       {/* The crescent — Chandrashekhar */}
       <motion.div
-        className="absolute left-1/2 top-[12%] -translate-x-1/2"
+        className="absolute left-1/2 top-[6%] -translate-x-1/2"
         animate={reducedMotion ? undefined : { opacity: [0.85, 1, 0.85] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       >
-        <svg width="220" height="220" viewBox="0 0 220 220">
+        <svg width="185" height="185" viewBox="0 0 220 220">
           <defs>
             <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#f5f2ec" stopOpacity="0.9" />
