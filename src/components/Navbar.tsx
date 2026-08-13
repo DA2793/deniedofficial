@@ -108,7 +108,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/chapter/neelkanth"
-                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-neelkanth-light hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gold/80 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
                       Neelkanth
                     </Link>
