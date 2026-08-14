@@ -897,6 +897,61 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
+  // id 16 is reserved for the Neelkanth Oversized Tee (launching separately).
+  {
+    id: 17,
+    name: "Legends are Always Late Supima Tee",
+    category: "T-Shirts",
+    tier: "The Foundation",
+    unitCap: null,
+    gender: "Unisex",
+    price: 1499,
+    originalPrice: null,
+    badge: "New",
+    image: "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
+    images: [
+      "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
+      "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/2.webp",
+      "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/3.webp",
+    ],
+    colorImages: {
+      "Maroon": [
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/2.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/3.webp",
+      ],
+      "Black": [
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Black/1.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Black/2.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Black/3.webp",
+      ],
+      "Navy Blue": [
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/NavyBlue/1.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/NavyBlue/2.webp",
+        "/Products/TShirts/TheFoundation/LegendsAlwaysLate/NavyBlue/3.webp",
+      ],
+    },
+    sizeChart: [
+      { size: "XS", chest: 36, length: 25 },
+      { size: "S", chest: 38, length: 26 },
+      { size: "M", chest: 40, length: 27 },
+      { size: "L", chest: 42, length: 28 },
+      { size: "XL", chest: 44, length: 29 },
+      { size: "XXL", chest: 46, length: 30 },
+    ],
+    description:
+      "Legends are Always Late. The statement that needs no apology — printed on featherlight Supima cotton with a clean, timeless silhouette.",
+    details: {
+      fabric:
+        "Crafted from 100% Supima® Cotton with a 160 GSM lightweight construction. Pre-shrunk for a consistent fit and engineered to deliver an exceptionally soft feel with premium everyday comfort.",
+      fit: "Unisex regular fit designed for a clean, timeless silhouette that's lightweight, breathable, and effortless to wear.",
+      features:
+        "160 GSM Fabric • 100% Supima® Cotton • Pre-Shrunk • Softer Feel • Lycra Ribbed Neck • Unisex Regular Fit",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: ["Maroon", "Black", "Navy Blue"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
 ];
 
 // Helper functions
