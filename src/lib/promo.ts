@@ -2,7 +2,13 @@ import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 export interface PromoRow {
   code: string;
-  type: "percentage" | "flat";
+  /**
+   * percentage — value% off the subtotal
+   * flat       — flat ₹value off the subtotal
+   * price_to   — every item priced above ₹value drops to ₹value
+   *              (e.g. FLAT999: 1,499 tee → 999, 1,799 tee → 999)
+   */
+  type: "percentage" | "flat" | "price_to";
   value: number;
   min_order: number;
   max_discount: number | null;
@@ -20,17 +26,27 @@ export interface PromoValidationResult {
   promo?: PromoRow;
 }
 
+/** Minimal item shape needed for per-item promo math (price_to). */
+export interface PromoCartItem {
+  price: number;
+  quantity: number;
+}
+
 /**
  * Looks up a promo code and validates it against order-independent rules
  * (active, not expired, not exhausted, min order). The first-time-only check
  * needs the requesting user's order history, so it's passed in rather than
  * queried here — keeps this function reusable for both server-side
  * validation (create-order) and any future admin/preview tooling.
+ *
+ * `items` is required for price_to codes (per-item math); percentage/flat
+ * codes only need the subtotal.
  */
 export async function validatePromoCode(
   rawCode: string,
   subtotal: number,
-  hasPriorOrders: boolean
+  hasPriorOrders: boolean,
+  items: PromoCartItem[] = []
 ): Promise<PromoValidationResult> {
   const code = rawCode.trim().toUpperCase();
   const { data, error } = await getSupabaseAdmin()
@@ -62,8 +78,28 @@ export async function validatePromoCode(
     };
   }
 
-  const rawDiscount =
-    promo.type === "percentage" ? Math.round((subtotal * promo.value) / 100) : promo.value;
+  let rawDiscount: number;
+  if (promo.type === "percentage") {
+    rawDiscount = Math.round((subtotal * promo.value) / 100);
+  } else if (promo.type === "price_to") {
+    // Each unit priced above ₹value is reduced to ₹value.
+    if (items.length === 0) {
+      return { valid: false, reason: "Unable to apply this promo code", discount: 0 };
+    }
+    rawDiscount = items.reduce(
+      (sum, item) => sum + Math.max(0, item.price - promo.value) * item.quantity,
+      0
+    );
+    if (rawDiscount === 0) {
+      return {
+        valid: false,
+        reason: `${promo.code} only applies to items priced above ₹${promo.value.toLocaleString("en-IN")}`,
+        discount: 0,
+      };
+    }
+  } else {
+    rawDiscount = promo.value;
+  }
   const cappedDiscount = promo.max_discount ? Math.min(rawDiscount, promo.max_discount) : rawDiscount;
   const discount = Math.min(cappedDiscount, subtotal);
 

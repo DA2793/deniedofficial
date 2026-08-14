@@ -65,7 +65,12 @@ export async function POST(req: NextRequest) {
         .eq("user_id", user.id);
       if (countError) throw countError;
 
-      const validation = await validatePromoCode(rawPromoCode, cartTotals.subtotal, (count || 0) > 0);
+      const validation = await validatePromoCode(
+        rawPromoCode,
+        cartTotals.subtotal,
+        (count || 0) > 0,
+        cartTotals.items
+      );
       if (!validation.valid) {
         return NextResponse.json({ error: validation.reason || "Invalid promo code" }, { status: 400 });
       }
