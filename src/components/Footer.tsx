@@ -6,7 +6,7 @@ import Link from "next/link";
 const linkClass = "text-gray-500 text-sm hover:text-white transition-colors";
 export default function Footer() {
   return (
-    <footer id="contact" className="border-t border-white/[0.04] pt-24 pb-10 px-6 md:px-12">
+    <footer id="contact" className="relative z-10 border-t border-white/[0.04] bg-black pt-24 pb-10 px-6 md:px-12">
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-20 mb-24">
           <div className="md:col-span-2">
