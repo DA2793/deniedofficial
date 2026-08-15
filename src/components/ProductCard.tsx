@@ -54,6 +54,13 @@ export default function ProductCard({ product }: { product: Product }) {
     : null;
   const imageSizes = "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw";
 
+  // Chapter products enter through their chapter's world, never the bare
+  // product page — the story sells the piece.
+  const href = product.chapterSlug ? `/chapter/${product.chapterSlug}` : `/product/${product.id}`;
+  const ariaLabel = product.chapterSlug
+    ? `Enter the ${product.name} chapter`
+    : `View ${product.name}`;
+
   return (
     <motion.article
       whileHover={{ y: -6 }}
@@ -62,7 +69,7 @@ export default function ProductCard({ product }: { product: Product }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/product/${product.id}`} className="block" aria-label={`View ${product.name}`}>
+      <Link href={href} className="block" aria-label={ariaLabel}>
         <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm">
           {previousImage && previousIndex !== previewIndex && (
             <motion.div
@@ -102,6 +109,11 @@ export default function ProductCard({ product }: { product: Product }) {
           <h3 className="text-sm text-white font-medium mb-1.5 group-hover:text-gold transition-colors duration-300">{product.name}</h3>
           <span className="text-gold text-sm">₹{product.price.toLocaleString()}</span>
           {product.originalPrice && <span className="text-gray-600 text-xs line-through ml-2">₹{product.originalPrice.toLocaleString()}</span>}
+          {product.chapterSlug && (
+            <p className="mt-2 text-[10px] uppercase tracking-brutal text-gold/80 group-hover:text-gold transition-colors duration-300">
+              Enter the Chapter →
+            </p>
+          )}
         </div>
       </Link>
       <button type="button" onClick={() => toggleWishlist(product.id)} className={`absolute top-4 right-4 z-20 w-11 h-11 rounded-full glass-subtle flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 transition-all duration-300 touch-manipulation ${wishlisted ? "text-gold" : "text-white hover:text-gold"}`} aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`} aria-pressed={wishlisted}>

@@ -19,6 +19,12 @@ export interface Product {
   name: string;
   category: string;
   tier: ProductTier | null;
+  /**
+   * When set, this product belongs to a chapter world. Product cards link to
+   * /chapter/<slug> instead of the bare product page so visitors always enter
+   * through the chapter's story; the chapter page routes them to the product.
+   */
+  chapterSlug?: string;
   unitCap: number | null;
   gender: ProductGender;
   price: number;
@@ -852,6 +858,7 @@ export const products: Product[] = [
     name: "Zodiac Ringer Tee",
     category: "T-Shirts",
     tier: "The Chapter",
+    chapterSlug: "zodiac",
     unitCap: 100,
     gender: "Unisex",
     price: 1499,
