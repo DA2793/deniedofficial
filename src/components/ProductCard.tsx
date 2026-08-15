@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Product, getProductLabel } from "@/data/products";
+import { Product, getProductLabel, getProductLabelClasses } from "@/data/products";
 import { useWishlist } from "@/context/WishlistContext";
 
 const FIRST_PREVIEW_DELAY_MS = 1950;
@@ -103,7 +103,7 @@ export default function ProductCard({ product }: { product: Product }) {
             />
           )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-          <div className="absolute top-4 left-4 glass-subtle px-3 py-1.5 z-10"><span className="text-[9px] uppercase tracking-brutal text-gold font-medium">{getProductLabel(product)}</span></div>
+          <div className={`absolute top-4 left-4 z-10 rounded-full px-3 py-1.5 font-medium shadow-lg text-[9px] uppercase tracking-brutal ${getProductLabelClasses(product)}`}>{getProductLabel(product)}</div>
         </div>
         <div className="pt-5 pb-6">
           <h3 className="text-sm text-white font-medium mb-1.5 group-hover:text-gold transition-colors duration-300">{product.name}</h3>

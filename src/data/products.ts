@@ -964,3 +964,14 @@ export function getProductLabel(product: Product): string {
   if (product.gender === "Men") return "Men";
   return "Unisex";
 }
+
+/**
+ * Solid pill styling for the identity label. Gold with black text for the
+ * house labels; Geet wears its own deep mauve with blush text, matching the
+ * silk identity of /geet.
+ */
+export function getProductLabelClasses(product: Product): string {
+  return getProductLabel(product) === "Geet"
+    ? "bg-[#5c3644] text-[#f2dcd3]"
+    : "bg-gold text-black";
+}

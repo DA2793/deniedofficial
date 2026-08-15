@@ -1,6 +1,6 @@
 "use client";
 
-import { getProductById, getProductLabel, products, TIER_DESCRIPTIONS } from "@/data/products";
+import { getProductById, getProductLabel, getProductLabelClasses, products, TIER_DESCRIPTIONS } from "@/data/products";
 import Image from "next/image";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -325,7 +325,7 @@ export default function ProductPageClient({ productId }: { productId: number }) 
             className="lg:pt-4"
           >
             {/* Identity label */}
-            <span className="inline-block bg-gold text-black text-[9px] uppercase tracking-brutal px-3 py-1.5 font-medium mb-6">
+            <span className={`inline-block rounded-full text-[9px] uppercase tracking-brutal px-3 py-1.5 font-medium mb-6 ${getProductLabelClasses(product)}`}>
               {getProductLabel(product)}
             </span>
 
