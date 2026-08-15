@@ -12,6 +12,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileCollectionOpen, setMobileCollectionOpen] = useState(false);
   const [accountHover, setAccountHover] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
@@ -288,8 +289,62 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-8 sm:gap-12 px-4 pt-20 overflow-y-auto"
           >
+            {/* Collection — expandable tree */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="text-center"
+            >
+              <button
+                type="button"
+                onClick={() => setMobileCollectionOpen((open) => !open)}
+                aria-expanded={mobileCollectionOpen}
+                className="text-3xl sm:text-4xl font-display uppercase tracking-wide text-white hover:text-gold transition-colors"
+              >
+                Collection
+                <span className={`ml-3 inline-block text-gold transition-transform duration-300 ${mobileCollectionOpen ? "rotate-90" : ""}`}>›</span>
+              </button>
+              <AnimatePresence>
+                {mobileCollectionOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-6 flex flex-col items-center gap-4">
+                      {[
+                        { label: "All Collection", href: "/collection", strong: true },
+                        { label: "Caps", href: "/collection?category=Caps", strong: true },
+                        { label: "T-Shirts", href: "/collection?category=T-Shirts", strong: true },
+                        { label: "The Foundation", href: "/collection?category=T-Shirts&tier=The%20Foundation" },
+                        { label: "The Numbered", href: "/collection?category=T-Shirts&tier=The%20Numbered" },
+                        { label: "The Chapter", href: "/collection?category=T-Shirts&tier=The%20Chapter" },
+                        { label: "· Neelkanth", href: "/chapter/neelkanth" },
+                        { label: "· Zodiac", href: "/chapter/zodiac" },
+                        { label: "The Geet Collection", href: "/geet" },
+                      ].map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={`text-sm uppercase tracking-brutal transition-colors ${
+                            item.strong ? "text-white hover:text-gold" : "text-gray-400 hover:text-gold"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
             {[
-              { label: "Collection", href: "/collection" },
               { label: "About", href: "/about" },
               { label: "Contact", href: "/contact" },
               { label: "Account", href: "/account" },
@@ -299,7 +354,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: (i + 1) * 0.1, duration: 0.5 }}
               >
                 <Link
                   href={link.href}
