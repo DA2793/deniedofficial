@@ -10,7 +10,7 @@ const publicRoutes = [
   { path: "/chapter/neelkanth", changeFrequency: "monthly", priority: 0.8 },
   { path: "/about", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.5 },
-  { path: "/inner-sanctum", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/geet", changeFrequency: "monthly", priority: 0.6 },
   { path: "/policies", changeFrequency: "monthly", priority: 0.5 },
 ] as const;
 

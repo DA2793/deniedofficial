@@ -16,6 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [chapterOpen, setChapterOpen] = useState(false);
   const [accountHover, setAccountHover] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
@@ -100,18 +101,6 @@ export default function Navbar() {
                         {tier}
                       </Link>
                     ))}
-                    <Link
-                      href="/chapter/zodiac"
-                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gold/80 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
-                    >
-                      Zodiac
-                    </Link>
-                    <Link
-                      href="/chapter/neelkanth"
-                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gold/80 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
-                    >
-                      Neelkanth
-                    </Link>
                     {genders.map((gender) => (
                       <Link
                         key={gender}
@@ -142,11 +131,52 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
+            {/* The Chapter — themed worlds dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setChapterOpen(true)}
+              onMouseLeave={() => setChapterOpen(false)}
+            >
+              <Link
+                href="/collection?category=T-Shirts&tier=The%20Chapter"
+                className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
+              >
+                The Chapter
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
+              </Link>
+
+              <AnimatePresence>
+                {chapterOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-full left-0 mt-3 w-[190px] glass-subtle rounded-xl py-3 overflow-hidden"
+                  >
+                    <Link
+                      href="/chapter/zodiac"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      Zodiac
+                    </Link>
+                    <Link
+                      href="/chapter/neelkanth"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      Neelkanth
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* The Geet Collection — the women's world */}
             <Link
-              href="/inner-sanctum"
+              href="/geet"
               className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
             >
-              Inner Sanctum
+              The Geet Collection
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
             </Link>
 
@@ -298,7 +328,8 @@ export default function Navbar() {
           >
             {[
               { label: "Collection", href: "/collection" },
-              { label: "Inner Sanctum", href: "/inner-sanctum" },
+              { label: "The Chapter", href: "/collection?category=T-Shirts&tier=The%20Chapter" },
+              { label: "The Geet Collection", href: "/geet" },
               { label: "About", href: "/about" },
               { label: "Contact", href: "/contact" },
               { label: "Account", href: "/account" },
