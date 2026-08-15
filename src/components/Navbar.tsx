@@ -72,7 +72,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-full left-0 mt-3 w-[200px] glass-subtle rounded-xl py-3"
+                    className="absolute top-full left-0 mt-3 w-[200px] rounded-xl border border-white/10 bg-[#0b0b0b] py-3 shadow-2xl shadow-black/80"
                   >
                     <Link
                       href="/collection"
@@ -116,7 +116,7 @@ export default function Navbar() {
                         The Chapter
                         <span aria-hidden="true" className="text-gray-600">›</span>
                       </Link>
-                      <div className="invisible absolute left-full top-0 ml-1 w-[160px] glass-subtle rounded-xl py-2 opacity-0 transition-all duration-200 group-hover/chapter:visible group-hover/chapter:opacity-100">
+                      <div className="invisible absolute left-full top-0 ml-1 w-[160px] rounded-xl border border-white/10 bg-[#0b0b0b] py-2 opacity-0 shadow-2xl shadow-black/80 transition-all duration-200 group-hover/chapter:visible group-hover/chapter:opacity-100">
                         <Link
                           href="/chapter/neelkanth"
                           className="block px-5 py-2.5 text-[10px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
