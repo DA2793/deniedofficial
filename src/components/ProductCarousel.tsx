@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { products } from "@/data/products";
+import { products, getProductLabel } from "@/data/products";
 import type { Product } from "@/data/products";
 
 const ROTATE_DEG_PER_SEC = 9; // continuous drift speed — full loop ≈ 40s
@@ -368,11 +368,9 @@ function CarouselCard({
         </p>
       </div>
 
-      {product.badge && (
-        <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
-          {product.badge}
-        </div>
-      )}
+      <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
+        {getProductLabel(product)}
+      </div>
 
       {isActive && (
         <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
@@ -561,11 +559,9 @@ function MobileCarousel() {
                   ₹{product.price.toLocaleString("en-IN")}
                 </p>
               </div>
-              {product.badge && (
-                <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
-                  {product.badge}
-                </div>
-              )}
+              <div className="absolute top-6 left-6 bg-gold text-black text-[10px] uppercase tracking-brutal px-4 py-2 rounded-full font-medium shadow-lg">
+                {getProductLabel(product)}
+              </div>
               {isActive && (
                 <div className="absolute inset-0 border border-gold/40 rounded-3xl pointer-events-none" />
               )}

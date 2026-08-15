@@ -29,7 +29,6 @@ export interface Product {
   gender: ProductGender;
   price: number;
   originalPrice: number | null;
-  badge: string | null;
   image: string;
   images: string[];
   colorImages: Record<string, string[]>;
@@ -57,7 +56,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1199,
     originalPrice: null,
-    badge: "Signature",
     image: "/Products/TShirts/TheFoundation/SignatureOversized/Black/1.png",
     images: [
       "/Products/TShirts/TheFoundation/SignatureOversized/Black/1.png",
@@ -104,7 +102,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/AcidWashed/1.png",
     images: [
       "/Products/TShirts/TheNumbered/AcidWashed/1.png",
@@ -145,7 +142,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: null,
     image: "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-1.png",
     images: [
       "/Products/TShirts/TheNumbered/DriveOrRideSupima/Black/black-1.png",
@@ -200,7 +196,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1199,
     originalPrice: null,
-    badge: null,
     image: "/Products/TShirts/TheFoundation/Polo/Black/polo-1.png",
     images: [
       "/Products/TShirts/TheFoundation/Polo/Black/polo-1.png",
@@ -271,7 +266,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 799,
     originalPrice: null,
-    badge: null,
     image: "/Products/Caps/Ottoman/1.png",
     images: [
       "/Products/Caps/Ottoman/1.png",
@@ -303,7 +297,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 799,
     originalPrice: null,
-    badge: "New",
     image: "/Products/Caps/Snapback/Black/1.png",
     images: [
       "/Products/Caps/Snapback/Black/1.png",
@@ -339,7 +332,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
     images: [
       "/Products/TShirts/TheNumbered/UniqueOversized/Black/1.png",
@@ -406,7 +398,6 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
     images: [
       "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
@@ -465,7 +456,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/1.png",
     images: [
       "/Products/TShirts/TheNumbered/ImThisOld/OffWhite/1.png",
@@ -512,7 +502,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/TheGameBegins/OffWhite/1.png",
     images: [
       "/Products/TShirts/TheNumbered/TheGameBegins/OffWhite/1.png",
@@ -559,7 +548,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/ThreeMonkeys/Black/1.png",
     images: [
       "/Products/TShirts/TheNumbered/ThreeMonkeys/Black/1.png",
@@ -602,7 +590,6 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
     images: [
       "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
@@ -669,7 +656,6 @@ export const products: Product[] = [
     gender: "Women",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
     images: [
       "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
@@ -755,7 +741,6 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
     images: [
       "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
@@ -863,7 +848,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "Zodiac",
     image: "/Products/TShirts/TheChapter/Zodiac/Capricorn/1.webp",
     images: [
       "/Products/TShirts/TheChapter/Zodiac/Capricorn/1.webp",
@@ -914,7 +898,6 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    badge: "New",
     image: "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
     images: [
       "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
@@ -970,6 +953,14 @@ export function getProductsByCategory(category: string): Product[] {
   return products.filter((p) => p.category === category);
 }
 
-export function getFeaturedProducts(): Product[] {
-  return products.filter((p) => p.badge);
+/**
+ * The label every product wears on its card: its identity, not a promo tag.
+ * Chapter pieces belong to their world, women's pieces belong to Geet,
+ * men-only pieces say Men, everything else is Unisex.
+ */
+export function getProductLabel(product: Product): string {
+  if (product.tier === "The Chapter") return "Chapter";
+  if (product.gender === "Women") return "Geet";
+  if (product.gender === "Men") return "Men";
+  return "Unisex";
 }

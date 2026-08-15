@@ -30,15 +30,12 @@ function CollectionContent() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeTier, setActiveTier] = useState<ProductTier | null>(null);
   const [activeGender, setActiveGender] = useState<ProductGender | null>(null);
-  const [showNewOnly, setShowNewOnly] = useState(false);
-  const [showSignature, setShowSignature] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "price-low" | "price-high">("default");
 
   useEffect(() => {
     const cat = searchParams.get("category");
     const tier = searchParams.get("tier");
     const gender = searchParams.get("gender");
-    const filter = searchParams.get("filter");
     if (cat) setActiveCategory(cat);
     if (tier === "The Foundation" || tier === "The Numbered" || tier === "The Chapter") {
       setActiveCategory("T-Shirts");
@@ -48,8 +45,6 @@ function CollectionContent() {
       setActiveCategory("T-Shirts");
       setActiveGender(gender);
     }
-    if (filter === "new") setShowNewOnly(true);
-    if (filter === "signature") setShowSignature(true);
   }, [searchParams]);
 
   const filteredProducts = useMemo(() => {
@@ -66,14 +61,6 @@ function CollectionContent() {
       filtered = filtered.filter((p) => p.gender === activeGender);
     }
 
-    if (showNewOnly) {
-      filtered = filtered.filter((p) => p.badge === "New");
-    }
-
-    if (showSignature) {
-      filtered = filtered.filter((p) => p.badge === "Signature");
-    }
-
     if (sortBy === "price-low") {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-high") {
@@ -81,7 +68,7 @@ function CollectionContent() {
     }
 
     return filtered;
-  }, [activeCategory, activeTier, activeGender, showNewOnly, showSignature, sortBy]);
+  }, [activeCategory, activeTier, activeGender, sortBy]);
 
   return (
     <>
@@ -102,11 +89,9 @@ function CollectionContent() {
                   setActiveCategory(cat.slug);
                   setActiveTier(null);
                   setActiveGender(null);
-                  setShowNewOnly(false);
-                  setShowSignature(false);
                 }}
                 className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-                  activeCategory === cat.slug && !showNewOnly && !showSignature
+                  activeCategory === cat.slug
                     ? "bg-white text-black"
                     : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
                 }`}
@@ -114,44 +99,6 @@ function CollectionContent() {
                 {cat.name}
               </button>
             ))}
-
-            {/* Divider */}
-            <div className="w-[1px] h-8 bg-white/[0.06] mx-2 self-center hidden md:block" />
-
-            {/* Special filters */}
-            <button
-              onClick={() => {
-                setShowNewOnly(!showNewOnly);
-                setShowSignature(false);
-                setActiveCategory("all");
-                setActiveTier(null);
-                setActiveGender(null);
-              }}
-              className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-                showNewOnly
-                  ? "bg-gold text-black"
-                  : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
-              }`}
-            >
-              · New In
-            </button>
-
-            <button
-              onClick={() => {
-                setShowSignature(!showSignature);
-                setShowNewOnly(false);
-                setActiveCategory("all");
-                setActiveTier(null);
-                setActiveGender(null);
-              }}
-              className={`px-5 py-2.5 text-[10px] uppercase tracking-brutal rounded-full transition-all duration-300 ${
-                showSignature
-                  ? "bg-gold text-black"
-                  : "border border-white/10 text-gray-400 hover:border-white/30 hover:text-white"
-              }`}
-            >
-              · Signature
-            </button>
           </div>
 
           {/* Tier sub-filters — nested under T-Shirts */}
@@ -220,7 +167,7 @@ function CollectionContent() {
       {/* Products Grid */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={activeCategory + String(activeTier) + String(activeGender) + String(showNewOnly) + String(showSignature) + sortBy}
+          key={activeCategory + String(activeTier) + String(activeGender) + sortBy}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

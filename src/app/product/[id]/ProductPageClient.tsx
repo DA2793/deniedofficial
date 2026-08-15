@@ -1,6 +1,6 @@
 "use client";
 
-import { getProductById, products, TIER_DESCRIPTIONS } from "@/data/products";
+import { getProductById, getProductLabel, products, TIER_DESCRIPTIONS } from "@/data/products";
 import Image from "next/image";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -324,12 +324,10 @@ export default function ProductPageClient({ productId }: { productId: number }) 
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:pt-4"
           >
-            {/* Badge */}
-            {product.badge && (
-              <span className="inline-block bg-gold text-black text-[9px] uppercase tracking-brutal px-3 py-1.5 font-medium mb-6">
-                {product.badge}
-              </span>
-            )}
+            {/* Identity label */}
+            <span className="inline-block bg-gold text-black text-[9px] uppercase tracking-brutal px-3 py-1.5 font-medium mb-6">
+              {getProductLabel(product)}
+            </span>
 
             {/* Category / Tier */}
             <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-3">
