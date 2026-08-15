@@ -29,10 +29,15 @@ export default function GeetClient() {
   const geetProducts = getGeetProducts();
 
   return (
-    <main className="bg-black text-white">
-      {/* Hero — the silk identity */}
-      <section className="relative flex min-h-[78vh] items-center justify-center overflow-hidden px-6">
+    <main className="relative text-white">
+      {/* Silk atmosphere behind the entire page — viewport-locked so the
+          petals and sheen accompany the whole scroll, not just the hero */}
+      <div className="fixed inset-0 z-0" aria-hidden="true">
         <SilkDriftBackdrop />
+      </div>
+
+      {/* Hero — the silk identity */}
+      <section className="relative z-10 flex min-h-[78vh] items-center justify-center overflow-hidden px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -64,7 +69,7 @@ export default function GeetClient() {
       </section>
 
       {/* The collection */}
-      <section id="collection" className="px-6 py-20 md:px-12">
+      <section id="collection" className="relative z-10 px-6 py-20 md:px-12">
         <div className="mx-auto max-w-[1400px]">
           <ScrollReveal>
             <div className="mb-14 text-center">
