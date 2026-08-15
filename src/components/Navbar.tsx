@@ -6,17 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { TIER_DESCRIPTIONS, type ProductTier, type ProductGender } from "@/data/products";
-
-const tiers: ProductTier[] = ["The Foundation", "The Numbered", "The Chapter"];
-const genders: ProductGender[] = ["Women", "Men", "Unisex"];
-const filters = ["New In", "Signature"];
+import { TIER_DESCRIPTIONS } from "@/data/products";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [chapterOpen, setChapterOpen] = useState(false);
   const [accountHover, setAccountHover] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
@@ -77,7 +72,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-full left-0 mt-3 w-[200px] glass-subtle rounded-xl py-3 overflow-hidden"
+                    className="absolute top-full left-0 mt-3 w-[200px] glass-subtle rounded-xl py-3"
                   >
                     <Link
                       href="/collection"
@@ -86,99 +81,66 @@ export default function Navbar() {
                       All Collection
                     </Link>
                     <Link
-                      href="/collection?category=T-Shirts"
-                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
-                    >
-                      T-Shirts
-                    </Link>
-                    {tiers.map((tier) => (
-                      <Link
-                        key={tier}
-                        href={`/collection?category=T-Shirts&tier=${encodeURIComponent(tier)}`}
-                        title={TIER_DESCRIPTIONS[tier]}
-                        className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
-                      >
-                        {tier}
-                      </Link>
-                    ))}
-                    {genders.map((gender) => (
-                      <Link
-                        key={gender}
-                        href={`/collection?category=T-Shirts&gender=${encodeURIComponent(gender)}`}
-                        className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
-                      >
-                        {gender}
-                      </Link>
-                    ))}
-                    <Link
                       href="/collection?category=Caps"
-                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-white hover:bg-white/[0.04] transition-all duration-200"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide font-semibold text-white hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
                       Caps
                     </Link>
-                    <div className="border-t border-white/[0.06] my-2" />
-                    {filters.slice(0, 2).map((item) => (
+                    <Link
+                      href="/collection?category=T-Shirts"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide font-semibold text-white hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      T-Shirts
+                    </Link>
+                    <Link
+                      href="/collection?category=T-Shirts&tier=The%20Foundation"
+                      title={TIER_DESCRIPTIONS["The Foundation"]}
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      The Foundation
+                    </Link>
+                    <Link
+                      href="/collection?category=T-Shirts&tier=The%20Numbered"
+                      title={TIER_DESCRIPTIONS["The Numbered"]}
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      The Numbered
+                    </Link>
+                    {/* The Chapter — side flyout with its worlds */}
+                    <div className="group/chapter relative">
                       <Link
-                        key={item}
-                        href={`/collection?filter=${item === "New In" ? "new" : "signature"}`}
-                        className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                        href="/collection?category=T-Shirts&tier=The%20Chapter"
+                        title={TIER_DESCRIPTIONS["The Chapter"]}
+                        className="flex items-center justify-between pl-9 pr-4 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                       >
-                        {item}
+                        The Chapter
+                        <span aria-hidden="true" className="text-gray-600">›</span>
                       </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* The Chapter — themed worlds dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setChapterOpen(true)}
-              onMouseLeave={() => setChapterOpen(false)}
-            >
-              <Link
-                href="/collection?category=T-Shirts&tier=The%20Chapter"
-                className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
-              >
-                The Chapter
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
-              </Link>
-
-              <AnimatePresence>
-                {chapterOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-full left-0 mt-3 w-[190px] glass-subtle rounded-xl py-3 overflow-hidden"
-                  >
+                      <div className="invisible absolute left-full top-0 ml-1 w-[160px] glass-subtle rounded-xl py-2 opacity-0 transition-all duration-200 group-hover/chapter:visible group-hover/chapter:opacity-100">
+                        <Link
+                          href="/chapter/neelkanth"
+                          className="block px-5 py-2.5 text-[10px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                        >
+                          Neelkanth
+                        </Link>
+                        <Link
+                          href="/chapter/zodiac"
+                          className="block px-5 py-2.5 text-[10px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                        >
+                          Zodiac
+                        </Link>
+                      </div>
+                    </div>
                     <Link
-                      href="/chapter/zodiac"
-                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                      href="/geet"
+                      className="block pl-9 pr-5 py-2 text-[10px] uppercase tracking-wide text-gray-500 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
-                      Zodiac
-                    </Link>
-                    <Link
-                      href="/chapter/neelkanth"
-                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
-                    >
-                      Neelkanth
+                      The Geet Collection
                     </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-
-            {/* The Geet Collection — the women's world */}
-            <Link
-              href="/geet"
-              className="relative text-[11px] uppercase tracking-brutal text-gray-400 hover:text-gold transition-colors duration-300 py-2 group"
-            >
-              The Geet Collection
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
 
             <Link
               href="/about"
@@ -328,8 +290,6 @@ export default function Navbar() {
           >
             {[
               { label: "Collection", href: "/collection" },
-              { label: "The Chapter", href: "/collection?category=T-Shirts&tier=The%20Chapter" },
-              { label: "The Geet Collection", href: "/geet" },
               { label: "About", href: "/about" },
               { label: "Contact", href: "/contact" },
               { label: "Account", href: "/account" },
