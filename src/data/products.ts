@@ -25,6 +25,14 @@ export interface Product {
    * through the chapter's story; the chapter page routes them to the product.
    */
   chapterSlug?: string;
+  /**
+   * Geet membership for unisex pieces shown on women (women's products belong
+   * automatically via gender). `geetImages` optionally curates which shots the
+   * Geet storefront card uses — first entry is the card face — so a male-model
+   * shot never fronts a Geet card.
+   */
+  geet?: boolean;
+  geetImages?: string[];
   unitCap: number | null;
   gender: ProductGender;
   price: number;
@@ -45,6 +53,18 @@ export interface Product {
     sizes: string[];
   };
 }
+
+/** Builds colour->images maps for The Geet Collection's webp exports. */
+const geetColorImages = (path: string, colors: string[]): Record<string, string[]> =>
+  Object.fromEntries(
+    colors.map((color) => [
+      color,
+      [1, 2].map(
+        (n) =>
+          `/Products/TShirts/TheGeetCollection/${path}/${color.replace(/[^A-Za-z0-9]/g, "")}/${n}.webp`
+      ),
+    ])
+  );
 
 export const products: Product[] = [
   {
@@ -398,35 +418,35 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    image: "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
+    image: "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/CoffeeBrown/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
-      "/Products/TShirts/TheNumbered/SheIsClassic/Black/2.png",
+      "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/CoffeeBrown/1.webp",
+      "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/CoffeeBrown/2.webp",
     ],
     colorImages: {
       "Black": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/Black/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/Black/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Black/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Black/2.webp",
       ],
       "Bottle Green": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/BottleGreen/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/BottleGreen/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/BottleGreen/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/BottleGreen/2.webp",
       ],
       "Coffee Brown": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/CoffeeBrown/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/CoffeeBrown/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/CoffeeBrown/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/CoffeeBrown/2.webp",
       ],
       "Maroon": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/Maroon/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/Maroon/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Maroon/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Maroon/2.webp",
       ],
       "Navy Blue": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/NavyBlue/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/NavyBlue/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/NavyBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/NavyBlue/2.webp",
       ],
       "Red": [
-        "/Products/TShirts/TheNumbered/SheIsClassic/Red/1.png",
-        "/Products/TShirts/TheNumbered/SheIsClassic/Red/2.png",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Red/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/SheIs/Red/2.webp",
       ],
     },
     sizeChart: [
@@ -443,7 +463,7 @@ export const products: Product[] = [
       fit: "Women's regular fit designed for a flattering everyday silhouette.",
       features: "180 GSM Fabric • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Folded Neck • Double-Stitched Construction",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
-      colors: ["Black", "Bottle Green", "Coffee Brown", "Maroon", "Navy Blue", "Red"],
+      colors: ["Coffee Brown", "Black", "Bottle Green", "Maroon", "Navy Blue", "Red"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
@@ -590,35 +610,35 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    image: "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
+    image: "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/BabyBlue/1.webp",
     images: [
-      "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
-      "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/2.png"
+      "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/BabyBlue/1.webp",
+      "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/BabyBlue/2.webp"
     ],
     colorImages: {
       "Baby Blue": [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/BabyBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/BabyBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/BabyBlue/2.webp"
       ],
       Flamingo: [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Flamingo/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Flamingo/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Flamingo/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Flamingo/2.webp"
       ],
       Jade: [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Jade/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Jade/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Jade/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Jade/2.webp"
       ],
       Lavender: [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Lavender/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/Lavender/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Lavender/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/Lavender/2.webp"
       ],
       "Light Baby Pink": [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/LightBabyPink/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/LightBabyPink/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/LightBabyPink/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/LightBabyPink/2.webp"
       ],
       "Off White": [
-        "/Products/TShirts/TheFoundation/MoodyFloaty/OffWhite/1.png",
-        "/Products/TShirts/TheFoundation/MoodyFloaty/OffWhite/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/OffWhite/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/MoodyFloaty/OffWhite/2.webp"
       ]
     },
     sizeChart: [
@@ -656,51 +676,51 @@ export const products: Product[] = [
     gender: "Women",
     price: 1499,
     originalPrice: null,
-    image: "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
+    image: "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Maroon/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
-      "/Products/TShirts/TheNumbered/ToDoList/Black/2.png"
+      "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Maroon/1.webp",
+      "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Maroon/2.webp"
     ],
     colorImages: {
       Black: [
-        "/Products/TShirts/TheNumbered/ToDoList/Black/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/Black/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Black/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Black/2.webp"
       ],
       "Bottle Green": [
-        "/Products/TShirts/TheNumbered/ToDoList/BottleGreen/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/BottleGreen/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/BottleGreen/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/BottleGreen/2.webp"
       ],
       "Coral Red": [
-        "/Products/TShirts/TheNumbered/ToDoList/CoralRed/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/CoralRed/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/CoralRed/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/CoralRed/2.webp"
       ],
       Maroon: [
-        "/Products/TShirts/TheNumbered/ToDoList/Maroon/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/Maroon/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Maroon/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Maroon/2.webp"
       ],
       "Navy Blue": [
-        "/Products/TShirts/TheNumbered/ToDoList/NavyBlue/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/NavyBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/NavyBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/NavyBlue/2.webp"
       ],
       "Olive Green": [
-        "/Products/TShirts/TheNumbered/ToDoList/OliveGreen/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/OliveGreen/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/OliveGreen/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/OliveGreen/2.webp"
       ],
       "Petrol Blue": [
-        "/Products/TShirts/TheNumbered/ToDoList/PetrolBlue/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/PetrolBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/PetrolBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/PetrolBlue/2.webp"
       ],
       Purple: [
-        "/Products/TShirts/TheNumbered/ToDoList/Purple/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/Purple/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Purple/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Purple/2.webp"
       ],
       Red: [
-        "/Products/TShirts/TheNumbered/ToDoList/Red/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/Red/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Red/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/Red/2.webp"
       ],
       "Royal Blue": [
-        "/Products/TShirts/TheNumbered/ToDoList/RoyalBlue/1.png",
-        "/Products/TShirts/TheNumbered/ToDoList/RoyalBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/RoyalBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/Oversized/ToDoList/RoyalBlue/2.webp"
       ]
     },
     sizeChart: [
@@ -718,10 +738,10 @@ export const products: Product[] = [
       features: "240 GSM Heavyweight • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
       colors: [
+        "Maroon",
         "Black",
         "Bottle Green",
         "Coral Red",
-        "Maroon",
         "Navy Blue",
         "Olive Green",
         "Petrol Blue",
@@ -741,43 +761,43 @@ export const products: Product[] = [
     gender: "Women",
     price: 1199,
     originalPrice: null,
-    image: "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
+    image: "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Black/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
-      "/Products/TShirts/TheNumbered/InfiniteClassic/Black/2.png"
+      "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Black/1.webp",
+      "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Black/2.webp"
     ],
     colorImages: {
       Black: [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Black/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Black/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Black/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Black/2.webp"
       ],
       "Bottle Green": [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/BottleGreen/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/BottleGreen/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/BottleGreen/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/BottleGreen/2.webp"
       ],
       "Coffee Brown": [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/CoffeeBrown/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/CoffeeBrown/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/CoffeeBrown/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/CoffeeBrown/2.webp"
       ],
       Maroon: [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Maroon/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Maroon/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Maroon/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Maroon/2.webp"
       ],
       "Navy Blue": [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/NavyBlue/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/NavyBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/NavyBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/NavyBlue/2.webp"
       ],
       Purple: [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Purple/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Purple/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Purple/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Purple/2.webp"
       ],
       Red: [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Red/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/Red/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Red/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/Red/2.webp"
       ],
       "Royal Blue": [
-        "/Products/TShirts/TheNumbered/InfiniteClassic/RoyalBlue/1.png",
-        "/Products/TShirts/TheNumbered/InfiniteClassic/RoyalBlue/2.png"
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/RoyalBlue/1.webp",
+        "/Products/TShirts/TheGeetCollection/WomenClassic/Infinite/RoyalBlue/2.webp"
       ]
     },
     sizeChart: [
@@ -894,6 +914,11 @@ export const products: Product[] = [
     name: "Legends are Always Late Supima Tee",
     category: "T-Shirts",
     tier: "The Foundation",
+    geet: true,
+    geetImages: [
+      "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/1.webp",
+      "/Products/TShirts/TheFoundation/LegendsAlwaysLate/Maroon/3.webp",
+    ],
     unitCap: null,
     gender: "Unisex",
     price: 1499,
@@ -939,6 +964,164 @@ export const products: Product[] = [
         "160 GSM Fabric • 100% Supima® Cotton • Pre-Shrunk • Softer Feel • Lycra Ribbed Neck • Unisex Regular Fit",
       care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: ["Maroon", "Black", "Navy Blue"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
+  {
+    id: 18,
+    name: "11:11 Crop Tee",
+    category: "T-Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Women",
+    price: 999,
+    originalPrice: null,
+    image: "/Products/TShirts/TheGeetCollection/CropTop/11-11/Black/1.webp",
+    images: [
+      "/Products/TShirts/TheGeetCollection/CropTop/11-11/Black/1.webp",
+      "/Products/TShirts/TheGeetCollection/CropTop/11-11/Black/2.webp",
+    ],
+    colorImages: geetColorImages("CropTop/11-11", [
+      "Black", "Capri Blue", "Golden Yellow", "Navy Blue", "Red",
+    ]),
+    sizeChart: [
+      { size: "XS", chest: 32, length: 15.5 },
+      { size: "S", chest: 34, length: 16.5 },
+      { size: "M", chest: 36, length: 17.5 },
+      { size: "L", chest: 38, length: 18.5 },
+      { size: "XL", chest: 40, length: 19.5 },
+      { size: "XXL", chest: 42, length: 20.5 },
+    ],
+    description:
+      "Make a wish. The 11:11 Crop Tee — the manifest minute in pure white ink on soft combed cotton, cut in a flattering crop silhouette.",
+    details: {
+      fabric:
+        "Crafted from 100% Super Combed Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for exceptional softness, breathable comfort, and lasting shape retention.",
+      fit: "Women's regular crop fit with half sleeves, designed for a flattering silhouette and effortless everyday comfort.",
+      features:
+        "180 GSM Fabric • 100% Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction • Excellent Colourfastness",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: ["Black", "Capri Blue", "Golden Yellow", "Navy Blue", "Red"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
+  {
+    id: 19,
+    name: "Expressions T-Shirt Dress",
+    category: "T-Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Women",
+    price: 1199,
+    originalPrice: null,
+    image: "/Products/TShirts/TheGeetCollection/TshirtDress/Expressions/Black/1.webp",
+    images: [
+      "/Products/TShirts/TheGeetCollection/TshirtDress/Expressions/Black/1.webp",
+      "/Products/TShirts/TheGeetCollection/TshirtDress/Expressions/Black/2.webp",
+    ],
+    colorImages: geetColorImages("TshirtDress/Expressions", [
+      "Black", "Grey Melange", "Navy Blue",
+    ]),
+    sizeChart: [
+      { size: "S", chest: 34, length: 33.5 },
+      { size: "M", chest: 36, length: 34 },
+      { size: "L", chest: 38, length: 34.5 },
+      { size: "XL", chest: 40, length: 35 },
+    ],
+    description:
+      "The Expressions T-Shirt Dress. A relaxed silhouette with attached side pockets — one piece, worn her way.",
+    details: {
+      fabric:
+        "Crafted from 100% Super Combed Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for superior softness, breathable comfort, and lasting shape retention.",
+      fit: "Relaxed t-shirt dress silhouette designed for effortless comfort and everyday style.",
+      features:
+        "180 GSM Fabric • 100% Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction • Attached Side Pockets • Excellent Colourfastness",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: ["Black", "Grey Melange", "Navy Blue"],
+      sizes: ["S", "M", "L", "XL"],
+    },
+  },
+  {
+    id: 20,
+    name: "Bee Classic Tee",
+    category: "T-Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Women",
+    price: 1199,
+    originalPrice: null,
+    image: "/Products/TShirts/TheGeetCollection/WomenClassic/Bee/Lavender/1.webp",
+    images: [
+      "/Products/TShirts/TheGeetCollection/WomenClassic/Bee/Lavender/1.webp",
+      "/Products/TShirts/TheGeetCollection/WomenClassic/Bee/Lavender/2.webp",
+    ],
+    colorImages: geetColorImages("WomenClassic/Bee", [
+      "Lavender", "Beige", "Capri Blue", "Golden", "Grey Melange", "Irish Green",
+      "Light Baby Pink", "Mustard", "Pink", "Red", "Yellow",
+    ]),
+    sizeChart: [
+      { size: "XS", chest: 32, length: 23 },
+      { size: "S", chest: 34, length: 24 },
+      { size: "M", chest: 36, length: 25 },
+      { size: "L", chest: 38, length: 26 },
+      { size: "XL", chest: 40, length: 27 },
+      { size: "XXL", chest: 42, length: 28 },
+    ],
+    description:
+      "The Bee Classic Tee. A gilded bee tracing its own path — soft, breathable cotton in a flattering everyday silhouette.",
+    details: {
+      fabric:
+        "Crafted from 100% Super Combed Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for enhanced softness, comfort, and lasting shape retention.",
+      fit: "Women's regular fit designed for a flattering everyday silhouette.",
+      features:
+        "180 GSM Fabric • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Folded Neck • Double-Stitched Construction",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
+      colors: [
+        "Lavender", "Beige", "Capri Blue", "Golden", "Grey Melange", "Irish Green",
+        "Light Baby Pink", "Mustard", "Pink", "Red", "Yellow",
+      ],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
+  {
+    id: 21,
+    name: "I'm Not Bossy Classic Tee",
+    category: "T-Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Women",
+    price: 1199,
+    originalPrice: null,
+    image: "/Products/TShirts/TheGeetCollection/WomenClassic/IMNotBossy/Red/1.webp",
+    images: [
+      "/Products/TShirts/TheGeetCollection/WomenClassic/IMNotBossy/Red/1.webp",
+      "/Products/TShirts/TheGeetCollection/WomenClassic/IMNotBossy/Red/2.webp",
+    ],
+    colorImages: geetColorImages("WomenClassic/IMNotBossy", [
+      "Red", "Black", "Bottle Green", "Capri Blue", "Charcoal Melange",
+      "Coffee Brown", "Maroon", "Navy Blue", "Purple", "Royal Blue",
+    ]),
+    sizeChart: [
+      { size: "XS", chest: 32, length: 23 },
+      { size: "S", chest: 34, length: 24 },
+      { size: "M", chest: 36, length: 25 },
+      { size: "L", chest: 38, length: 26 },
+      { size: "XL", chest: 40, length: 27 },
+      { size: "XXL", chest: 42, length: 28 },
+    ],
+    description:
+      "I'm Not Bossy — I just know what I want. The statement in bold type on soft combed cotton, cut for her everyday.",
+    details: {
+      fabric:
+        "Crafted from 100% Super Combed Cotton with a 180 GSM construction. Pre-shrunk and bio-washed for enhanced softness, comfort, and lasting shape retention.",
+      fit: "Women's regular fit designed for a flattering everyday silhouette.",
+      features:
+        "180 GSM Fabric • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Folded Neck • Double-Stitched Construction",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
+      colors: [
+        "Red", "Black", "Bottle Green", "Capri Blue", "Charcoal Melange",
+        "Coffee Brown", "Maroon", "Navy Blue", "Purple", "Royal Blue",
+      ],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },

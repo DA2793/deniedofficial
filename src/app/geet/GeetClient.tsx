@@ -1,23 +1,43 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import SilkDriftBackdrop from "@/components/SilkDriftBackdrop";
+import ProductCard from "@/components/ProductCard";
+import ScrollReveal from "@/components/ScrollReveal";
+import { products, type Product } from "@/data/products";
 
-// Flip to true once the Geet pieces are added — the women's collection
-// (existing and new) moves under this roof at launch.
-const COLLECTION_LIVE = false;
+// Curated order: the new drops lead, the guest Foundation piece closes.
+const GEET_ORDER = [18, 19, 20, 21, 13, 12, 8, 14, 17];
+
+/** Geet membership: every women's product, plus unisex pieces flagged in. */
+function getGeetProducts(): Product[] {
+  const members = products.filter((p) => p.gender === "Women" || p.geet);
+  return members.sort((a, b) => {
+    const ai = GEET_ORDER.indexOf(a.id);
+    const bi = GEET_ORDER.indexOf(b.id);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+}
+
+/** Cards wear curated Geet imagery when specified (unisex guest pieces). */
+function forGeetCard(product: Product): Product {
+  if (!product.geetImages || product.geetImages.length === 0) return product;
+  return { ...product, image: product.geetImages[0], images: product.geetImages };
+}
 
 export default function GeetClient() {
+  const geetProducts = getGeetProducts();
+
   return (
     <main className="bg-black text-white">
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
+      {/* Hero — the silk identity */}
+      <section className="relative flex min-h-[78vh] items-center justify-center overflow-hidden px-6">
         <SilkDriftBackdrop />
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mx-auto max-w-3xl text-center"
+          className="relative z-10 mx-auto max-w-3xl pt-24 pb-16 text-center"
         >
           <p className="mb-6 text-[10px] uppercase tracking-brutal text-[#deaa8e]">
             DENIED. presents
@@ -32,30 +52,47 @@ export default function GeetClient() {
           <p className="mx-auto mt-4 max-w-md text-sm text-gray-400">
             Crafted for the woman who needs no introduction.
           </p>
-
-          {COLLECTION_LIVE ? (
-            <div className="mt-14">
-              <Link
-                href="/collection?gender=Women"
-                className="inline-flex rounded-full bg-[#f6f1e7] px-10 py-4 text-[10px] uppercase tracking-brutal text-black transition-colors duration-300 hover:bg-[#deaa8e]"
-              >
-                Enter the Collection
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-14 inline-flex items-center gap-3 rounded-full border border-[#deaa8e]/25 bg-[#deaa8e]/[0.06] px-7 py-3">
-              <motion.span
-                animate={{ opacity: [0.35, 1, 0.35] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                className="h-1.5 w-1.5 rounded-full bg-[#deaa8e]"
-                aria-hidden="true"
-              />
-              <span className="text-[10px] uppercase tracking-brutal text-[#deaa8e]">
-                Launching Soon
-              </span>
-            </div>
-          )}
+          <div className="mt-12">
+            <a
+              href="#collection"
+              className="inline-flex rounded-full bg-[#f6f1e7] px-10 py-4 text-[10px] uppercase tracking-brutal text-black transition-colors duration-300 hover:bg-[#deaa8e]"
+            >
+              Explore the Collection
+            </a>
+          </div>
         </motion.div>
+      </section>
+
+      {/* The collection */}
+      <section id="collection" className="px-6 py-20 md:px-12">
+        <div className="mx-auto max-w-[1400px]">
+          <ScrollReveal>
+            <div className="mb-14 text-center">
+              <p className="mb-3 text-[10px] uppercase tracking-brutal text-[#deaa8e]">
+                Her Pieces
+              </p>
+              <h2 className="font-display text-4xl uppercase md:text-6xl">The Collection</h2>
+              <p className="mx-auto mt-4 max-w-md text-sm text-gray-500">
+                Crop tops, dresses, classics, and oversized fits — every piece
+                belongs to her. The collection grows. Selectively.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
+            {geetProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: (index % 3) * 0.08 }}
+              >
+                <ProductCard product={forGeetCard(product)} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );
