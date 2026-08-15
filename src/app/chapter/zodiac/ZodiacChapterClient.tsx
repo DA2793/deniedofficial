@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import ConstellationBackdrop from "@/components/ConstellationBackdrop";
+import FloatingChapterCTA from "@/components/FloatingChapterCTA";
 
 interface SignBeat {
   name: string;
@@ -107,8 +108,11 @@ export default function ZodiacChapterClient() {
         </div>
       </section>
 
+      {/* Floating shortcut — lives only in the middle stretch of the scroll */}
+      <FloatingChapterCTA href="/product/15" endId="zodiac-cta" />
+
       {/* ===== CLOSING CTA ===== */}
-      <section className="relative overflow-hidden px-6 py-32 md:py-44">
+      <section id="zodiac-cta" className="relative overflow-hidden px-6 py-32 md:py-44">
         <ConstellationBackdrop starCount={80} seed={424242} className="opacity-60" shooting={false} />
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[140px]" />
