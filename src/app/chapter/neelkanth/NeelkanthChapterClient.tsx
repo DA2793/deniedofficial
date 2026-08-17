@@ -56,7 +56,7 @@ export default function NeelkanthChapterClient() {
 
       {/* ===== THE STORIES ===== */}
       <section id="stories" className="relative overflow-hidden px-6 pb-28">
-        <AshDriftBackdrop className="opacity-70" />
+        <AshDriftBackdrop className="opacity-70" showTripundra={false} />
 
         <div className="relative mx-auto max-w-2xl py-24 text-center md:py-32">
           <ScrollReveal>
@@ -130,7 +130,7 @@ export default function NeelkanthChapterClient() {
 
       {/* ===== CLOSING ===== */}
       <section id="neelkanth-cta" className="relative overflow-hidden px-6 py-32 md:py-44">
-        <AshDriftBackdrop className="opacity-60" />
+        <AshDriftBackdrop className="opacity-60" showTripundra={false} />
         <div className="relative mx-auto max-w-2xl text-center">
           <ScrollReveal>
             <p className="mb-5 text-[10px] uppercase tracking-brutal text-gold">

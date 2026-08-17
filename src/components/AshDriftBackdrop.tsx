@@ -5,6 +5,9 @@ import { useMemo } from "react";
 
 interface AshDriftBackdropProps {
   className?: string;
+  /** The tripundra mark — wanted on the hero, but it collides with content
+   *  in tall sections; those pass false. */
+  showTripundra?: boolean;
 }
 
 /**
@@ -13,7 +16,7 @@ interface AshDriftBackdropProps {
  * palette is moonlight, ash, and the brand's gold. Pure transforms/opacity,
  * no video or WebGL; same lightweight approach as ConstellationBackdrop.
  */
-export default function AshDriftBackdrop({ className = "" }: AshDriftBackdropProps) {
+export default function AshDriftBackdrop({ className = "", showTripundra = true }: AshDriftBackdropProps) {
   const reducedMotion = useReducedMotion();
 
   const particles = useMemo(() => {
@@ -41,6 +44,7 @@ export default function AshDriftBackdrop({ className = "" }: AshDriftBackdropPro
       <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0d0c0a] to-black" />
 
       {/* The tripundra — three strokes of sacred ash */}
+      {showTripundra && (
       <motion.div
         className="absolute left-1/2 top-[11%] -translate-x-1/2"
         animate={reducedMotion ? undefined : { opacity: [0.8, 1, 0.8] }}
@@ -65,6 +69,7 @@ export default function AshDriftBackdrop({ className = "" }: AshDriftBackdropPro
           </g>
         </svg>
       </motion.div>
+      )}
 
       {/* Soft moonlight aura behind the content area */}
       <div className="absolute left-1/2 top-[38%] h-[30rem] w-[34rem] -translate-x-1/2 rounded-full bg-[#efe9db]/[0.045] blur-[130px]" />
