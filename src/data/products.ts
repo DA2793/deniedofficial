@@ -54,6 +54,56 @@ export interface Product {
   };
 }
 
+// Shared blocks for the Neelkanth chapter tees (one garment colour per story).
+const NEELKANTH_SIZE_CHART: SizeChartRow[] = [
+  { size: "XS", chest: 39, length: 27 },
+  { size: "S", chest: 41, length: 28 },
+  { size: "M", chest: 43, length: 29 },
+  { size: "L", chest: 45, length: 30 },
+  { size: "XL", chest: 47, length: 31 },
+  { size: "XXL", chest: 49, length: 32 },
+];
+
+const NEELKANTH_DETAILS = {
+  fabric:
+    "Crafted from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for superior softness, durability, and lasting shape retention.",
+  fit: "Unisex oversized fit with dropped shoulders, offering a relaxed streetwear silhouette.",
+  features:
+    "240 GSM Heavyweight • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction",
+  care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
+  sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+};
+
+/** Compact builder for the single-colour Neelkanth chapter tees. */
+function neelkanthTee(
+  id: number,
+  name: string,
+  segment: string,
+  color: string,
+  description: string,
+  imageCount = 3
+): Product {
+  const images = Array.from({ length: imageCount }, (_, i) =>
+    `/Products/TShirts/TheChapter/Neelkanth/${segment}/${i + 1}.webp`);
+  return {
+    id,
+    name,
+    category: "T-Shirts",
+    tier: "The Chapter",
+    chapterSlug: "neelkanth",
+    unitCap: 100,
+    gender: "Unisex",
+    price: 1499,
+    originalPrice: null,
+    image: images[0],
+    images,
+    colorImages: { [color]: images },
+    sizeChart: NEELKANTH_SIZE_CHART,
+    description,
+    details: { ...NEELKANTH_DETAILS, colors: [color] },
+  };
+}
+
 /** Builds colour->images maps for The Geet Collection's webp exports. */
 const geetColorImages = (path: string, colors: string[]): Record<string, string[]> =>
   Object.fromEntries(
@@ -908,7 +958,26 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
-  // id 16 is reserved for the Neelkanth Oversized Tee (launching separately).
+  {
+    id: 16,
+    name: "Kaal Har Oversized Tee",
+    category: "T-Shirts",
+    tier: "The Chapter",
+    chapterSlug: "neelkanth",
+    unitCap: 100,
+    gender: "Unisex",
+    price: 1799,
+    originalPrice: null,
+    image: "/Products/TShirts/TheChapter/Neelkanth/KaalHar/1.webp",
+    images: [1, 2, 3, 4].map((n) => `/Products/TShirts/TheChapter/Neelkanth/KaalHar/${n}.webp`),
+    colorImages: {
+      "Black": [1, 2, 3, 4].map((n) => `/Products/TShirts/TheChapter/Neelkanth/KaalHar/${n}.webp`),
+    },
+    sizeChart: NEELKANTH_SIZE_CHART,
+    description:
+      "The chapter's flagship. Mahadev in moonlit ink on the chest; the Kaal Har shloka beneath the trishul across the back — time, pain, and fear, removed. Printed in white on heavyweight black cotton.",
+    details: { ...NEELKANTH_DETAILS, colors: ["Black"] },
+  },
   {
     id: 17,
     name: "Legends are Always Late Supima Tee",
@@ -1125,6 +1194,21 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
+  // ===== The Neelkanth chapter — one story, one colour per tee =====
+  neelkanthTee(22, "Amarnath Oversized Tee", "Amarnath", "Navy Blue",
+    "The yatra, mapped in engraved gold — Nandi at Pahalgam, the moon at Chandanwari, Sheshnag risen, Ganesha at the pass, five streams, and the ice lingam waiting in the cave. He left everything behind, one stop at a time."),
+  neelkanthTee(23, "Halahal Oversized Tee", "Halahal", "Black",
+    "The ocean gave poison; he gave it a home. The halahala held at the throat in the only colour that matters — the blue that named Neelkanth. Held. Never swallowed."),
+  neelkanthTee(24, "Ananta Oversized Tee", "Ananta", "Black",
+    "Before form, there was sound. The damaru's first beat rising in cosmic blue — creation as vibration, worn in the dark."),
+  neelkanthTee(25, "Tandav Oversized Tee", "Tandav", "Black",
+    "The dance that ends worlds, caught mid-motion in tonal white ink — stillness at the centre of the storm."),
+  neelkanthTee(26, "Mahakaal Oversized Tee", "Mahakaal", "Black",
+    "Ujjain's lord of time in ember and ash. Even time keeps his time."),
+  neelkanthTee(27, "Aghora Oversized Tee", "Aghora", "Navy Blue",
+    "Aghora — beyond fear. The calm silhouette against the eclipse: power that needs no fury."),
+  neelkanthTee(28, "Astra Oversized Tee", "Astra", "Black",
+    "Not a weapon forged, but one forming — Ganga's flow, smoke, ash, moonlight and cosmic dust converging into the trishul, the damaru bound at its heart. Energy becoming matter, sealed with the first line of the Mahamrityunjaya."),
 ];
 
 // Helper functions
