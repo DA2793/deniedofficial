@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { products, TIER_DESCRIPTIONS, type ProductTier, type ProductGender } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import { useShuffledProducts } from "@/lib/useShuffledProducts";
 
 const categoryFilters = [
   { slug: "all", name: "All" },
@@ -26,6 +27,10 @@ const genderFilters: { slug: ProductGender; name: string }[] = [
 ];
 
 function CollectionContent() {
+  // Session-stable shuffle: the catalog array is append-ordered (newest last),
+  // which buries the newest designs at the bottom of the grid. Falls back to
+  // catalog order for the pre-hydration paint.
+  const shuffledProducts = useShuffledProducts();
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeTier, setActiveTier] = useState<ProductTier | null>(null);
@@ -48,10 +53,11 @@ function CollectionContent() {
   }, [searchParams]);
 
   const filteredProducts = useMemo(() => {
+    const catalog = shuffledProducts ?? products;
     let filtered =
       activeCategory === "all"
-        ? products
-        : products.filter((p) => p.category === activeCategory);
+        ? catalog
+        : catalog.filter((p) => p.category === activeCategory);
 
     if (activeTier) {
       filtered = filtered.filter((p) => p.tier === activeTier);
@@ -68,7 +74,7 @@ function CollectionContent() {
     }
 
     return filtered;
-  }, [activeCategory, activeTier, activeGender, sortBy]);
+  }, [shuffledProducts, activeCategory, activeTier, activeGender, sortBy]);
 
   return (
     <>

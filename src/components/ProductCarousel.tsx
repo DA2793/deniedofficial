@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { products, getProductLabel, getProductLabelClasses } from "@/data/products";
 import type { Product } from "@/data/products";
+import { useShuffledProducts } from "@/lib/useShuffledProducts";
 
 const ROTATE_DEG_PER_SEC = 9; // continuous drift speed — full loop ≈ 40s
 const FLOAT_HEIGHT = 16;
@@ -42,6 +43,10 @@ function computeTarget(currentSpin: number, index: number) {
 }
 
 export default function ProductCarousel() {
+  // Session-stable shuffle so newer designs aren't stuck at the back of the
+  // ring (the catalog array is append-ordered).
+  const shuffledProducts = useShuffledProducts();
+  const items = shuffledProducts ?? products;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -116,7 +121,7 @@ export default function ProductCarousel() {
     [spin, reducedMotion]
   );
 
-  if (isMobile === null) {
+  if (isMobile === null || shuffledProducts === null) {
     return <section className="py-24 px-6 md:px-12 h-[620px]" aria-hidden="true" />;
   }
 
@@ -136,7 +141,7 @@ export default function ProductCarousel() {
         </div>
 
         {isMobile ? (
-          <MobileCarousel />
+          <MobileCarousel items={items} />
         ) : (
           <>
             {/* Rotating ring */}
@@ -150,7 +155,7 @@ export default function ProductCarousel() {
               onFocusCapture={handleFocusCapture}
               onBlurCapture={handleBlurCapture}
             >
-              {products.map((product, index) => (
+              {items.map((product, index) => (
                 <CarouselCard
                   key={product.id}
                   product={product}
@@ -177,7 +182,7 @@ export default function ProductCarousel() {
 
               {/* Dots */}
               <div className="flex gap-3" role="tablist" aria-label="Select product">
-                {products.map((product, index) => (
+                {items.map((product, index) => (
                   <button
                     key={product.id}
                     type="button"
@@ -412,7 +417,7 @@ function CarouselCard({
 const MOBILE_AUTOPLAY_MS = 3200;
 const MOBILE_RESUME_DELAY_MS = 2500;
 
-function MobileCarousel() {
+function MobileCarousel({ items }: { items: Product[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [tabHidden, setTabHidden] = useState(false);
@@ -490,7 +495,7 @@ function MobileCarousel() {
     if (!isPlaying) return;
     const interval = setInterval(() => {
       const container = containerRef.current;
-      const next = (activeIndex + 1) % products.length;
+      const next = (activeIndex + 1) % items.length;
       const card = cardRefs.current[next];
       if (!container || !card) return;
       const targetLeft =
@@ -498,7 +503,7 @@ function MobileCarousel() {
       container.scrollTo({ left: targetLeft, behavior: "smooth" });
     }, MOBILE_AUTOPLAY_MS);
     return () => clearInterval(interval);
-  }, [isPlaying, activeIndex]);
+  }, [isPlaying, activeIndex, items.length]);
 
   const handleTouchStart = () => {
     setPaused(true);
@@ -525,7 +530,7 @@ function MobileCarousel() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {products.map((product, index) => {
+      {items.map((product, index) => {
         const isActive = index === activeIndex;
         return (
           <Link
