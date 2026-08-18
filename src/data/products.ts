@@ -1209,6 +1209,46 @@ export const products: Product[] = [
     "Aghora — beyond fear. The calm silhouette against the eclipse: power that needs no fury."),
   neelkanthTee(28, "Astra Oversized Tee", "Astra", "Black",
     "Not a weapon forged, but one forming — Ganga's flow, smoke, ash, moonlight and cosmic dust converging into the trishul, the damaru bound at its heart. Energy becoming matter, sealed with the first line of the Mahamrityunjaya."),
+  {
+    id: 29,
+    name: "Think Outside the Box Acid Washed Tee",
+    category: "T-Shirts",
+    tier: "The Numbered",
+    unitCap: 100,
+    gender: "Unisex",
+    price: 1499,
+    originalPrice: null,
+    image: "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
+    images: [
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/2.webp",
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/3.webp",
+    ],
+    colorImages: {
+      "Acid Wash": [
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/2.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/3.webp",
+      ],
+    },
+    sizeChart: [
+      { size: "XS", chest: 39, length: 27 },
+      { size: "S", chest: 41, length: 28 },
+      { size: "M", chest: 43, length: 29 },
+      { size: "L", chest: 45, length: 30 },
+      { size: "XL", chest: 47, length: 31 },
+      { size: "XXL", chest: 49, length: 32 },
+    ],
+    description: "The box unfolds; the thinking doesn't stop at its edges. Printed on a unique acid wash — each piece washed differently, no two alike.",
+    details: {
+      fabric: "Crafted from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and finished with a unique acid wash treatment for a soft, lived-in feel and lasting comfort.",
+      fit: "Unisex oversized fit with dropped shoulders, delivering a relaxed streetwear silhouette.",
+      features: "240 GSM Heavyweight • 100% Super Combed Cotton • Pre-Shrunk • Acid-Washed Finish • Lycra Ribbed Neck • Double-Stitched Construction • Every piece is uniquely washed, making no two tees exactly alike.",
+      care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: ["Acid Wash"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
 ];
 
 // Helper functions
