@@ -172,17 +172,22 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    image: "/Products/TShirts/TheNumbered/AcidWashed/1.png",
+    image: "/Products/TShirts/TheNumbered/AcidWashed/Black/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/AcidWashed/1.png",
-      "/Products/TShirts/TheNumbered/AcidWashed/2.png",
-      "/Products/TShirts/TheNumbered/AcidWashed/3.png",
+      "/Products/TShirts/TheNumbered/AcidWashed/Black/1.webp",
+      "/Products/TShirts/TheNumbered/AcidWashed/Black/2.webp",
+      "/Products/TShirts/TheNumbered/AcidWashed/Black/3.webp",
     ],
     colorImages: {
-      "Acid Wash": [
-        "/Products/TShirts/TheNumbered/AcidWashed/1.png",
-        "/Products/TShirts/TheNumbered/AcidWashed/2.png",
-        "/Products/TShirts/TheNumbered/AcidWashed/3.png",
+      "Black": [
+        "/Products/TShirts/TheNumbered/AcidWashed/Black/1.webp",
+        "/Products/TShirts/TheNumbered/AcidWashed/Black/2.webp",
+        "/Products/TShirts/TheNumbered/AcidWashed/Black/3.webp",
+      ],
+      "Navy Blue": [
+        "/Products/TShirts/TheNumbered/AcidWashed/NavyBlue/1.webp",
+        "/Products/TShirts/TheNumbered/AcidWashed/NavyBlue/2.webp",
+        "/Products/TShirts/TheNumbered/AcidWashed/NavyBlue/3.webp",
       ],
     },
     sizeChart: [
@@ -199,7 +204,7 @@ export const products: Product[] = [
       fit: "Unisex oversized fit with dropped shoulders, delivering a relaxed streetwear silhouette.",
       features: "240 GSM Heavyweight • 100% Super Combed Cotton • Pre-Shrunk • Acid-Washed Finish • Lycra Ribbed Neck • Double-Stitched Construction • Every piece is uniquely washed, making no two tees exactly alike.",
       care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
-      colors: ["Acid Wash"],
+      colors: ["Black", "Navy Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
