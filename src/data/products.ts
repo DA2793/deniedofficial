@@ -1223,17 +1223,22 @@ export const products: Product[] = [
     gender: "Unisex",
     price: 1499,
     originalPrice: null,
-    image: "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
+    image: "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/1.webp",
     images: [
-      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
-      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/2.webp",
-      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/3.webp",
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/1.webp",
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/2.webp",
+      "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/3.webp",
     ],
     colorImages: {
-      "Acid Wash": [
-        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/1.webp",
-        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/2.webp",
-        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/3.webp",
+      "Black": [
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/1.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/2.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/Black/3.webp",
+      ],
+      "Navy Blue": [
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/NavyBlue/1.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/NavyBlue/2.webp",
+        "/Products/TShirts/TheNumbered/ThinkOutsideTheBox/NavyBlue/3.webp",
       ],
     },
     sizeChart: [
@@ -1250,7 +1255,7 @@ export const products: Product[] = [
       fit: "Unisex oversized fit with dropped shoulders, delivering a relaxed streetwear silhouette.",
       features: "240 GSM Heavyweight • 100% Super Combed Cotton • Pre-Shrunk • Acid-Washed Finish • Lycra Ribbed Neck • Double-Stitched Construction • Every piece is uniquely washed, making no two tees exactly alike.",
       care: "Machine wash cold, inside out with similar colours. Hang dry or tumble dry on low. Iron inside out on low heat. Do not bleach or iron directly on the print.",
-      colors: ["Acid Wash"],
+      colors: ["Black", "Navy Blue"],
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
