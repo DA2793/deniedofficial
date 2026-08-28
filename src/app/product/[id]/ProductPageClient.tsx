@@ -342,7 +342,7 @@ export default function ProductPageClient({ productId }: { productId: number }) 
             {product.unitCap && (
               <p className={`text-[10px] uppercase tracking-brutal mb-3 ${soldOut ? "text-red-400" : "text-gray-500"}`}>
                 {soldOut
-                  ? "Sold Out"
+                  ? "Unavailable."
                   : stockRemaining !== null
                     ? `Only ${stockRemaining} of ${product.unitCap} left`
                     : `Limited to ${product.unitCap} pieces`}
@@ -472,7 +472,7 @@ export default function ProductPageClient({ productId }: { productId: number }) 
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                   )}
-                  {soldOut || selectedVariantOutOfStock ? "Sold Out" : "Add to Bag"}
+                  {soldOut || selectedVariantOutOfStock ? "Unavailable." : "Add to Bag"}
                 </button>
               </MagneticButton>
 
