@@ -115,10 +115,12 @@ const ANIME_DETAILS = {
   sizes: ["XS", "S", "M", "L", "XL", "XXL"],
 };
 
-/** Compact builder for the Anime saga tees — every design in Black + Navy. */
+/** Compact builder for the Anime saga tees — every design in Black + Navy.
+ *  Three shots per colour: back print (hero), the saga crest front (shared
+ *  across the saga), model back. */
 function animeTee(id: number, name: string, segment: string, description: string): Product {
   const shots = (colour: string) =>
-    [1, 2].map((n) => `/Products/TShirts/TheChapter/Anime/${segment}/${colour}/${n}.webp`);
+    [1, 2, 3].map((n) => `/Products/TShirts/TheChapter/Anime/${segment}/${colour}/${n}.webp`);
   return {
     id,
     name,
