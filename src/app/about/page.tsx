@@ -129,6 +129,61 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* The Card — the name, answered */}
+      <section className="py-28 px-6 md:px-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gold/[0.02] to-transparent pointer-events-none" />
+        <div className="max-w-[560px] mx-auto text-center relative z-10">
+          <ScrollReveal>
+            <p className="text-[10px] uppercase tracking-brutal text-gold mb-3">
+              The Name, Answered
+            </p>
+            <p className="font-serif text-lg italic text-gray-400 mb-16">
+              Not for Everyone. Luxury for the Selected.
+            </p>
+          </ScrollReveal>
+
+          <div className="space-y-14">
+            <ScrollReveal delay={0.1}>
+              <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+                Why DENIED?
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                Because approval was never the goal.
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                The best stories begin with &ldquo;No.&rdquo;
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.15}>
+              <div className="mx-auto h-px w-10 bg-white/10 mb-14" />
+              <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+                What is DENIED?
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                Wearable storytelling.
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                Limited pieces. Never restocked.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.2}>
+              <div className="mx-auto h-px w-10 bg-white/10 mb-14" />
+              <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+                DENIED who?
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                The ordinary.
+              </p>
+              <p className="font-serif text-xl md:text-2xl italic leading-relaxed text-gray-200">
+                Some standards still exist.
+              </p>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* Founder's Letter */}
       <section className="py-28 px-6 md:px-12 bg-black-soft">
         <div className="max-w-[700px] mx-auto">
