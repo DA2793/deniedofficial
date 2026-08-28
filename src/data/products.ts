@@ -104,6 +104,40 @@ function neelkanthTee(
   };
 }
 
+const ANIME_DETAILS = {
+  fabric:
+    "Crafted from 100% Super Combed Cotton with a 240 GSM heavyweight construction. Pre-shrunk and bio-washed for superior softness, durability, and lasting shape retention.",
+  fit: "Unisex oversized fit with dropped shoulders, offering a relaxed streetwear silhouette.",
+  features:
+    "240 GSM Heavyweight • Super Combed Cotton • Pre-Shrunk • Bio-Washed • Lycra Ribbed Neck • Double-Stitched Construction • Saga crest on the chest — the back tells the story",
+  care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out. Do not iron directly on the print.",
+  colors: ["Black", "Navy Blue"],
+  sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+};
+
+/** Compact builder for the Anime saga tees — every design in Black + Navy. */
+function animeTee(id: number, name: string, segment: string, description: string): Product {
+  const shots = (colour: string) =>
+    [1, 2].map((n) => `/Products/TShirts/TheChapter/Anime/${segment}/${colour}/${n}.webp`);
+  return {
+    id,
+    name,
+    category: "T-Shirts",
+    tier: "The Chapter",
+    chapterSlug: "anime",
+    unitCap: 100,
+    gender: "Unisex",
+    price: 1499,
+    originalPrice: null,
+    image: shots("Black")[0],
+    images: shots("Black"),
+    colorImages: { "Black": shots("Black"), "Navy Blue": shots("NavyBlue") },
+    sizeChart: NEELKANTH_SIZE_CHART, // same 240 GSM oversized garment
+    description,
+    details: ANIME_DETAILS,
+  };
+}
+
 /** Builds colour->images maps for The Geet Collection's webp exports. */
 const geetColorImages = (path: string, colors: string[]): Record<string, string[]> =>
   Object.fromEntries(
@@ -1214,6 +1248,25 @@ export const products: Product[] = [
     "Aghora — beyond fear. The calm silhouette against the eclipse: power that needs no fury."),
   neelkanthTee(28, "Astra Oversized Tee", "Astra", "Black",
     "Not a weapon forged, but one forming — Ganga's flow, smoke, ash, moonlight and cosmic dust converging into the trishul, the damaru bound at its heart. Energy becoming matter, sealed with the first line of the Mahamrityunjaya."),
+  // ===== The Anime chapter — Saga 01: One Piece. Locked narrative order. =====
+  animeTee(30, "Identity Oversized Tee", "Identity",
+    "The strongest identity is the one you never abandon."),
+  animeTee(31, "Dream Oversized Tee", "Dream",
+    "The world said impossible. He sailed anyway."),
+  animeTee(32, "Ambition Oversized Tee", "Ambition",
+    "He never wanted to rule the seas. He wanted no one to rule him."),
+  animeTee(33, "Crew Oversized Tee", "Crew",
+    "The greatest treasure chose to sail beside him."),
+  animeTee(34, "Evolution Oversized Tee", "Evolution",
+    "Every gear earned. The dream never changed."),
+  animeTee(35, "Loyalty Oversized Tee", "Loyalty",
+    "Nothing happened. Yet everything did."),
+  animeTee(36, "Liberation Oversized Tee", "Liberation",
+    "Legends don't conquer the world. They liberate it."),
+  animeTee(37, "Cost Oversized Tee", "Cost",
+    "The people we lose become the reason we never stop."),
+  animeTee(38, "3D2Y Oversized Tee", "3D2Y",
+    "Growth begins the moment you admit you're not ready."),
   {
     id: 29,
     name: "Think Outside the Box Acid Washed Tee",

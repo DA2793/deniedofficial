@@ -119,6 +119,12 @@ export default function Navbar() {
                       </Link>
                       <div className="invisible absolute left-full top-0 ml-1 w-[160px] rounded-xl border border-white/10 bg-[#0b0b0b] py-2 opacity-0 shadow-2xl shadow-black/80 transition-all duration-200 group-hover/chapter:visible group-hover/chapter:opacity-100">
                         <Link
+                          href="/chapter/anime"
+                          className="block px-5 py-2.5 text-[10px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                        >
+                          Anime
+                        </Link>
+                        <Link
                           href="/chapter/neelkanth"
                           className="block px-5 py-2.5 text-[10px] uppercase tracking-wide text-gray-400 hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                         >
@@ -323,6 +329,7 @@ export default function Navbar() {
                         { label: "The Foundation", href: "/collection?category=T-Shirts&tier=The%20Foundation" },
                         { label: "The Numbered", href: "/collection?category=T-Shirts&tier=The%20Numbered" },
                         { label: "The Chapter", href: "/collection?category=T-Shirts&tier=The%20Chapter" },
+                        { label: "· Anime", href: "/chapter/anime" },
                         { label: "· Neelkanth", href: "/chapter/neelkanth" },
                         { label: "· Zodiac", href: "/chapter/zodiac" },
                         { label: "The Geet Collection", href: "/geet" },
