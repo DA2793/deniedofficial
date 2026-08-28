@@ -211,7 +211,7 @@ export default function AboutPage() {
                 The name itself is a filter. Not everyone will get it. Not everyone is supposed to. And that&apos;s exactly the point.
               </p>
               <p className="text-gray-300 text-base leading-relaxed">
-                Because some standards still exist.
+                If you understand, you belong.
               </p>
             </div>
 
