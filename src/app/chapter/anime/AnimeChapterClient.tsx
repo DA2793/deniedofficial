@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import GrandLineBackdrop from "@/components/GrandLineBackdrop";
-import FloatingChapterCTA from "@/components/FloatingChapterCTA";
 import { products, type Product } from "@/data/products";
 
 /**
@@ -194,14 +193,6 @@ export default function AnimeChapterClient() {
         ))}
       </div>
 
-      {/* Floating shortcut only once there is somewhere to go */}
-      {hasProducts && (
-        <FloatingChapterCTA
-          href="/collection?category=T-Shirts&tier=The%20Chapter"
-          endId="anime-cta"
-        />
-      )}
-
       {/* ===== CLOSING ===== */}
       <section id="anime-cta" className="relative overflow-hidden px-6 py-32 md:py-44">
         <GrandLineBackdrop className="opacity-60" showCompass={false} />
@@ -216,16 +207,7 @@ export default function AnimeChapterClient() {
             <p className="mx-auto mt-6 max-w-md font-serif text-lg italic leading-relaxed text-gray-400">
               Every saga earned its place here. So did you.
             </p>
-            {hasProducts ? (
-              <div className="mt-10">
-                <Link
-                  href="/collection?category=T-Shirts&tier=The%20Chapter"
-                  className="inline-flex rounded-full bg-white px-10 py-4 text-[10px] uppercase tracking-brutal text-black transition-colors duration-300 hover:bg-gold"
-                >
-                  Enter the Collection
-                </Link>
-              </div>
-            ) : (
+            {!hasProducts && (
               <p className="mt-10 text-[10px] uppercase tracking-brutal text-gray-500">
                 The first saga is assembling. Coming soon.
               </p>

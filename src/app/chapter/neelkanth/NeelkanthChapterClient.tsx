@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/ScrollReveal";
 import AshDriftBackdrop from "@/components/AshDriftBackdrop";
-import FloatingChapterCTA from "@/components/FloatingChapterCTA";
 import { getProductById } from "@/data/products";
 
 // One line per story — a gist, never an explanation.
@@ -122,12 +121,6 @@ export default function NeelkanthChapterClient() {
         </div>
       </section>
 
-      {/* Floating shortcut — lives only in the middle stretch of the scroll */}
-      <FloatingChapterCTA
-        href="/collection?category=T-Shirts&tier=The%20Chapter"
-        endId="neelkanth-cta"
-      />
-
       {/* ===== CLOSING ===== */}
       <section id="neelkanth-cta" className="relative overflow-hidden px-6 py-32 md:py-44">
         <AshDriftBackdrop className="opacity-60" showTripundra={false} />
@@ -143,14 +136,6 @@ export default function NeelkanthChapterClient() {
               Eight stories on heavyweight cotton — each limited to 100 pieces,
               each printed only after you claim yours.
             </p>
-            <div className="mt-10">
-              <Link
-                href="/collection?category=T-Shirts&tier=The%20Chapter"
-                className="inline-flex rounded-full bg-white px-10 py-4 text-[10px] uppercase tracking-brutal text-black transition-colors duration-300 hover:bg-gold"
-              >
-                Enter the Collection
-              </Link>
-            </div>
           </ScrollReveal>
         </div>
       </section>
