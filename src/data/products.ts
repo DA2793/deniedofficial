@@ -1322,6 +1322,16 @@ export const products: Product[] = [
     tier: null,
     unitCap: null,
     gender: "Unisex",
+    geet: true,
+    // Pastel shots only — female model faces the Geet card.
+    geetImages: [
+      "/Products/Shirts/Oversized/Lavender/2.webp",
+      "/Products/Shirts/Oversized/BabyPink/2.webp",
+      "/Products/Shirts/Oversized/BabyBlue/2.webp",
+      "/Products/Shirts/Oversized/Lavender/1.webp",
+      "/Products/Shirts/Oversized/BabyPink/1.webp",
+      "/Products/Shirts/Oversized/BabyBlue/1.webp",
+    ],
     price: 1199,
     originalPrice: null,
     image: "/Products/Shirts/Oversized/Black/1.webp",

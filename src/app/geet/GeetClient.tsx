@@ -7,7 +7,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { products, type Product } from "@/data/products";
 
 // Curated order: the new drops lead, the guest Foundation piece closes.
-const GEET_ORDER = [18, 19, 20, 21, 13, 12, 8, 14, 17];
+const GEET_ORDER = [39, 18, 19, 20, 21, 13, 12, 8, 14, 17];
 
 /** Geet membership: every women's product, plus unisex pieces flagged in. */
 function getGeetProducts(): Product[] {
