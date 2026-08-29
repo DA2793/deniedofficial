@@ -33,6 +33,12 @@ export interface Product {
    */
   geet?: boolean;
   geetImages?: string[];
+  /**
+   * Small line under the name on product cards. Used when several products
+   * share a name (e.g. one Oversized Shirt card per colour) so each card
+   * says which one it is without polluting the product page title.
+   */
+  cardSubtitle?: string;
   unitCap: number | null;
   gender: ProductGender;
   price: number;
@@ -137,6 +143,43 @@ function animeTee(id: number, name: string, segment: string, description: string
     sizeChart: NEELKANTH_SIZE_CHART, // same 240 GSM oversized garment
     description,
     details: ANIME_DETAILS,
+  };
+}
+
+/** One Oversized Shirt product per colour — each colour gets its own card in
+ *  the Shirts grid (subtitle names the colour), while every product page
+ *  reads simply "Oversized Shirt". Pastels join Geet, model shot fronting. */
+function oversizedShirt(id: number, color: string, geet = false): Product {
+  const images = [1, 2].map(
+    (n) => `/Products/Shirts/Oversized/${color.replace(/[^A-Za-z0-9]/g, "")}/${n}.webp`
+  );
+  return {
+    id,
+    name: "Oversized Shirt",
+    category: "Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Unisex",
+    ...(geet ? { geet: true, geetImages: [images[1], images[0]] } : {}),
+    cardSubtitle: color,
+    price: 1199,
+    originalPrice: null,
+    image: images[0],
+    images,
+    colorImages: { [color]: images },
+    sizeChart: null,
+    description:
+      "The DENIED. monogram, embroidered where a pocket would brag. Heavyweight cotton, boxy drop-shoulder cut — a shirt that says everything by saying one letter.",
+    details: {
+      fabric:
+        "Crafted from 100% Cotton with a 240 GSM heavyweight construction, offering a structured feel with breathable comfort for everyday wear.",
+      fit: "Unisex oversized fit with half sleeves and a straight hem, designed to deliver a relaxed, contemporary silhouette.",
+      features:
+        "240 GSM Fabric • 100% Cotton • Oversized Fit • Half Sleeves • Straight Hem • Front Shoulder Design • Unisex Style",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: [color],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
   };
 }
 
@@ -1314,53 +1357,15 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
-  // ===== Shirts — new category. Always available, never numbered. =====
-  {
-    id: 39,
-    name: "Monogram Oversized Shirt",
-    category: "Shirts",
-    tier: null,
-    unitCap: null,
-    gender: "Unisex",
-    geet: true,
-    // Pastel shots only — female model faces the Geet card.
-    geetImages: [
-      "/Products/Shirts/Oversized/Lavender/2.webp",
-      "/Products/Shirts/Oversized/BabyPink/2.webp",
-      "/Products/Shirts/Oversized/BabyBlue/2.webp",
-      "/Products/Shirts/Oversized/Lavender/1.webp",
-      "/Products/Shirts/Oversized/BabyPink/1.webp",
-      "/Products/Shirts/Oversized/BabyBlue/1.webp",
-    ],
-    price: 1199,
-    originalPrice: null,
-    image: "/Products/Shirts/Oversized/Black/1.webp",
-    images: [
-      "/Products/Shirts/Oversized/Black/1.webp",
-      "/Products/Shirts/Oversized/Black/2.webp",
-    ],
-    colorImages: Object.fromEntries(
-      ["Black", "Maroon", "Navy Blue", "Baby Pink", "Lavender", "Baby Blue"].map((color) => [
-        color,
-        [1, 2].map(
-          (n) => `/Products/Shirts/Oversized/${color.replace(/[^A-Za-z0-9]/g, "")}/${n}.webp`
-        ),
-      ])
-    ),
-    sizeChart: null,
-    description:
-      "The DENIED. monogram, embroidered where a pocket would brag. Heavyweight cotton, boxy drop-shoulder cut — a shirt that says everything by saying one letter.",
-    details: {
-      fabric:
-        "Crafted from 100% Cotton with a 240 GSM heavyweight construction, offering a structured feel with breathable comfort for everyday wear.",
-      fit: "Unisex oversized fit with half sleeves and a straight hem, designed to deliver a relaxed, contemporary silhouette.",
-      features:
-        "240 GSM Fabric • 100% Cotton • Oversized Fit • Half Sleeves • Straight Hem • Front Shoulder Design • Unisex Style",
-      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
-      colors: ["Black", "Maroon", "Navy Blue", "Baby Pink", "Lavender", "Baby Blue"],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    },
-  },
+  // ===== Shirts — new category. Always available, never numbered. One card
+  // per colour so the whole palette shows in the Shirts grid; every page just
+  // says "Oversized Shirt". Pastels also live in Geet, female model fronting.
+  oversizedShirt(39, "Black"),
+  oversizedShirt(40, "Maroon"),
+  oversizedShirt(41, "Navy Blue"),
+  oversizedShirt(42, "Baby Pink", true),
+  oversizedShirt(43, "Lavender", true),
+  oversizedShirt(44, "Baby Blue", true),
 ];
 
 // Helper functions

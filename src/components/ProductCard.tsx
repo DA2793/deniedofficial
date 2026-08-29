@@ -107,6 +107,9 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="pt-5 pb-6">
           <h3 className="text-sm text-white font-medium mb-1.5 group-hover:text-gold transition-colors duration-300">{product.name}</h3>
+          {product.cardSubtitle && (
+            <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-1.5">{product.cardSubtitle}</p>
+          )}
           <span className="text-gold text-sm">₹{product.price.toLocaleString()}</span>
           {product.originalPrice && <span className="text-gray-600 text-xs line-through ml-2">₹{product.originalPrice.toLocaleString()}</span>}
           {product.chapterSlug && (
