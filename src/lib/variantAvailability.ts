@@ -5,14 +5,11 @@ export interface UnavailableVariantRule {
 }
 
 const POLO_PRODUCT_IDS = [4] as const;
-const NUMBERED_OVERSIZED_PRODUCT_IDS = [7, 9, 10, 11, 13] as const;
 
 // Keep this list synchronized with Business/out-of-stock.xlsx.
 export const UNAVAILABLE_VARIANTS: readonly UnavailableVariantRule[] = [
-  { productIds: POLO_PRODUCT_IDS, color: "Navy Blue", sizes: ["XL", "XXL"] },
-  { productIds: POLO_PRODUCT_IDS, color: "Maroon", sizes: ["XL"] },
-  { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Bottle Green", sizes: ["XS"] },
-  { productIds: NUMBERED_OVERSIZED_PRODUCT_IDS, color: "Maroon", sizes: ["M"] },
+  { productIds: POLO_PRODUCT_IDS, color: "Grey", sizes: ["M"] },
+  { productIds: POLO_PRODUCT_IDS, color: "Petrol Blue", sizes: ["L", "XL"] },
 ];
 
 export function isVariantOutOfStock(productId: number, color: string, size: string): boolean {
