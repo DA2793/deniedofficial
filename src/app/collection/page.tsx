@@ -21,6 +21,10 @@ const tierFilters: { slug: ProductTier; name: string }[] = [
   { slug: "The Chapter", name: "The Chapter" },
 ];
 
+// The Shirts tab shows the palette in a fixed order (dark to pastel) instead
+// of the session shuffle: Black, Navy, Maroon, Baby Pink, Lavender, Baby Blue.
+const SHIRT_ORDER = [39, 41, 40, 42, 43, 44];
+
 const genderFilters: { slug: ProductGender; name: string }[] = [
   { slug: "Women", name: "Women" },
   { slug: "Men", name: "Men" },
@@ -66,6 +70,12 @@ function CollectionContent() {
 
     if (activeGender) {
       filtered = filtered.filter((p) => p.gender === activeGender);
+    }
+
+    if (activeCategory === "Shirts") {
+      filtered = [...filtered].sort(
+        (a, b) => SHIRT_ORDER.indexOf(a.id) - SHIRT_ORDER.indexOf(b.id)
+      );
     }
 
     if (sortBy === "price-low") {
