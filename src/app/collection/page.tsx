@@ -77,8 +77,28 @@ function CollectionContent() {
     return filtered;
   }, [shuffledProducts, activeCategory, activeTier, activeGender, sortBy]);
 
+  // The hero names whichever category is open; the full grid stays Collection.
+  const heading =
+    categoryFilters.find((cat) => cat.slug === activeCategory && cat.slug !== "all")?.name ??
+    "Collection";
+
   return (
     <>
+      {/* Header */}
+      <ScrollReveal>
+        <div className="mb-16">
+          <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
+            Too Original to Blend In
+          </p>
+          <h1 className="font-display text-6xl md:text-8xl uppercase mb-4">
+            {heading}
+          </h1>
+          <p className="text-gray-500 text-sm max-w-md">
+            Every piece carries intention. Every drop is limited. Find what speaks to you.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Filters */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -212,21 +232,6 @@ export default function CollectionPage() {
   return (
     <section className="min-h-screen pt-32 pb-20 px-6 md:px-12">
       <div className="max-w-[1400px] mx-auto">
-        {/* Header */}
-        <ScrollReveal>
-          <div className="mb-16">
-            <p className="text-[10px] uppercase tracking-brutal text-gold mb-4">
-              Too Original to Blend In
-            </p>
-            <h1 className="font-display text-6xl md:text-8xl uppercase mb-4">
-              Collection
-            </h1>
-            <p className="text-gray-500 text-sm max-w-md">
-              Every piece carries intention. Every drop is limited. Find what speaks to you.
-            </p>
-          </div>
-        </ScrollReveal>
-
         <Suspense
           fallback={
             <div className="text-center py-20">
