@@ -88,6 +88,12 @@ export default function Navbar() {
                       Caps
                     </Link>
                     <Link
+                      href="/collection?category=Shirts"
+                      className="block px-5 py-2.5 text-[11px] uppercase tracking-wide font-semibold text-white hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
+                    >
+                      Shirts
+                    </Link>
+                    <Link
                       href="/collection?category=T-Shirts"
                       className="block px-5 py-2.5 text-[11px] uppercase tracking-wide font-semibold text-white hover:text-gold hover:bg-white/[0.04] transition-all duration-200"
                     >
@@ -325,6 +331,7 @@ export default function Navbar() {
                       {[
                         { label: "All Collection", href: "/collection", strong: true },
                         { label: "Caps", href: "/collection?category=Caps", strong: true },
+                        { label: "Shirts", href: "/collection?category=Shirts", strong: true },
                         { label: "T-Shirts", href: "/collection?category=T-Shirts", strong: true },
                         { label: "The Foundation", href: "/collection?category=T-Shirts&tier=The%20Foundation" },
                         { label: "The Numbered", href: "/collection?category=T-Shirts&tier=The%20Numbered" },

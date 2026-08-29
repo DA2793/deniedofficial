@@ -1314,6 +1314,43 @@ export const products: Product[] = [
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     },
   },
+  // ===== Shirts — new category. Always available, never numbered. =====
+  {
+    id: 39,
+    name: "Monogram Oversized Shirt",
+    category: "Shirts",
+    tier: null,
+    unitCap: null,
+    gender: "Unisex",
+    price: 1199,
+    originalPrice: null,
+    image: "/Products/Shirts/Oversized/Black/1.webp",
+    images: [
+      "/Products/Shirts/Oversized/Black/1.webp",
+      "/Products/Shirts/Oversized/Black/2.webp",
+    ],
+    colorImages: Object.fromEntries(
+      ["Black", "Maroon", "Navy Blue", "Baby Pink", "Lavender", "Baby Blue"].map((color) => [
+        color,
+        [1, 2].map(
+          (n) => `/Products/Shirts/Oversized/${color.replace(/[^A-Za-z0-9]/g, "")}/${n}.webp`
+        ),
+      ])
+    ),
+    sizeChart: null,
+    description:
+      "The DENIED. monogram, embroidered where a pocket would brag. Heavyweight cotton, boxy drop-shoulder cut — a shirt that says everything by saying one letter.",
+    details: {
+      fabric:
+        "Crafted from 100% Cotton with a 240 GSM heavyweight construction, offering a structured feel with breathable comfort for everyday wear.",
+      fit: "Unisex oversized fit with half sleeves and a straight hem, designed to deliver a relaxed, contemporary silhouette.",
+      features:
+        "240 GSM Fabric • 100% Cotton • Oversized Fit • Half Sleeves • Straight Hem • Front Shoulder Design • Unisex Style",
+      care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
+      colors: ["Black", "Maroon", "Navy Blue", "Baby Pink", "Lavender", "Baby Blue"],
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    },
+  },
 ];
 
 // Helper functions

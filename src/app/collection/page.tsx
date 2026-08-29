@@ -11,6 +11,7 @@ import { useShuffledProducts } from "@/lib/useShuffledProducts";
 const categoryFilters = [
   { slug: "all", name: "All" },
   { slug: "T-Shirts", name: "T-Shirts" },
+  { slug: "Shirts", name: "Shirts" },
   { slug: "Caps", name: "Caps" },
 ];
 
