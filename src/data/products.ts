@@ -34,10 +34,12 @@ export interface Product {
   geet?: boolean;
   geetImages?: string[];
   /**
-   * Small line under the name on product cards. Used when several products
-   * share a name (e.g. one Oversized Shirt card per colour) so each card
-   * says which one it is without polluting the product page title.
+   * Card-only display overrides. Used when several products share a name
+   * (e.g. one Oversized Shirt card per colour): the card leads with the
+   * colour (cardTitle) and carries the shared name as the small line
+   * (cardSubtitle), while the product page keeps the clean product name.
    */
+  cardTitle?: string;
   cardSubtitle?: string;
   unitCap: number | null;
   gender: ProductGender;
@@ -161,13 +163,21 @@ function oversizedShirt(id: number, color: string, geet = false): Product {
     unitCap: null,
     gender: "Unisex",
     ...(geet ? { geet: true, geetImages: [images[1], images[0]] } : {}),
-    cardSubtitle: color,
+    cardTitle: color,
+    cardSubtitle: "Oversized Shirt",
     price: 1199,
     originalPrice: null,
     image: images[0],
     images,
     colorImages: { [color]: images },
-    sizeChart: null,
+    sizeChart: [
+      { size: "S", chest: 41, length: 26.5 },
+      { size: "M", chest: 43, length: 27.5 },
+      { size: "L", chest: 45, length: 28.5 },
+      { size: "XL", chest: 47, length: 29.5 },
+      { size: "XXL", chest: 49, length: 30.5 },
+      { size: "3XL", chest: 51, length: 31.5 },
+    ],
     description:
       "The DENIED. monogram, embroidered where a pocket would brag. Heavyweight cotton, boxy drop-shoulder cut — a shirt that says everything by saying one letter.",
     details: {
@@ -178,7 +188,7 @@ function oversizedShirt(id: number, color: string, geet = false): Product {
         "240 GSM Fabric • 100% Cotton • Oversized Fit • Half Sleeves • Straight Hem • Front Shoulder Design • Unisex Style",
       care: "Machine wash cold, inside out with similar colours. Tumble dry low or hang dry. Iron inside out on low heat. Do not bleach or iron directly on the print.",
       colors: [color],
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+      sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
     },
   };
 }

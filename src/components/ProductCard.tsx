@@ -106,7 +106,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className={`absolute top-4 left-4 z-10 rounded-full px-3 py-1.5 font-medium shadow-lg text-[9px] uppercase tracking-brutal ${getProductLabelClasses(product)}`}>{getProductLabel(product)}</div>
         </div>
         <div className="pt-5 pb-6">
-          <h3 className="text-sm text-white font-medium mb-1.5 group-hover:text-gold transition-colors duration-300">{product.name}</h3>
+          <h3 className="text-sm text-white font-medium mb-1.5 group-hover:text-gold transition-colors duration-300">{product.cardTitle ?? product.name}</h3>
           {product.cardSubtitle && (
             <p className="text-[10px] uppercase tracking-brutal text-gray-500 mb-1.5">{product.cardSubtitle}</p>
           )}
