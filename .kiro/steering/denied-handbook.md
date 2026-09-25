@@ -44,9 +44,10 @@ match to the site's display font).
   any code push. Asset-only swaps (replacing an image at the same path) may
   skip the build.
 - **Never commit:** `Business/`, `Designs/`, root `Products/` — these are
-  local working folders. `public/Products/` (the live site images) IS
-  committed. Note: a few old snapshots of the excluded folders exist in git
-  history; the local/uploaded copies are the current truth.
+  local working folders and are now enforced in `.gitignore` (since the
+  Sept 2026 handover; stale early snapshots were purged from the index).
+  `public/Products/` (the live site images) IS committed. The transfer
+  archive / local copies are the only truth for those three folders.
 
 ### Services and keys
 - Supabase (DB + auth) and Razorpay (payments) — keys live ONLY in

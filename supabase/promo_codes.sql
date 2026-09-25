@@ -51,12 +51,5 @@ $$;
 -- (used throughout finalize.ts and admin-notification) — no schema change
 -- needed there.
 
--- Seed the existing promo codes so checkout keeps working identically once
--- the hardcoded map is removed. Adjust/pause any of these from the Table
--- Editor going forward — no deploy needed.
-insert into public.promo_codes (code, type, value, first_time_only, active)
-values
-  ('FIRST10', 'percentage', 10, true, true),
-  ('DENIED20', 'percentage', 20, false, true),
-  ('FLAT100', 'flat', 100, false, true)
-on conflict (code) do nothing;
+-- Seed codes removed intentionally: promo codes are managed directly in the
+-- Table Editor now. Rerunning this script must not re-insert deleted codes.

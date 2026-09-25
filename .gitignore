@@ -27,3 +27,10 @@ npm-debug.log*
 Business/*key*.csv
 supabase pw.txt
 **/~$*
+
+# local working folders — never committed (covenant). Restored from the
+# transfer archive on a new machine. public/Products/ (live site images)
+# is tracked; the root Products/ (source mockups) is not.
+/Designs/
+/Products/
+/Business/
