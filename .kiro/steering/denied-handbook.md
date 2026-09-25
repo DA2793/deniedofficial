@@ -122,6 +122,29 @@ Single source of truth for the catalog. No CMS. Key fields on `Product`:
   (folder names strip spaces; newer products use webp, older ones png).
   Convention: convert source PNGs to webp quality 88 for the site.
 
+### src/ file map (where to look for what)
+- `src/data/products.ts` — the entire catalog + builders + label helpers. Most
+  product work starts and ends here.
+- `src/lib/variantAvailability.ts` — variant sellout rules (syncs to
+  Business/out-of-stock.xlsx). `src/lib/inventory.ts` — unit-cap stock reads +
+  atomic reservation. `src/lib/checkout.ts` — server-side price/variant
+  validation. `src/lib/useShuffledProducts.ts` — session-stable shuffle.
+- `src/app/` — App Router pages: `collection/` (grid + filters + pinned shirt
+  order), `product/[id]/ProductPageClient.tsx` (gallery, colour/size
+  selectors, sold-out states, "Unavailable."), `chapter/{anime,neelkanth,
+  zodiac}/` (story worlds), `geet/GeetClient.tsx` (curated GEET_ORDER),
+  `about/` (brand card + founder's letter), `api/` (stock, checkout,
+  Razorpay webhook/verify, admin order actions).
+- `src/components/` — `ProductCard.tsx` (cardTitle/cardSubtitle, hover image
+  rotation, chapter routing), `Navbar.tsx` (category dropdown + Chapter
+  flyout + mobile menu — three places to update when adding a category),
+  `Footer.tsx` (shop links), `Categories.tsx` (homepage grid),
+  `ProductCarousel.tsx` (homepage 3D ring, renders all products).
+- `src/context/` — Cart/Wishlist/Toast providers (cart drops variants that
+  became unavailable, blocks out-of-stock adds).
+- Adding a category touches: products.ts, collection categoryFilters,
+  Navbar (2 spots), Footer, Categories.tsx — the handbook's §3 has the rules.
+
 ## 4. Categories snapshot (Sept 2026)
 
 - **T-Shirts**: Foundation (Signature Oversized, Polo, Supima...), Numbered
